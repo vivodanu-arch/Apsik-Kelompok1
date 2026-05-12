@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KunjunganController;
+use App\Http\Controllers\PasienController;
 
 Route::get('/datakunjungan', [KunjunganController::class, 'index'])
     ->name('datakunjungan');
@@ -21,13 +22,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/datapasien', function () {
-    return view('datapasien');
-})->name('datapasien');
+/* ✅ DATA PASIEN */
+Route::get('/datapasien', [PasienController::class, 'index'])
+    ->name('datapasien');
 
+/* LAPORAN */
 Route::get('/laporan', function () {
     return view('laporan');
 })->name('laporan');
-
 
 require __DIR__.'/auth.php';
