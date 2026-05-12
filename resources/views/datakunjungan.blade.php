@@ -45,9 +45,24 @@
                 <div class="flex items-center justify-between p-5 border-b">
 
                     {{-- Filter --}}
-                    <button class="bg-gray-100 hover:bg-gray-200 transition px-4 py-2 rounded-xl text-sm font-semibold text-gray-700">
-                        ☰ Filter Tanggal
+                    <form method="GET" action="{{ route('datakunjungan') }}" class="flex items-center gap-3">
+
+                    <input type="date"
+                        name="tanggal"
+                        value="{{ request('tanggal') }}"
+                        class="border border-gray-300 rounded-lg px-4 py-2 text-sm">
+
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
+                        Filter
                     </button>
+
+                    <a href="{{ route('datakunjungan') }}"
+                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm">
+                            Reset
+                    </a>
+
+                </form>
 
                     {{-- Info --}}
                     <p class="text-sm text-gray-400">
@@ -103,7 +118,7 @@
 
                                 {{-- No --}}
                                 <td class="px-6 py-5 text-gray-600">
-                                    {{ $loop->iteration }}
+                                    {{ ($kunjungans->currentPage() - 1) * $kunjungans->perPage() + $loop->iteration }}
                                 </td>
 
                                 {{-- Tanggal --}}
@@ -128,7 +143,7 @@
                                 <td class="px-6 py-5">
 
                                     @php
-                                        $warna = match($item->poli_tujuan) {
+                                        $warna =match(strtoupper(trim($item->poli_tujuan))) {
                                             'POLI UMUM' => 'bg-orange-100 text-orange-600',
                                             'POLI MATA' => 'bg-pink-100 text-pink-600',
                                             'POLI GIGI' => 'bg-blue-100 text-blue-600',
@@ -177,27 +192,42 @@
                 </div>
 
                 {{-- Pagination Dummy --}}
-                <div class="flex items-center justify-center gap-3 p-6 border-t">
+                <div class="mt-8 flex justify-center items-center gap-2">
 
-                    <button class="w-10 h-10 rounded-full border hover:bg-gray-100">
-                        ‹
-                    </button>
+                    {{-- Prev --}}
+                    @if ($kunjungans->onFirstPage())
+                        <span class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-300">
+                            ‹
+                        </span>
+                    @else
+                        <a href="{{ $kunjungans->previousPageUrl() }}"
+                        class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition">
+                            ‹
+                        </a>
+                    @endif
 
-                    <button class="w-10 h-10 rounded-full bg-blue-700 text-white font-semibold">
-                        1
-                    </button>
+                    {{-- Number --}}
+                    @for ($i = 1; $i <= $kunjungans->lastPage(); $i++)
+                        <a href="{{ $kunjungans->url($i) }}"
+                        class="w-10 h-10 flex items-center justify-center rounded-full transition
+                        {{ $kunjungans->currentPage() == $i
+                                ? 'bg-blue-600 text-white shadow'
+                                : 'border border-gray-200 text-gray-600 hover:bg-gray-100' }}">
+                            {{ $i }}
+                        </a>
+                    @endfor
 
-                    <button class="w-10 h-10 rounded-full border hover:bg-gray-100">
-                        2
-                    </button>
-
-                    <button class="w-10 h-10 rounded-full border hover:bg-gray-100">
-                        3
-                    </button>
-
-                    <button class="w-10 h-10 rounded-full border hover:bg-gray-100">
-                        ›
-                    </button>
+                    {{-- Next --}}
+                    @if ($kunjungans->hasMorePages())
+                        <a href="{{ $kunjungans->nextPageUrl() }}"
+                        class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition">
+                            ›
+                        </a>
+                    @else
+                        <span class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-300">
+                            ›
+                        </span>
+                    @endif
 
                 </div>
 
