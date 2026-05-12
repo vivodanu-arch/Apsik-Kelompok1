@@ -1,0 +1,121 @@
+<aside class="fixed top-0 left-0 w-64 h-screen bg-white border-r flex flex-col">
+
+    {{-- Logo --}}
+    <div class="px-6 py-5 border-b">
+
+        <h1 class="text-lg font-bold text-blue-900 leading-tight">
+            RUMAH SAKIT KASIH
+        </h1>
+
+        <p class="text-[11px] tracking-[0.25em] text-gray-400 mt-1">
+            SISTEM PELAPORAN
+        </p>
+
+    </div>
+
+    {{-- Menu --}}
+    <nav class="flex-1 mt-5 px-3 space-y-2 overflow-y-auto">
+
+        {{-- Dashboard --}}
+        <a href="{{ route('dashboard') }}"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+           {{ request()->routeIs('dashboard')
+                ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700' }}">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5 flex-shrink-0"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h6"/>
+            </svg>
+
+            <span class="font-semibold text-xs">
+                Dashboard
+            </span>
+
+        </a>
+
+        {{-- Data Pasien --}}
+        <a href="{{ route('datapasien') }}"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+           {{ request()->routeIs('datapasien')
+                ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700' }}">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5 flex-shrink-0"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+
+            <span class="font-semibold text-xs">
+                Data Pasien
+            </span>
+
+        </a>
+
+        {{-- Data Kunjungan --}}
+        <a href="{{ route('datakunjungan') }}"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+           {{ request()->routeIs('datakunjungan')
+                ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700' }}">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5 flex-shrink-0"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+
+            <span class="font-semibold text-xs">
+                Data Kunjungan
+            </span>
+
+        </a>
+
+        {{-- Laporan --}}
+        <a href="{{ route('laporan') }}"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+           {{ request()->routeIs('laporan')
+                ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700' }}">
+
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5 flex-shrink-0"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor">
+
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 17v-6m4 6V7m4 10v-3M5 21h14"/>
+            </svg>
+
+            <span class="font-semibold text-xs">
+                Laporan
+            </span>
+
+        </a>
+
+    </nav>
+
+</aside>
