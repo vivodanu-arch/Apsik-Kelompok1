@@ -28,10 +28,8 @@
 
         {{-- Deskripsi --}}
         <p class="text-gray-600 text-sm mb-6">
-            Akun Anda telah terdaftar, namun belum memiliki akses ke sistem.
-            Silakan menunggu hingga admin memberikan hak akses.
+            Anda telah berhasil mendaftar, namun akun Anda masih menunggu persetujuan dari admin. Mohon bersabar dan cek kembali dalam beberapa saat.
         </p>
-
         {{-- Loading --}}
         <div class="flex flex-col items-center gap-3 mb-6">
 
