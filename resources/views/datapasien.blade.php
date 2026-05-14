@@ -67,7 +67,7 @@
                         </tr>
                     </thead>
 
-                    {{-- 🔥 INI BAGIAN DATABASE --}}
+                    
                     <tbody>
                         @forelse($pasien as $p)
                         <tr>

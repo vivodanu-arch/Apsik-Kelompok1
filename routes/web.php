@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\LaporanController;
 
 Route::get('/', function () {
     return view('default');
@@ -30,9 +31,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/datapasien', [PasienController::class, 'index'])->name('datapasien');
 
-    Route::get('/laporan', function () {
-        return view('laporan');
-    })->name('laporan');
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 
 });
 
