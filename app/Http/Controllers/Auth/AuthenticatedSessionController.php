@@ -34,6 +34,7 @@ class AuthenticatedSessionController extends Controller
             'petugas' => redirect('/dashboard'),
             'kepalarm' => redirect('/dashboard-kepalarm'),
             'dokter' => redirect('/dashboard-dokter'),
+            'umum' => redirect('/menunggu'),
             default => redirect('/'),
         };
     }

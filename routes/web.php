@@ -36,7 +36,33 @@ Route::middleware(['auth', 'role:kepalarm'])
 Route::middleware(['auth', 'role:dokter'])
     ->get('/dashboard-dokter', fn() => view('dashboarddokter'))
     ->name('dashboard.dokter');
+
+Route::middleware('auth')->get('/menunggu', function () {
+
+    $role = auth()->user()->role;
+
+    // kalau sudah bukan umum → lempar ke dashboard sesuai
+    if ($role !== 'umum') {
+        return match ($role) {
+            'petugas' => redirect('/dashboard'),
+            'kepala' => redirect('/dashboard-kepala'),
+            'dokter' => redirect('/dashboard-dokter'),
+            default => redirect('/'),
+        };
+    }
+
+    return view('menunggu');
+})->name('menunggu');
+
+Route::get('/', function () {
+    if (auth()->check()) {
+        return redirect('/menunggu'); // atau redirect-role
+    }
+    return view('default');
+});
+
 require __DIR__.'/auth.php';
+
 Route::get('/force-logout', function () {
     auth()->logout();
     session()->invalidate();
