@@ -5,77 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Rumah Sakit Kasih</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/auth.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 to-blue-300">
+<body class="auth-page min-h-screen flex items-center justify-center relative overflow-hidden">
 
-    <div class="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
+    <!-- BUBBLE -->
+    <div class="bubbles">
+        @for ($i = 0; $i < 15; $i++)
+            <span></span>
+        @endfor
+    </div>
+
+    <!-- CARD -->
+    <div id="mainCard"
+         class="card-animate relative z-10 w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl">
 
         {{-- Logo --}}
         <div class="flex justify-center mb-4">
-
-            {{-- GANTI DENGAN LOGO KAMU --}}
             <img src="{{ asset('images/logo1.png') }}"
-                 alt="Logo Rumah Sakit"
                  class="w-24 h-24 object-contain">
-
         </div>
 
         {{-- Judul --}}
-        <h1 class="text-4xl font-bold text-center text-black mb-8">
+        <h1 class="text-3xl font-bold text-center text-black mb-6">
             RUMAH SAKIT KASIH
         </h1>
 
-        {{-- Session Status --}}
+        {{-- STATUS --}}
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            {{-- Email --}}
+            {{-- EMAIL --}}
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700">
+                <label class="block text-sm font-medium text-gray-700">
                     Email
                 </label>
 
-                <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}"
-                    required
-                    autofocus
-                    autocomplete="username"
-                    placeholder="Masukkan email"
+                <input type="email" name="email"
                     class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                >
+                    placeholder="Masukkan email">
 
                 <x-input-error :messages="$errors->get('email')" class="mt-2" />
             </div>
 
-            {{-- Password --}}
+            {{-- PASSWORD --}}
             <div class="mt-5">
-
-                <label for="password" class="block text-sm font-medium text-gray-700">
+                <label class="block text-sm font-medium text-gray-700">
                     Password
                 </label>
 
-                <input
-                    id="password"
-                    type="password"
-                    name="password"
-                    required
-                    autocomplete="current-password"
-                    placeholder="Masukkan password"
+                <input type="password" name="password"
                     class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                >
+                    placeholder="Masukkan password">
 
                 <x-input-error :messages="$errors->get('password')" class="mt-2" />
-
             </div>
 
-            {{-- Remember Me --}}
+            {{-- REMEMBER ME --}}
             <div class="mt-4 flex items-center">
                 <input id="remember_me"
                        type="checkbox"
@@ -87,24 +76,20 @@
                 </label>
             </div>
 
-            {{-- Button --}}
+            {{-- BUTTON --}}
             <div class="flex gap-4 mt-6">
-
-                {{-- Login --}}
                 <button type="submit"
-                        class="w-1/2 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-xl transition">
+                        class="btn-masuk w-1/2 py-2 rounded-xl font-semibold">
                     Login
                 </button>
 
-                {{-- Register --}}
                 <a href="{{ route('register') }}"
-                   class="w-1/2 bg-gray-200 hover:bg-gray-300 text-center text-black font-semibold py-2 rounded-xl transition">
+                   class="w-1/2 bg-gray-200 hover:bg-gray-300 text-center py-2 rounded-xl font-semibold">
                     Register
                 </a>
-
             </div>
 
-            {{-- Forgot Password --}}
+            {{-- FORGOT PASSWORD --}}
             @if (Route::has('password.request'))
                 <div class="mt-5 text-center">
                     <a href="{{ route('password.request') }}"

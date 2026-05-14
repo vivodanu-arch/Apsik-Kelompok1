@@ -5,3 +5,29 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 
 Alpine.start();
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("JS Loaded");
+
+    // CARD POP UP
+    const card = document.getElementById("mainCard");
+    if (card) {
+        setTimeout(() => {
+            card.classList.add("show");
+        }, 200);
+    }
+
+    document.querySelectorAll("a[data-transition]").forEach(link => {
+        link.addEventListener("click", function(e) {
+            const target = this.href;
+
+            e.preventDefault();
+
+            document.body.classList.add("fade-out");
+
+            setTimeout(() => {
+                window.location.href = target;
+            }, 200);
+        });
+    });
+});

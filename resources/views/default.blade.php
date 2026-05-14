@@ -5,11 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Pelaporan Rumah Sakit</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- VITE (cukup sekali di head) --}}
+    @vite(['resources/css/auth.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gradient-to-br from-blue-100 to-blue-300 min-h-screen flex items-center justify-center">
 
-    <div class="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-2xl text-center">
+<body class="auth-page min-h-screen flex items-center justify-center relative overflow-hidden">
+
+    <!-- BUBBLE BACKGROUND -->
+    <div class="bubbles">
+    @for ($i = 0; $i < 15; $i++)
+        <span></span>
+    @endfor
+    </div>
+
+    <!-- MAIN CARD -->
+    <div id="mainCard"
+         class="card-animate relative z-10 bg-white shadow-2xl rounded-3xl p-10 w-full max-w-2xl text-center">
 
         {{-- Icon --}}
         <div class="flex justify-center mb-6">
@@ -31,12 +42,10 @@
 
         {{-- Button --}}
         <div class="flex justify-center gap-4">
-
             <a href="{{ route('login') }}"
-               class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold shadow-md transition duration-300">
+               class="btn-masuk px-8 py-3 rounded-xl font-semibold shadow-md">
                 Masuk
             </a>
-
         </div>
 
     </div>
