@@ -2,7 +2,6 @@
 
     {{-- Logo --}}
     <div class="px-6 py-5 border-b">
-
         <h1 class="text-lg font-bold text-blue-900 leading-tight">
             RUMAH SAKIT KASIH
         </h1>
@@ -10,7 +9,6 @@
         <p class="text-[11px] tracking-[0.25em] text-gray-400 mt-1">
             SISTEM PELAPORAN
         </p>
-
     </div>
 
     {{-- Menu --}}
@@ -18,10 +16,7 @@
 
         {{-- Dashboard --}}
         <a href="{{ route('dashboard') }}"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-           {{ request()->routeIs('dashboard')
-                ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700' }}">
+           class="sidebar-item {{ request()->routeIs('dashboard') ? 'sidebar-active' : '' }}">
 
             <svg xmlns="http://www.w3.org/2000/svg"
                  class="w-5 h-5 flex-shrink-0"
@@ -43,10 +38,7 @@
 
         {{-- Data Pasien --}}
         <a href="{{ route('datapasien') }}"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-           {{ request()->routeIs('datapasien')
-                ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700' }}">
+           class="sidebar-item {{ request()->routeIs('datapasien') ? 'sidebar-active' : '' }}">
 
             <svg xmlns="http://www.w3.org/2000/svg"
                  class="w-5 h-5 flex-shrink-0"
@@ -68,10 +60,7 @@
 
         {{-- Data Kunjungan --}}
         <a href="{{ route('datakunjungan') }}"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-           {{ request()->routeIs('datakunjungan')
-                ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700' }}">
+           class="sidebar-item {{ request()->routeIs('datakunjungan') ? 'sidebar-active' : '' }}">
 
             <svg xmlns="http://www.w3.org/2000/svg"
                  class="w-5 h-5 flex-shrink-0"
@@ -93,10 +82,7 @@
 
         {{-- Laporan --}}
         <a href="{{ route('laporan') }}"
-           class="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-           {{ request()->routeIs('laporan')
-                ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-blue-700' }}">
+           class="sidebar-item {{ request()->routeIs('laporan') ? 'sidebar-active' : '' }}">
 
             <svg xmlns="http://www.w3.org/2000/svg"
                  class="w-5 h-5 flex-shrink-0"

@@ -34,17 +34,25 @@
                 </div>
 
                 <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}"
-                     class="w-12 h-12 rounded-full border border-gray-300">
+                    class="w-12 h-12 rounded-full border border-gray-300 profile-avatar">
             </button>
 
             {{-- Dropdown --}}
             <div x-show="open"
-                 @click.away="open = false"
-                 x-transition
-                 class="absolute right-0 mt-3 w-52 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50">
+                @click.outside="open = false"
+
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 -translate-y-3 scale-95"
+                x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                x-transition:leave-end="opacity-0 -translate-y-2 scale-95"
+
+                class="absolute right-0 mt-3 w-52 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 origin-top-right">
 
                 <a href="{{ route('profile.edit') }}"
-                   class="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100">
+                   class="block px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 transition">
                     Profile
                 </a>
 

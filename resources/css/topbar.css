@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .profile-avatar {
+        @apply transition;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .profile-avatar:hover {
+        transform: scale(1.08);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .dropdown-smooth {
+        @apply origin-top-right;
+        
+    }
+    .dropdown-smooth {
+    backdrop-filter: blur(10px);
+}
+}

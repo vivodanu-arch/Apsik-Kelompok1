@@ -38,9 +38,18 @@
         @endisset
 
         <!-- Page Content -->
-        <main class="p-6">
-    @yield('content')
-</main>
+        <main class="ml-64 p-6">
+            <div x-data="{ show: false }"
+                x-init="setTimeout(() => show = true, 50)"
+                x-show="show"
+                x-transition:enter="transition ease-out duration-500"
+                x-transition:enter-start="opacity-0 translate-y-10"
+                x-transition:enter-end="opacity-100 translate-y-0">
+
+                @yield('content')
+
+            </div>
+        </main>
 
     </div>
 
