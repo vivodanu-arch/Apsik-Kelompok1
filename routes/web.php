@@ -4,31 +4,42 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\PasienController;
-
-Route::get('/datakunjungan', [KunjunganController::class, 'index'])
-    ->name('datakunjungan');
+use App\Http\Controllers\RegisterController;
 
 Route::get('/', function () {
     return view('default');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/datakunjungan', [KunjunganController::class, 'index'])->name('datakunjungan');
+
+    Route::get('/datapasien', [PasienController::class, 'index'])->name('datapasien');
+
+    Route::get('/laporan', function () {
+        return view('laporan');
+    })->name('laporan');
+
 });
 
-/* ✅ DATA PASIEN */
-Route::get('/datapasien', [PasienController::class, 'index'])
-    ->name('datapasien');
+/* DASHBOARD ROLE */
+Route::middleware(['auth', 'role:petugas'])
+    ->get('/dashboard', fn() => view('dashboard'))
+    ->name('dashboard');
 
-/* LAPORAN */
-Route::get('/laporan', function () {
-    return view('laporan');
-})->name('laporan');
+Route::middleware(['auth', 'role:kepalarm'])
+    ->get('/dashboard-kepalarm', fn() => view('dashboardkepalarm'))
+    ->name('dashboard.kepala');
 
+Route::middleware(['auth', 'role:dokter'])
+    ->get('/dashboard-dokter', fn() => view('dashboarddokter'))
+    ->name('dashboard.dokter');
 require __DIR__.'/auth.php';
+Route::get('/force-logout', function () {
+    auth()->logout();
+    session()->invalidate();
+    session()->regenerateToken();
+    return redirect('/');
+});
