@@ -116,66 +116,94 @@
             margin: 15mm;
         }
 
-        @media print {
+@media print {
 
-            html,
-            body{
-                background: white !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
+    html,
+    body{
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
 
-            .no-print{
-                display: none !important;
-            }
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
 
-            aside,
-            nav,
-            .sidebar{
-                display: none !important;
-            }
+    .no-print{
+        display: none !important;
+    }
 
-            .flex-1{
-                margin-left: 0 !important;
-                width: 100% !important;
-            }
+    aside,
+    nav,
+    .sidebar{
+        display: none !important;
+    }
 
-            main{
-                padding: 0 !important;
-                margin: 0 !important;
-            }
+    .flex-1{
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
 
-            .page-print{
-                width: 100% !important;
-                max-width: 100% !important;
-                margin: 0 !important;
-                padding: 20px !important;
-                border-radius: 0 !important;
-                box-shadow: none !important;
-                page-break-after: always;
-            }
+    main{
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 
-            .page-print:last-child{
-                page-break-after: auto;
-            }
+    .page-print{
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 20px !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+    }
 
-            table{
-                width: 100% !important;
-            }
+    .page-print:last-child{
+        page-break-after: auto;
+    }
 
-            th,
-            td{
-                border: 1px solid black !important;
-                font-size: 11px !important;
-                padding: 6px !important;
-            }
+    table{
+        width: 100% !important;
+        border-collapse: collapse !important;
+    }
 
-            .judul{
-                font-size: 24px;
-            }
+    th,
+    td{
+        border: 1px solid black !important;
+        font-size: 11px !important;
+        padding: 6px !important;
+    }
 
-        }
+    .judul{
+        font-size: 24px;
+    }
 
+    /* ================= WARNA HEADER ================= */
+
+    .bg-blue-600{
+        background-color: #2563eb !important;
+        color: white !important;
+    }
+
+    .bg-red-600{
+        background-color: #dc2626 !important;
+        color: white !important;
+    }
+
+    .bg-green-600{
+        background-color: #16a34a !important;
+        color: white !important;
+    }
+
+    .text-white{
+        color: white !important;
+    }
+
+    thead th{
+        color: white !important;
+    }
+
+}
     </style>
 
 </head>
