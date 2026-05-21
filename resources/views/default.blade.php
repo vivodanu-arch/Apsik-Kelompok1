@@ -6,11 +6,7 @@
     <title>Sistem Pelaporan Rumah Sakit</title>
 
     {{-- VITE (cukup sekali di head) --}}
-<<<<<<< HEAD
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-=======
-    @vite(['resources/css/auth.css', 'resources/js/app.js'])
->>>>>>> 2b8a082 (tes)
 </head>
 
 <body class="auth-page min-h-screen flex items-center justify-center relative overflow-hidden">

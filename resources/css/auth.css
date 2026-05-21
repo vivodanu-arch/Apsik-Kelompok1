@@ -18,6 +18,7 @@
     /* ANIMASI */
     animation: gradientMove 15s ease infinite;
 }
+
 /* === GRADIENT ANIMATION === */
 @keyframes gradientMove {
     0% {
@@ -46,11 +47,7 @@
 .auth-page::before {
     width: 400px;
     height: 400px;
-<<<<<<< HEAD
     background: rgba(59,130,246,0.25);
-=======
-    background: rgba(59, 130, 246, 0.25);
->>>>>>> 2b8a082 (tes)
     filter: blur(120px);
     top: 10%;
     left: 20%;
@@ -59,11 +56,7 @@
 .auth-page::after {
     width: 300px;
     height: 300px;
-<<<<<<< HEAD
     background: rgba(37,99,235,0.2);
-=======
-    background: rgba(37, 99, 235, 0.2);
->>>>>>> 2b8a082 (tes)
     filter: blur(100px);
     bottom: 10%;
     right: 20%;
@@ -72,6 +65,7 @@
 /* =========================
    CARD ANIMATION
 ========================= */
+
 /* === CARD MASUK === */
 .auth-page .card-animate {
     opacity: 0;
@@ -80,14 +74,8 @@
 
 /* SAAT MUNCUL */
 .auth-page .card-animate.show {
-<<<<<<< HEAD
     animation: cardEntry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards,
                floatZoom 6s ease-in-out infinite 0.8s;
-=======
-    animation:
-        cardEntry 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards,
-        floatZoom 6s ease-in-out infinite 0.8s;
->>>>>>> 2b8a082 (tes)
 }
 
 /* POP UP MASUK */
@@ -140,11 +128,7 @@
 .btn-masuk:hover {
     transform: translateY(-4px) scale(1.05);
     background: linear-gradient(135deg, #3b82f6, #2563eb);
-<<<<<<< HEAD
     box-shadow: 0 10px 25px rgba(37,99,235,0.4);
-=======
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
->>>>>>> 2b8a082 (tes)
 }
 
 .btn-masuk:active {
@@ -159,16 +143,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-<<<<<<< HEAD
     background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
-=======
-    background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(255, 255, 255, 0.6),
-        transparent
-    );
->>>>>>> 2b8a082 (tes)
     transition: 0.5s;
 }
 
@@ -190,11 +165,7 @@
     position: absolute;
     border-radius: 50%;
     bottom: -150px;
-<<<<<<< HEAD
     background: rgba(255,255,255,0.25);
-=======
-    background: rgba(255, 255, 255, 0.25);
->>>>>>> 2b8a082 (tes)
     animation: bubble linear infinite;
 }
 
@@ -212,7 +183,6 @@
 }
 
 /* posisi */
-<<<<<<< HEAD
 .auth-page .bubbles span:nth-child(1) { left: 5%; }
 .auth-page .bubbles span:nth-child(2) { left: 15%; }
 .auth-page .bubbles span:nth-child(3) { left: 25%; }
@@ -223,38 +193,6 @@
 .auth-page .bubbles span:nth-child(8) { left: 75%; }
 .auth-page .bubbles span:nth-child(9) { left: 85%; }
 .auth-page .bubbles span:nth-child(10) { left: 95%; }
-=======
-.auth-page .bubbles span:nth-child(1) {
-    left: 5%;
-}
-.auth-page .bubbles span:nth-child(2) {
-    left: 15%;
-}
-.auth-page .bubbles span:nth-child(3) {
-    left: 25%;
-}
-.auth-page .bubbles span:nth-child(4) {
-    left: 35%;
-}
-.auth-page .bubbles span:nth-child(5) {
-    left: 45%;
-}
-.auth-page .bubbles span:nth-child(6) {
-    left: 55%;
-}
-.auth-page .bubbles span:nth-child(7) {
-    left: 65%;
-}
-.auth-page .bubbles span:nth-child(8) {
-    left: 75%;
-}
-.auth-page .bubbles span:nth-child(9) {
-    left: 85%;
-}
-.auth-page .bubbles span:nth-child(10) {
-    left: 95%;
-}
->>>>>>> 2b8a082 (tes)
 
 /* animasi */
 @keyframes bubble {
@@ -273,8 +211,4 @@
 ========================= */
 #mainCard {
     backdrop-filter: blur(10px);
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 2b8a082 (tes)

@@ -9,12 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
-    {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role')->default('petugas');
-        });
-    }
+    public function up(): void
+{
+    Schema::table('users', function (Blueprint $table) {
+        $table->enum('role', [
+            'petugas',
+            'dokter',
+            'kepalarm'
+        ])->default('petugas');
+    });
+}
 
     /**
      * Reverse the migrations.

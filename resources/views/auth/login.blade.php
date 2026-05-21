@@ -23,11 +23,7 @@
 
         {{-- Logo --}}
         <div class="flex justify-center mb-4">
-<<<<<<< HEAD
             <img src="{{ asset('images/logo1.png') }}"
-=======
-            <img src="{{ asset('images/logors.jpeg') }}"
->>>>>>> 2b8a082 (tes)
                  class="w-24 h-24 object-contain">
         </div>
 
@@ -80,24 +76,19 @@
                 </label>
             </div>
 
-            {{-- BUTTON --}}
-            <div class="flex gap-4 mt-6">
+           {{-- BUTTON --}}
+            <div class="flex justify-center mt-6">
                 <button type="submit"
                         class="btn-masuk w-1/2 py-2 rounded-xl font-semibold">
                     Login
                 </button>
-
-                <a href="{{ route('register') }}"
-                   class="w-1/2 bg-gray-200 hover:bg-gray-300 text-center py-2 rounded-xl font-semibold">
-                    Register
-                </a>
             </div>
 
             {{-- FORGOT PASSWORD --}}
             @if (Route::has('password.request'))
                 <div class="mt-5 text-center">
                     <a href="{{ route('password.request') }}"
-                       class="text-sm text-gray-600 hover:text-black underline">
+                    class="text-sm text-gray-600 hover:text-black underline">
                         Forgot password?
                     </a>
                 </div>
