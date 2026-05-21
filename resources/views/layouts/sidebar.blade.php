@@ -37,8 +37,8 @@
         </a>
 
         {{-- Data Pasien --}}
-        <a href="{{ route('datapasien') }}"
-           class="sidebar-item {{ request()->routeIs('datapasien') ? 'sidebar-active' : '' }}">
+        <a href="{{ route('pasien.index') }}"
+        class="sidebar-item {{ request()->routeIs('pasien.*') ? 'sidebar-active' : '' }}">
 
             <svg xmlns="http://www.w3.org/2000/svg"
                  class="w-5 h-5 flex-shrink-0"

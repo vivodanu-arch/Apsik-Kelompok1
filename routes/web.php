@@ -1,15 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\LaporanController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
 
 /*
-|--------------------------------------------------------------------------
 | HALAMAN AWAL
-|--------------------------------------------------------------------------
 */
 Route::get('/', function () {
     if (auth()->check()) {
@@ -25,9 +24,7 @@ Route::get('/', function () {
 });
 
 /*
-|--------------------------------------------------------------------------
-| AUTH ROUTES
-|--------------------------------------------------------------------------
+| AUTH
 */
 Route::middleware('auth')->group(function () {
 
@@ -38,32 +35,27 @@ Route::middleware('auth')->group(function () {
 
     // DATA
     Route::get('/datakunjungan', [KunjunganController::class, 'index'])->name('datakunjungan');
-    Route::get('/datapasien', [PasienController::class, 'index'])->name('datapasien');
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
 
+    // PASIEN CRUD
+    Route::resource('/pasien', PasienController::class);
 });
 
 /*
-|--------------------------------------------------------------------------
-| DASHBOARD ROLE
-|--------------------------------------------------------------------------
+| DASHBOARD
 */
 Route::middleware(['auth', 'role:petugas'])
-    ->get('/dashboard', fn() => view('dashboard'))
+    ->get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 Route::middleware(['auth', 'role:kepalarm'])
-    ->get('/dashboard-kepalarm', fn() => view('dashboardkepalarm'))
-    ->name('dashboard.kepala');
+    ->get('/dashboard-kepalarm', fn() => view('dashboardkepalarm'));
 
 Route::middleware(['auth', 'role:dokter'])
-    ->get('/dashboard-dokter', fn() => view('dashboarddokter'))
-    ->name('dashboard.dokter');
+    ->get('/dashboard-dokter', fn() => view('dashboarddokter'));
 
 /*
-|--------------------------------------------------------------------------
-| FORCE LOGOUT
-|--------------------------------------------------------------------------
+| LOGOUT PAKSA
 */
 Route::get('/force-logout', function () {
     auth()->logout();
@@ -71,7 +63,5 @@ Route::get('/force-logout', function () {
     session()->regenerateToken();
     return redirect('/');
 });
-Route::middleware(['auth'])->group(function () {
-    Route::resource('/pasien', App\Http\Controllers\PasienController::class);
-});
+
 require __DIR__.'/auth.php';

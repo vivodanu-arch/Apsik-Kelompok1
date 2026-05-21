@@ -46,7 +46,7 @@
                     </h2>
 
                     <p class="text-3xl font-bold text-blue-600 mt-2">
-                        120
+                        {{ $totalPasien ?? 0 }}
                     </p>
                 </div>
 
@@ -57,7 +57,7 @@
                     </h2>
 
                     <p class="text-3xl font-bold text-green-600 mt-2">
-                        25
+                        {{ $laporanHariIni ?? 0 }}
                     </p>
                 </div>
 
@@ -68,7 +68,7 @@
                     </h2>
 
                     <p class="text-3xl font-bold text-red-600 mt-2">
-                        15
+                        {{ $totalDokter ?? 0 }}
                     </p>
                 </div>
 
