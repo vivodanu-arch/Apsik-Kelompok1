@@ -63,58 +63,13 @@
             </div>
 
             {{-- Filter --}}
-            <div class="bg-white rounded-2xl shadow-sm p-4 mb-6">
+            <div class="bg-white rounded-2xl shadow-sm p-6 mb-6 max-w-4xl mx-auto">
 
                 <form method="GET" action="{{ route('laporan') }}">
 
-                    <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex flex-wrap items-center justify-center gap-4">
 
-                        {{-- Filter Periode --}}
-                        <div class="flex items-center gap-2">
-
-                            <span class="text-sm font-semibold text-gray-700">
-                                Filter Periode:
-                            </span>
-
-                            <div class="flex bg-gray-100 rounded-lg p-1">
-
-                                <button type="submit"
-                                    name="periode"
-                                    value="harian"
-                                    class="{{ request('periode') == 'harian' ? 'bg-white shadow text-blue-700' : 'text-gray-500' }} px-4 py-1 rounded-lg text-sm font-semibold">
-
-                                    Harian
-                                </button>
-
-                                <button type="submit"
-                                    name="periode"
-                                    value="mingguan"
-                                    class="{{ request('periode') == 'mingguan' ? 'bg-white shadow text-blue-700' : 'text-gray-500' }} px-4 py-1 rounded-lg text-sm font-semibold">
-
-                                    Mingguan
-                                </button>
-
-                                <button type="submit"
-                                    name="periode"
-                                    value="bulanan"
-                                    class="{{ request('periode') == 'bulanan' ? 'bg-white shadow text-blue-700' : 'text-gray-500' }} px-4 py-1 rounded-lg text-sm font-semibold">
-
-                                    Bulanan
-                                </button>
-
-                                <button type="submit"
-                                    name="periode"
-                                    value="tahunan"
-                                    class="{{ request('periode') == 'tahunan' ? 'bg-white shadow text-blue-700' : 'text-gray-500' }} px-4 py-1 rounded-lg text-sm font-semibold">
-
-                                    Tahunan
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                        {{-- Date --}}
+                        {{-- Dari --}}
                         <div class="flex items-center gap-2">
 
                             <label class="text-sm font-semibold text-gray-700">
@@ -125,10 +80,11 @@
                                 type="date"
                                 name="dari"
                                 value="{{ request('dari') }}"
-                                class="border rounded-lg px-3 py-2">
+                                class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
 
                         </div>
 
+                        {{-- Sampai --}}
                         <div class="flex items-center gap-2">
 
                             <label class="text-sm font-semibold text-gray-700">
@@ -139,14 +95,14 @@
                                 type="date"
                                 name="sampai"
                                 value="{{ request('sampai') }}"
-                                class="border rounded-lg px-3 py-2">
+                                class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
 
                         </div>
 
                         {{-- Button --}}
                         <button
                             type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+                            class="bg-blue-600 hover:bg-blue-700 transition text-white px-6 py-2 rounded-lg shadow">
 
                             Terapkan
 
@@ -168,7 +124,9 @@
 
                         <tr>
 
-                            <th class="border border-gray-400 px-3 py-2">NO</th>
+                            <th class="border border-gray-400 px-3 py-2">
+                                NO
+                            </th>
 
                             <th class="border border-gray-400 px-3 py-2 text-nowrap">
                                 NAMA PASIEN
@@ -262,7 +220,7 @@
 
                         <tr>
 
-                            <td colspan="11"
+                            <td colspan="10"
                                 class="border border-gray-400 px-3 py-4 text-center text-gray-500">
 
                                 Tidak ada data laporan
@@ -282,7 +240,7 @@
 
                     <button
                         onclick="window.print()"
-                        class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-xl shadow">
+                        class="bg-orange-500 hover:bg-orange-600 transition text-white px-6 py-2 rounded-xl shadow">
 
                         🖨 Print Document
 
