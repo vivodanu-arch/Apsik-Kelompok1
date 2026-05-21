@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Pasien</title>
+    <title>Edit Pasien</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -15,98 +15,98 @@
     {{-- Sidebar --}}
     @include('layouts.sidebar')
 
-
     {{-- Content --}}
     <div class="flex-1 ml-64 flex flex-col">
 
         {{-- Navbar --}}
         @include('layouts.rsnavigation')
-        
 
-        {{-- TITLE --}}
-        <div class="p-4">
+        {{-- Main --}}
+        <main class="p-6">
 
-            <div class="bg-primary text-white p-3 rounded shadow-sm">
-                <h3 class="mb-0 fw-bold">
-                    DATA PASIEN
-                </h3>
+            {{-- Header --}}
+            <div class="bg-blue-700 rounded-2xl p-6 mb-6 shadow-sm">
+                <h1 class="text-3xl font-bold text-white uppercase">
+                    Edit Pasien
+                </h1>
+                <p class="text-blue-100 mt-2">
+                    Ubah data pasien
+                </p>
             </div>
 
-            {{-- TABLE --}}
-            <div class="bg-white shadow-sm rounded-4 p-4 mt-4 overflow-auto">
+            {{-- Form Card --}}
+            <div class="bg-white rounded-2xl shadow-sm p-6 max-w-3xl">
 
-    <div class="bg-white shadow-sm rounded-4 p-4 mt-4">
+                <form action="{{ route('pasien.update', $pasien->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
 
-    <h4 class="fw-bold mb-4">
-        Form Edit Pasien
-    </h4>
+                    <div class="grid grid-cols-2 gap-4">
 
-    <form action="#" method="POST">
+                        <div>
+                            <label class="text-sm text-gray-600">No. RM</label>
+                            <input type="text" name="no_rm"
+                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2"
+                                value="{{ $pasien->no_rm }}">
+                        </div>
 
-        @csrf
+                        <div>
+                            <label class="text-sm text-gray-600">Nama Pasien</label>
+                            <input type="text" name="nama_pasien"
+                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2"
+                                value="{{ $pasien->nama_pasien }}">
+                        </div>
 
-        <div class="mb-3">
-            <label class="form-label">
-                No. RM
-            </label>
+                        <div>
+                            <label class="text-sm text-gray-600">Jenis Kelamin</label>
+                            <input type="text" name="jenis_kelamin"
+                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2"
+                                value="{{ $pasien->jenis_kelamin }}">
+                        </div>
 
-            <input type="text"
-                class="form-control"
-                value="12-45-67">
-        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Tanggal Lahir</label>
+                            <input type="date" name="ttl"
+                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2"
+                                value="{{ $pasien->ttl }}">
+                        </div>
 
-        <div class="mb-3">
-            <label class="form-label">
-                Nama Pasien
-            </label>
+                        <div class="col-span-2">
+                            <label class="text-sm text-gray-600">Alamat</label>
+                            <textarea name="alamat"
+                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2">{{ $pasien->alamat }}</textarea>
+                        </div>
 
-            <input type="text"
-                class="form-control"
-                value="Dansuloyo">
-        </div>
+                        <div>
+                            <label class="text-sm text-gray-600">Telepon</label>
+                            <input type="text" name="telepon"
+                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-2"
+                                value="{{ $pasien->telepon }}">
+                        </div>
 
-        <div class="mb-3">
-            <label class="form-label">
-                Diagnosa
-            </label>
+                    </div>
 
-            <input type="text"
-                class="form-control"
-                value="Common Cold">
-        </div>
+                    <div class="mt-6 flex gap-3">
+                        <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+                            Simpan Perubahan
+                        </button>
 
-        <div class="mb-3">
-            <label class="form-label">
-                Alamat
-            </label>
+                        <a href="{{ route('pasien.index') }}"
+                           class="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg">
+                            Kembali
+                        </a>
+                    </div>
 
-            <textarea class="form-control"
-                rows="3">Jember</textarea>
-        </div>
-
-        <button type="submit"
-            class="btn btn-primary">
-
-            Simpan Perubahan
-        </button>
-
-        <a href="/datapasien"
-            class="btn btn-secondary">
-
-            Kembali
-        </a>
-
-    </form>
-
-</div>
-</div>
-</div>
+                </form>
 
             </div>
 
-        </div>
+        </main>
 
     </div>
 
 </div>
 
+</body>
+</html>

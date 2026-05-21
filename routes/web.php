@@ -71,5 +71,7 @@ Route::get('/force-logout', function () {
     session()->regenerateToken();
     return redirect('/');
 });
-
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/pasien', App\Http\Controllers\PasienController::class);
+});
 require __DIR__.'/auth.php';

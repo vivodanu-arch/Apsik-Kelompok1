@@ -9,17 +9,15 @@ class KunjunganController extends Controller
 {
     public function index()
     {
-        $query = Kunjungan::query();
+        $query = Kunjungan::with(['pasien', 'dokter', 'diagnosa']);
 
-        //filter tanggal
-        if (request()->has('tanggal')) {
-            $query->whereDate('tanggal', request('tanggal'));
+        // filter tanggal
+        if (request()->filled('tanggal')) {
+            $query->whereDate('tanggal_kunjungan', request('tanggal'));
         }
 
-        $kunjungans = $query
-        ->orderBy('tanggal', 'desc')
-        ->orderBy('jam', 'desc')
-        ->paginate(10);
+        $kunjungans = $query->orderBy('tanggal_kunjungan', 'desc')
+                            ->paginate(10);
 
         return view('datakunjungan', compact('kunjungans'));
     }
