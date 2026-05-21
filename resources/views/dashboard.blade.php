@@ -7,6 +7,8 @@
     <title>Dashboard - Rumah Sakit Kasih</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -74,11 +76,95 @@
 
             </div>
 
+            {{-- Grafik 10 Besar Penyakit --}}
+            <div class="bg-white rounded-2xl shadow-sm p-6 mt-6">
+
+                <h2 class="text-xl font-bold text-gray-800 mb-6">
+                    Grafik 10 Besar Penyakit
+                </h2>
+
+                <canvas id="penyakitChart" height="100"></canvas>
+
+            </div>
+
         </main>
 
     </div>
 
 </div>
+
+<script>
+
+    const ctx = document.getElementById('penyakitChart');
+
+    new Chart(ctx, {
+
+        type: 'bar',
+
+        data: {
+
+            labels: @json($topPenyakit->pluck('diagnosa_utama')),
+
+            datasets: [{
+
+                label: 'Jumlah Kasus',
+
+                data: @json($topPenyakit->pluck('total')),
+
+                backgroundColor: [
+                    '#2563eb',
+                    '#16a34a',
+                    '#dc2626',
+                    '#ca8a04',
+                    '#9333ea',
+                    '#0891b2',
+                    '#ea580c',
+                    '#4f46e5',
+                    '#db2777',
+                    '#059669'
+                ],
+
+                borderRadius: 8
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+
+                        precision: 0
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
 
 </body>
 </html>
