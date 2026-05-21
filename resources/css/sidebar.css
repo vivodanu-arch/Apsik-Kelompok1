@@ -1,14 +1,25 @@
 @layer components {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2b8a082 (tes)
     .sidebar-item {
         @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700;
         position: relative;
         overflow: hidden;
 
+<<<<<<< HEAD
         transition: transform 0.25s ease, 
                     background 0.25s ease, 
                     color 0.2s ease, 
                     box-shadow 0.25s ease;
+=======
+        transition:
+            transform 0.25s ease,
+            background 0.25s ease,
+            color 0.2s ease,
+            box-shadow 0.25s ease;
+>>>>>>> 2b8a082 (tes)
     }
 
     .sidebar-item:hover {
@@ -56,5 +67,9 @@
     .sidebar-item:hover svg {
         transform: translateX(3px);
     }
+<<<<<<< HEAD
 
 }
+=======
+}
+>>>>>>> 2b8a082 (tes)

@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 @import './auth.css';
+=======
+@import "./auth.css";
+>>>>>>> 2b8a082 (tes)
 
 @tailwind base;
 @tailwind components;
@@ -23,12 +27,22 @@
 /* ===================== */
 @layer components {
     .profile-avatar {
+<<<<<<< HEAD
         transition: transform 0.25s ease, box-shadow 0.25s ease;
+=======
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+>>>>>>> 2b8a082 (tes)
     }
 
     .profile-avatar:hover {
         transform: scale(1.08);
+<<<<<<< HEAD
         box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+=======
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+>>>>>>> 2b8a082 (tes)
     }
 }
 
@@ -41,10 +55,18 @@
         position: relative;
         overflow: hidden;
 
+<<<<<<< HEAD
         transition: transform 0.25s ease, 
                     background 0.25s ease, 
                     color 0.2s ease, 
                     box-shadow 0.25s ease;
+=======
+        transition:
+            transform 0.25s ease,
+            background 0.25s ease,
+            color 0.2s ease,
+            box-shadow 0.25s ease;
+>>>>>>> 2b8a082 (tes)
     }
 
     .sidebar-item:hover {
@@ -67,5 +89,9 @@
 /* ===================== */
 .page-enter {
     animation: slideFadeIn 0.6s both;
+<<<<<<< HEAD
 
 }
+=======
+}
+>>>>>>> 2b8a082 (tes)

@@ -6,7 +6,11 @@
     <title>Sistem Pelaporan Rumah Sakit</title>
 
     {{-- VITE (cukup sekali di head) --}}
+<<<<<<< HEAD
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+=======
+    @vite(['resources/css/auth.css', 'resources/js/app.js'])
+>>>>>>> 2b8a082 (tes)
 </head>
 
 <body class="auth-page min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -24,7 +28,7 @@
 
         {{-- Icon --}}
         <div class="flex justify-center mb-6">
-            <img src="{{ asset('images/logo1.png') }}"
+            <img src="{{ asset('images/logors.jpeg') }}"
                 alt="Logo Rumah Sakit"
                 class="w-32 h-32 object-cover rounded-full shadow-xl border-4 border-white">
         </div>

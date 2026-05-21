@@ -5,19 +5,37 @@
 @layer components {
     .profile-avatar {
         @apply transition;
+<<<<<<< HEAD
         transition: transform 0.25s ease, box-shadow 0.25s ease;
+=======
+        transition:
+            transform 0.25s ease,
+            box-shadow 0.25s ease;
+>>>>>>> 2b8a082 (tes)
     }
 
     .profile-avatar:hover {
         transform: scale(1.08);
+<<<<<<< HEAD
         box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+=======
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+>>>>>>> 2b8a082 (tes)
     }
 
     .dropdown-smooth {
         @apply origin-top-right;
+<<<<<<< HEAD
         
     }
     .dropdown-smooth {
     backdrop-filter: blur(10px);
 }
 }
+=======
+    }
+    .dropdown-smooth {
+        backdrop-filter: blur(10px);
+    }
+}
+>>>>>>> 2b8a082 (tes)

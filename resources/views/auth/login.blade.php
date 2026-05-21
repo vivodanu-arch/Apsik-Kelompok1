@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Rumah Sakit Kasih</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/auth.css', 'resources/js/app.js'])
 </head>
 
 <body class="auth-page min-h-screen flex items-center justify-center relative overflow-hidden">
@@ -23,7 +23,11 @@
 
         {{-- Logo --}}
         <div class="flex justify-center mb-4">
+<<<<<<< HEAD
             <img src="{{ asset('images/logo1.png') }}"
+=======
+            <img src="{{ asset('images/logors.jpeg') }}"
+>>>>>>> 2b8a082 (tes)
                  class="w-24 h-24 object-contain">
         </div>
 

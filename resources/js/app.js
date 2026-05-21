@@ -1,6 +1,6 @@
-import './bootstrap';
+import "./bootstrap";
 
-import Alpine from 'alpinejs';
+import Alpine from "alpinejs";
 
 window.Alpine = Alpine;
 
@@ -17,8 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 200);
     }
 
+<<<<<<< HEAD
     document.querySelectorAll("a[data-transition]").forEach(link => {
         link.addEventListener("click", function(e) {
+=======
+    document.querySelectorAll("a[data-transition]").forEach((link) => {
+        link.addEventListener("click", function (e) {
+>>>>>>> 2b8a082 (tes)
             const target = this.href;
 
             e.preventDefault();
@@ -30,4 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }, 200);
         });
     });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> 2b8a082 (tes)
