@@ -89,19 +89,36 @@
             margin: 30px auto;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             width: 100%;
-            max-width: 1300px;
-        }
+                        max-width: 1300px;
+                    }
 
-        .ttd{
-            margin-top: 80px;
-            display: flex;
-            justify-content: flex-end;
-        }
+            .ttd{
+                margin-top: 120px;
+                display: flex;
+                justify-content: flex-end;
+                padding-right: 40px;
+            }
 
-        .ttd-box{
-            width: 280px;
-            text-align: center;
-        }
+            .ttd-box{
+                width: 250px;
+                text-align: center;
+            }
+
+            .ttd-box .jabatan{
+                margin-top: 20px;
+                font-weight: bold;
+            }
+
+           .ttd-box .garis-ttd{
+                margin-top: 90px;
+                text-align: center;
+                font-size: 22px;
+                letter-spacing: 3px;
+            }
+
+            .ttd-box .nama-terang{
+                margin-top: 50px;
+            }
 
         .judul{
             text-align: center;
@@ -440,29 +457,34 @@
 
                 </table>
 
-                <div class="ttd">
+             <div class="ttd">
 
-                    <div class="ttd-box">
+    <div class="ttd-box">
 
-                        <p class="mb-4">
-                            Jember,
-                            {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
-                        </p>
+        <p style="margin-bottom: 10px;">
+            Jember,
+            {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+        </p>
 
-                        <p class="font-semibold mb-20">
-                            Admin Rekam Medis
-                        </p>
+        <p style="margin-bottom: 90px; font-weight: bold;">
+            Admin Rekam Medis
+        </p>
 
-                        <div class="border-b border-black mb-2"></div>
+        <div style="margin-top: 15px;">
 
-                        <p>
-                            Nama Terang
-                        </p>
+            <p style="margin-bottom: 5px;">
+                (........................................................)
+            </p>
 
-                    </div>
+            <p>
+                Nama Terang
+            </p>
 
-                </div>
+        </div>
 
+            </div>
+
+        </div>
             </div>
 
             {{-- HALAMAN 2 --}}
