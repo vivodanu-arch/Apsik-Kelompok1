@@ -23,6 +23,27 @@
 
         {{-- Main --}}
         <main class="p-6">
+            {{-- Notif --}}
+            @foreach (['success', 'error'] as $msg)
+                @if(session($msg))
+                    <div class="mb-4 px-4 py-3 rounded-xl 
+                        {{ $msg == 'success' ? 'bg-green-100 text-green-700 border-green-400' : 'bg-red-100 text-red-700 border-red-400' }}"
+                        id="alertBox">
+
+                        {{ session($msg) }}
+                    </div>
+                @endif
+            @endforeach
+
+            <script>
+                setTimeout(() => {
+                    const alert = document.getElementById('alertBox');
+                    if(alert){
+                        alert.style.opacity = '0';
+                        setTimeout(() => alert.remove(), 500);
+                    }
+                }, 2500);
+            </script>
 
             {{-- Header --}}
             <div class="bg-blue-700 rounded-2xl p-6 mb-6 shadow-sm">

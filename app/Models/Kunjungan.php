@@ -15,7 +15,6 @@ class Kunjungan extends Model
         'status',
         'pasien_id',
         'dokter_id',
-        'diagnosa_id',
     ];
 
     // RELASI KE PASIEN
@@ -33,6 +32,6 @@ class Kunjungan extends Model
     // RELASI KE DIAGNOSA
     public function diagnosa()
     {
-        return $this->belongsTo(Diagnosa::class, 'diagnosa_id');
+        return $this->hasOne(Diagnosa::class, 'kunjungan_id');
     }
 }

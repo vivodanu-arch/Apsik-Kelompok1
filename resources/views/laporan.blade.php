@@ -191,10 +191,6 @@
                             </th>
 
                             <th class="border border-gray-400 px-3 py-2">
-                                NIK
-                            </th>
-
-                            <th class="border border-gray-400 px-3 py-2">
                                 JENIS KELAMIN
                             </th>
 
@@ -225,7 +221,7 @@
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2">
-                                {{ $l->nama_pasien }}
+                                {{ $l->pasien->nama_pasien ?? '-' }}
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2 text-nowrap">
@@ -233,23 +229,19 @@
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2">
-                                {{ $l->nama_dokter }}
+                                {{ $l->dokter->nama_dokter ?? '-' }}
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2">
-                                {{ $l->nama_poli }}
+                                {{ $l->pasien->nama_poli ?? '-' }}
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2 text-nowrap">
-                                {{ $l->no_rm }}
+                                {{ $l->pasien->no_rm ?? '-' }}
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2">
-                                {{ $l->nik }}
-                            </td>
-
-                            <td class="border border-gray-400 px-3 py-2">
-                                {{ $l->jenis_kelamin }}
+                                {{ $l->pasien->jenis_kelamin ?? '-' }}
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2">
@@ -257,11 +249,11 @@
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2">
-                                {{ $l->diagnosa_utama }}
+                                {{ $l->diagnosa->diagnosa_utama ?? '-' }}
                             </td>
 
                             <td class="border border-gray-400 px-3 py-2 text-center">
-                                {{ $l->diagnosa_sekunder }}
+                                {{ $l->diagnosa->diagnosa_sekunder ?? '-' }}
                             </td>
 
                         </tr>

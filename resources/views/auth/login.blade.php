@@ -48,7 +48,11 @@
                     class="mt-2 w-full rounded-xl border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     placeholder="Masukkan email">
 
-                <x-input-error :messages="$errors->get('email')" class="mt-2" />
+                @if ($errors->any())
+                    <div class="bg-red-100 text-red-700 px-3 py-2 rounded-lg mb-3">
+                        {{ $errors->first() }}
+                    </div>
+                @endif
             </div>
 
             {{-- PASSWORD --}}
