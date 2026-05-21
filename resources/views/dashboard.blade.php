@@ -77,12 +77,12 @@
             </div>
 
             {{-- Section Grafik --}}
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
 
                 {{-- Grafik 10 Besar Penyakit --}}
-                <div class="bg-white rounded-2xl shadow-sm p-6">
+                <div class="bg-white rounded-2xl shadow-sm p-5 h-[420px]">
 
-                    <h2 class="text-xl font-bold text-gray-800 mb-6">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4">
                         Grafik 10 Besar Penyakit
                     </h2>
 
@@ -103,31 +103,37 @@
 
                     @endphp
 
-                    <canvas id="penyakitChart" height="100"></canvas>
+                    <div class="relative h-[320px]">
+                        <canvas id="penyakitChart"></canvas>
+                    </div>
 
                 </div>
 
-                {{-- Grafik Laporan --}}
-                <div class="bg-white rounded-2xl shadow-sm p-6">
+                {{-- Grafik 10 Besar Penyakit Pelaporan --}}
+                <div class="bg-white rounded-2xl shadow-sm p-5 h-[420px]">
 
-                    <h2 class="text-xl font-bold text-gray-800 mb-6">
+                    <h2 class="text-lg font-bold text-gray-800 mb-4">
                         Grafik 10 Besar Penyakit Pelaporan
                     </h2>
 
                     @php
+
                         $laporanPenyakit = \Illuminate\Support\Facades\DB::table('kunjungans')
-                                ->join('diagnosas', 'kunjungans.id', '=', 'diagnosas.kunjungan_id')
-                                ->select(
-                                    'diagnosas.diagnosa_utama',
-                                    \Illuminate\Support\Facades\DB::raw('COUNT(*) as total')
-                                )
-                                ->groupBy('diagnosas.diagnosa_utama')
-                                ->orderByDesc('total')
-                                ->limit(10)
-                                ->get();
+                            ->join('diagnosas', 'kunjungans.id', '=', 'diagnosas.kunjungan_id')
+                            ->select(
+                                'diagnosas.diagnosa_utama',
+                                \Illuminate\Support\Facades\DB::raw('COUNT(*) as total')
+                            )
+                            ->groupBy('diagnosas.diagnosa_utama')
+                            ->orderByDesc('total')
+                            ->limit(10)
+                            ->get();
+
                     @endphp
 
-                    <canvas id="kunjunganChart" height="100"></canvas>
+                    <div class="relative h-[320px]">
+                        <canvas id="kunjunganChart"></canvas>
+                    </div>
 
                 </div>
 
@@ -180,6 +186,7 @@
         options: {
 
             responsive: true,
+            maintainAspectRatio: false,
 
             plugins: {
 
@@ -190,6 +197,14 @@
             },
 
             scales: {
+
+                x: {
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
 
                 y: {
 
@@ -250,6 +265,7 @@
         options: {
 
             responsive: true,
+            maintainAspectRatio: false,
 
             plugins: {
 
@@ -260,6 +276,14 @@
             },
 
             scales: {
+
+                x: {
+                    ticks: {
+                        font: {
+                            size: 10
+                        }
+                    }
+                },
 
                 y: {
 
