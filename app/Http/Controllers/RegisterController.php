@@ -15,6 +15,7 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:6',
+            'role' => 'required|in:petugas,dokter,kepalarm'
         ]);
 
         // SIMPAN USER
@@ -22,6 +23,7 @@ class RegisterController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => $request->role, 
         ]);
 
         // 🔥 redirect TANPA login

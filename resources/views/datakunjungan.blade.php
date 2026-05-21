@@ -45,24 +45,30 @@
                 <div class="flex items-center justify-between p-5 border-b">
 
                     {{-- Filter --}}
-                    <form method="GET" action="{{ route('datakunjungan') }}" class="flex items-center gap-3">
+                    <form method="GET"
+                          action="{{ route('datakunjungan') }}"
+                          class="flex items-center gap-3">
 
-                    <input type="date"
-                        name="tanggal"
-                        value="{{ request('tanggal') }}"
-                        class="border border-gray-300 rounded-lg px-4 py-2 text-sm">
+                        <input
+                            type="date"
+                            name="tanggal"
+                            value="{{ request('tanggal') }}"
+                            class="border border-gray-300 rounded-lg px-4 py-2 text-sm"
+                        >
 
-                    <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                        Filter
-                    </button>
+                        <button
+                            type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold"
+                        >
+                            Filter
+                        </button>
 
-                    <a href="{{ route('datakunjungan') }}"
-                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm">
+                        <a href="{{ route('datakunjungan') }}"
+                           class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm">
                             Reset
-                    </a>
+                        </a>
 
-                </form>
+                    </form>
 
                     {{-- Info --}}
                     <p class="text-sm text-gray-400">
@@ -94,11 +100,15 @@
                                 </th>
 
                                 <th class="px-6 py-4">
-                                    Poli Tujuan
+                                    Keluhan Utama
                                 </th>
 
                                 <th class="px-6 py-4">
                                     Dokter
+                                </th>
+
+                                <th class="px-6 py-4">
+                                    Status
                                 </th>
 
                                 <th class="px-6 py-4">
@@ -125,48 +135,47 @@
                                 <td class="px-6 py-5">
 
                                     <div class="text-gray-700 font-medium">
-                                        {{ \Carbon\Carbon::parse($item->tanggal)->translatedFormat('d F Y') }}
-                                    </div>
-
-                                    <div class="text-red-500 text-xs mt-1">
-                                        {{ $item->jam }}
+                                        {{ \Carbon\Carbon::parse($item->tanggal_kunjungan)->translatedFormat('d F Y') }}
                                     </div>
 
                                 </td>
 
-                                {{-- Nama --}}
+                                {{-- Nama Pasien --}}
                                 <td class="px-6 py-5 font-semibold text-gray-800">
-                                    {{ $item->nama_pasien }}
+                                    {{ $item->pasien->nama_pasien ?? '-' }}
                                 </td>
 
-                                {{-- Poli --}}
+                                {{-- Keluhan --}}
+                                <td class="px-6 py-5 text-gray-700">
+                                    {{ $item->keluhan_utama ?? '-' }}
+                                </td>
+
+                                {{-- Dokter --}}
+                                <td class="px-6 py-5 text-gray-700">
+                                    {{ $item->dokter->nama_dokter ?? '-' }}
+                                </td>
+
+                                {{-- Status --}}
                                 <td class="px-6 py-5">
 
                                     @php
-                                        $warna =match(strtoupper(trim($item->poli_tujuan))) {
-                                            'POLI UMUM' => 'bg-orange-100 text-orange-600',
-                                            'POLI MATA' => 'bg-pink-100 text-pink-600',
-                                            'POLI GIGI' => 'bg-blue-100 text-blue-600',
-                                            'POLI THT' => 'bg-purple-100 text-purple-600',
-                                            'POLI PENYAKIT DALAM' => 'bg-green-100 text-green-700',
+                                        $warna = match(strtolower(trim($item->status))) {
+                                            'menunggu' => 'bg-yellow-100 text-yellow-700',
+                                            'diperiksa' => 'bg-blue-100 text-blue-700',
+                                            'selesai' => 'bg-green-100 text-green-700',
                                             default => 'bg-gray-100 text-gray-600'
                                         };
                                     @endphp
 
                                     <span class="px-3 py-1 rounded-full text-xs font-semibold {{ $warna }}">
-                                        {{ $item->poli_tujuan }}
+                                        {{ ucfirst($item->status) }}
                                     </span>
 
                                 </td>
 
-                                {{-- Dokter --}}
-                                <td class="px-6 py-5 text-gray-700">
-                                    {{ $item->dokter }}
-                                </td>
-
                                 {{-- Diagnosa --}}
                                 <td class="px-6 py-5 text-gray-700">
-                                    {{ $item->diagnosa }}
+                                    {{ $item->diagnosa->diagnosa_utama ?? '-' }}
                                 </td>
 
                             </tr>
@@ -175,7 +184,8 @@
 
                             <tr>
 
-                                <td colspan="6" class="text-center py-10 text-gray-400">
+                                <td colspan="7"
+                                    class="text-center py-10 text-gray-400">
 
                                     Belum ada data kunjungan
 
@@ -191,42 +201,54 @@
 
                 </div>
 
-                {{-- Pagination Dummy --}}
-                <div class="mt-8 flex justify-center items-center gap-2">
+                {{-- Pagination --}}
+                <div class="mt-8 flex justify-center items-center gap-2 pb-6">
 
                     {{-- Prev --}}
                     @if ($kunjungans->onFirstPage())
+
                         <span class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-300">
                             ‹
                         </span>
+
                     @else
+
                         <a href="{{ $kunjungans->previousPageUrl() }}"
-                        class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition">
+                           class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition">
                             ‹
                         </a>
+
                     @endif
 
                     {{-- Number --}}
                     @for ($i = 1; $i <= $kunjungans->lastPage(); $i++)
+
                         <a href="{{ $kunjungans->url($i) }}"
-                        class="w-10 h-10 flex items-center justify-center rounded-full transition
-                        {{ $kunjungans->currentPage() == $i
+                           class="w-10 h-10 flex items-center justify-center rounded-full transition
+                           {{ $kunjungans->currentPage() == $i
                                 ? 'bg-blue-600 text-white shadow'
                                 : 'border border-gray-200 text-gray-600 hover:bg-gray-100' }}">
+
                             {{ $i }}
+
                         </a>
+
                     @endfor
 
                     {{-- Next --}}
                     @if ($kunjungans->hasMorePages())
+
                         <a href="{{ $kunjungans->nextPageUrl() }}"
-                        class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition">
+                           class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-500 hover:bg-gray-100 transition">
                             ›
                         </a>
+
                     @else
+
                         <span class="w-10 h-10 flex items-center justify-center rounded-full border border-gray-200 text-gray-300">
                             ›
                         </span>
+
                     @endif
 
                 </div>

@@ -90,18 +90,6 @@
     }
 }
 
-/* FLOAT + ZOOM DIGABUNG */
-@keyframes floatZoom {
-    0% {
-        transform: translateY(0px) scale(1);
-    }
-    50% {
-        transform: translateY(-10px) scale(1.03);
-    }
-    100% {
-        transform: translateY(0px) scale(1);
-    }
-}
 
 /* =========================
    LOGO
