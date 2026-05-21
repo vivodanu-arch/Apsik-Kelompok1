@@ -20,16 +20,30 @@
                 visibility: hidden;
             }
 
-            #printTable,
-            #printTable * {
+            #printArea,
+            #printArea * {
                 visibility: visible;
             }
 
-            #printTable {
+            #printArea {
                 position: absolute;
                 left: 0;
                 top: 0;
                 width: 100%;
+                padding: 20px;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            table {
+                page-break-inside: auto;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;
             }
 
         }
@@ -53,17 +67,8 @@
         {{-- Main --}}
         <main class="p-6 bg-gray-100 min-h-screen">
 
-            {{-- Header --}}
-            <div class="bg-blue-700 rounded-2xl p-6 mb-6 shadow-sm">
-
-                <h1 class="text-3xl font-bold text-white uppercase">
-                    Laporan
-                </h1>
-
-            </div>
-
             {{-- Filter --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6 mb-6 max-w-4xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-sm p-6 mb-6 max-w-4xl mx-auto no-print">
 
                 <form method="GET" action="{{ route('laporan') }}">
 
@@ -114,10 +119,56 @@
 
             </div>
 
-            {{-- Table --}}
-            <div class="bg-white rounded-2xl shadow-sm p-4 overflow-auto">
+            {{-- Print Area --}}
+            <div id="printArea" class="bg-white rounded-2xl shadow-sm p-6 overflow-auto">
 
-                <table id="printTable"
+                {{-- KOP RUMAH SAKIT --}}
+                <div class="border-b-4 border-blue-700 pb-4 mb-6">
+
+                    <div class="flex flex-col items-center justify-center text-center">
+
+                        {{-- Logo --}}
+                        <img
+                            src="{{ asset('images/logoRS.jpeg') }}"
+                            alt="Logo Rumah Sakit"
+                            class="w-24 h-24 object-contain mb-2">
+
+                        {{-- Info Rumah Sakit --}}
+                        <div>
+
+                            <h1 class="text-3xl font-bold text-blue-900 uppercase">
+                                Rumah Sakit Kasih
+                            </h1>
+
+                            <p class="text-sm text-gray-700">
+                                Melayani Dengan Kasih, Mengutamakan Kesembuhan
+                            </p>
+
+                            <p class="text-sm text-gray-700">
+                                Jl. KH. Ahmad Dahlan No. 25, Jember, Jawa Timur
+                            </p>
+
+                            <p class="text-sm text-gray-700">
+                                Telp: (0331) 123456 | Email: rskasihjember@gmail.com
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- Judul Laporan --}}
+                <div class="text-center mb-6">
+
+                    <h2 class="text-2xl font-bold uppercase">
+                        {{ $judulLaporan }}
+                    </h2>
+
+                </div>
+
+                {{-- Table --}}
+                <table
                     class="table-auto border-collapse border border-gray-400 w-full text-sm">
 
                     <thead class="bg-blue-600 text-white">
@@ -235,8 +286,36 @@
 
                 </table>
 
+                {{-- Footer TTD --}}
+                <div class="mt-16 flex justify-end">
+
+                    <div class="text-center w-72">
+
+                        {{-- Tempat dan tanggal --}}
+                        <p class="mb-4">
+                            Jember,
+                            {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+                        </p>
+
+                        {{-- Jabatan --}}
+                        <p class="font-semibold mb-16">
+                            Admin Rekam Medis
+                        </p>
+
+                        {{-- Area tanda tangan --}}
+                        <div class="border-b border-black w-full mb-2"></div>
+
+                        {{-- Nama --}}
+                        <p class="text-sm text-gray-700">
+                            Nama Terang
+                        </p>
+
+                    </div>
+
+                </div>
+
                 {{-- Print --}}
-                <div class="flex justify-center mt-6">
+                <div class="flex justify-center mt-6 no-print">
 
                     <button
                         onclick="window.print()"
