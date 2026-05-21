@@ -20,14 +20,31 @@ class DashboardController extends Controller
         // Total dokter
         $totalDokter = User::where('role', 'dokter')->count();
 
-        // Statistik 10 besar penyakit
+        // =========================
+        // Grafik 10 besar penyakit (dari kunjungan → diagnosa)
+        // =========================
         $topPenyakit = DB::table('kunjungans')
             ->join('diagnosas', 'kunjungans.id', '=', 'diagnosas.kunjungan_id')
             ->select(
                 'diagnosas.diagnosa_utama',
                 DB::raw('COUNT(*) as total')
             )
-            ->groupBy('diagnosa_utama')
+            ->groupBy('diagnosas.diagnosa_utama')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get();
+
+        // =========================
+        // Grafik laporan (pakai data pasien → kunjungan → diagnosa)
+        // =========================
+        $grafikLaporan = DB::table('pasiens')
+            ->join('kunjungans', 'pasiens.id', '=', 'kunjungans.pasien_id')
+            ->join('diagnosas', 'kunjungans.id', '=', 'diagnosas.kunjungan_id')
+            ->select(
+                'diagnosas.diagnosa_utama',
+                DB::raw('COUNT(*) as total')
+            )
+            ->groupBy('diagnosas.diagnosa_utama')
             ->orderByDesc('total')
             ->limit(10)
             ->get();
@@ -36,7 +53,8 @@ class DashboardController extends Controller
             'totalPasien',
             'laporanHariIni',
             'totalDokter',
-            'topPenyakit'
+            'topPenyakit',
+            'grafikLaporan'
         ));
     }
 }

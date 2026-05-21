@@ -76,14 +76,60 @@
 
             </div>
 
-            {{-- Grafik 10 Besar Penyakit --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6 mt-6">
+            {{-- Section Grafik --}}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 
-                <h2 class="text-xl font-bold text-gray-800 mb-6">
-                    Grafik 10 Besar Penyakit
-                </h2>
+                {{-- Grafik 10 Besar Penyakit --}}
+                <div class="bg-white rounded-2xl shadow-sm p-6">
 
-                <canvas id="penyakitChart" height="100"></canvas>
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">
+                        Grafik 10 Besar Penyakit
+                    </h2>
+
+                    @php
+
+                        $topPenyakit = \Illuminate\Support\Facades\DB::table('diagnosas')
+                            ->select(
+                                'diagnosa_utama',
+                                \Illuminate\Support\Facades\DB::raw('COUNT(*) as total')
+                            )
+                            ->groupBy('diagnosa_utama')
+                            ->orderByDesc('total')
+                            ->limit(10)
+                            ->get();
+
+                        $labels = $topPenyakit->pluck('diagnosa_utama');
+                        $data = $topPenyakit->pluck('total');
+
+                    @endphp
+
+                    <canvas id="penyakitChart" height="100"></canvas>
+
+                </div>
+
+                {{-- Grafik Laporan --}}
+                <div class="bg-white rounded-2xl shadow-sm p-6">
+
+                    <h2 class="text-xl font-bold text-gray-800 mb-6">
+                        Grafik 10 Besar Penyakit Pelaporan
+                    </h2>
+
+                    @php
+                        $laporanPenyakit = \Illuminate\Support\Facades\DB::table('kunjungans')
+                                ->join('diagnosas', 'kunjungans.id', '=', 'diagnosas.kunjungan_id')
+                                ->select(
+                                    'diagnosas.diagnosa_utama',
+                                    \Illuminate\Support\Facades\DB::raw('COUNT(*) as total')
+                                )
+                                ->groupBy('diagnosas.diagnosa_utama')
+                                ->orderByDesc('total')
+                                ->limit(10)
+                                ->get();
+                    @endphp
+
+                    <canvas id="kunjunganChart" height="100"></canvas>
+
+                </div>
 
             </div>
 
@@ -93,6 +139,7 @@
 
 </div>
 
+{{-- Grafik Penyakit --}}
 <script>
 
     const ctx = document.getElementById('penyakitChart');
@@ -103,13 +150,13 @@
 
         data: {
 
-            labels: @json($topPenyakit->pluck('diagnosa_utama')),
+            labels: @json($labels),
 
             datasets: [{
 
                 label: 'Jumlah Kasus',
 
-                data: @json($topPenyakit->pluck('total')),
+                data: @json($data),
 
                 backgroundColor: [
                     '#2563eb',
@@ -137,9 +184,7 @@
             plugins: {
 
                 legend: {
-
                     display: false
-
                 }
 
             },
@@ -151,9 +196,77 @@
                     beginAtZero: true,
 
                     ticks: {
-
                         precision: 0
+                    }
 
+                }
+
+            }
+
+        }
+
+    });
+
+</script>
+
+{{-- Grafik Laporan --}}
+<script>
+
+    const kunjunganCtx = document.getElementById('kunjunganChart');
+
+    new Chart(kunjunganCtx, {
+
+        type: 'bar',
+
+        data: {
+
+            labels: @json($laporanPenyakit->pluck('diagnosa_utama')),
+
+            datasets: [{
+
+                label: 'Jumlah Penyakit',
+
+                data: @json($laporanPenyakit->pluck('total')),
+
+                backgroundColor: [
+                    '#0ea5e9',
+                    '#22c55e',
+                    '#ef4444',
+                    '#f59e0b',
+                    '#8b5cf6',
+                    '#14b8a6',
+                    '#f97316',
+                    '#6366f1',
+                    '#ec4899',
+                    '#10b981'
+                ],
+
+                borderRadius: 8
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+                    display: false
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    ticks: {
+                        precision: 0
                     }
 
                 }
