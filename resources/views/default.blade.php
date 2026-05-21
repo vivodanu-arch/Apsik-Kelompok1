@@ -6,7 +6,7 @@
     <title>Sistem Pelaporan Rumah Sakit</title>
 
     {{-- VITE (cukup sekali di head) --}}
-    @vite(['resources/css/auth.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="auth-page min-h-screen flex items-center justify-center relative overflow-hidden">
