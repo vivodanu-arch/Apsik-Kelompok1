@@ -7,27 +7,31 @@ use Illuminate\Http\Request;
 
 class PasienController extends Controller
 {
-    // =========================
-    // TAMPIL DATA
-    // =========================
     public function index()
     {
-        $pasien = Pasien::paginate(10);
+        $query = Pasien::query();
+
+        // ← fitur search yang sudah ada di view tapi belum diimplementasi di controller
+        if (request()->filled('search')) {
+            $search = request('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('nama_pasien', 'like', "%{$search}%")
+                  ->orWhere('no_rm', 'like', "%{$search}%")
+                  ->orWhere('telepon', 'like', "%{$search}%");
+            });
+        }
+
+        // ← naikkan dari 10 ke 15 agar lebih banyak terlihat, dengan pagination
+        $pasien = $query->orderBy('nama_pasien')->paginate(15)->withQueryString();
 
         return view('datapasien', compact('pasien'));
     }
 
-    // =========================
-    // FORM TAMBAH
-    // =========================
     public function create()
     {
         return view('createpasien');
     }
 
-    // =========================
-    // SIMPAN DATA
-    // =========================
     public function store(Request $request)
     {
         $request->validate([
@@ -36,43 +40,28 @@ class PasienController extends Controller
                 'unique:pasiens,no_rm',
                 'regex:/^\d{2}-\d{2}-\d{2}$/'
             ],
-
-            'nama_pasien' => 'required',
+            'nama_pasien'   => 'required',
             'jenis_kelamin' => 'required',
-            'ttl' => 'required',
-            'alamat' => 'required',
-            'telepon' => 'required',
+            'ttl'           => 'required',
+            'alamat'        => 'required',
+            'telepon'       => 'required',
         ], [
             'no_rm.regex' => 'Format No RM harus 00-00-00',
         ]);
 
-        Pasien::create([
-            'no_rm' => $request->no_rm,
-            'nama_pasien' => $request->nama_pasien,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'ttl' => $request->ttl,
-            'alamat' => $request->alamat,
-            'telepon' => $request->telepon,
-        ]);
+        Pasien::create($request->only([
+            'no_rm', 'nama_pasien', 'jenis_kelamin', 'ttl', 'alamat', 'telepon'
+        ]));
 
-        return redirect()
-            ->route('pasien.index')
-            ->with('success', 'Data pasien berhasil ditambahkan');
+        return redirect()->route('pasien.index')->with('success', 'Data pasien berhasil ditambahkan');
     }
 
-    // =========================
-    // FORM EDIT
-    // =========================
     public function edit($id)
     {
         $pasien = Pasien::findOrFail($id);
-
         return view('editdatapasien', compact('pasien'));
     }
 
-    // =========================
-    // UPDATE DATA
-    // =========================
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -81,43 +70,25 @@ class PasienController extends Controller
                 'regex:/^\d{2}-\d{2}-\d{2}$/',
                 'unique:pasiens,no_rm,' . $id
             ],
-
-            'nama_pasien' => 'required',
+            'nama_pasien'   => 'required',
             'jenis_kelamin' => 'required',
-            'ttl' => 'required',
-            'alamat' => 'required',
-            'telepon' => 'required',
+            'ttl'           => 'required',
+            'alamat'        => 'required',
+            'telepon'       => 'required',
         ], [
             'no_rm.regex' => 'Format No RM harus 00-00-00',
         ]);
 
-        $pasien = Pasien::findOrFail($id);
+        Pasien::findOrFail($id)->update($request->only([
+            'no_rm', 'nama_pasien', 'jenis_kelamin', 'ttl', 'alamat', 'telepon'
+        ]));
 
-        $pasien->update([
-            'no_rm' => $request->no_rm,
-            'nama_pasien' => $request->nama_pasien,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'ttl' => $request->ttl,
-            'alamat' => $request->alamat,
-            'telepon' => $request->telepon,
-        ]);
-
-        return redirect()
-            ->route('pasien.index')
-            ->with('success', 'Data pasien berhasil diperbarui');
+        return redirect()->route('pasien.index')->with('success', 'Data pasien berhasil diperbarui');
     }
 
-    // =========================
-    // HAPUS DATA
-    // =========================
     public function destroy($id)
     {
-        $pasien = Pasien::findOrFail($id);
-
-        $pasien->delete();
-
-        return redirect()
-            ->route('pasien.index')
-            ->with('success', 'Data pasien berhasil dihapus');
+        Pasien::findOrFail($id)->delete();
+        return redirect()->route('pasien.index')->with('success', 'Data pasien berhasil dihapus');
     }
 }

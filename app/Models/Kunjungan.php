@@ -3,9 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Pasien;
-use App\Models\Dokter;
-use App\Models\Diagnosa;
 
 class Kunjungan extends Model
 {
@@ -15,23 +12,27 @@ class Kunjungan extends Model
         'status',
         'pasien_id',
         'dokter_id',
+        'poli_id',          // ← tambahan
     ];
 
-    // RELASI KE PASIEN
     public function pasien()
     {
         return $this->belongsTo(Pasien::class, 'pasien_id');
     }
 
-    // RELASI KE DOKTER
     public function dokter()
     {
         return $this->belongsTo(Dokter::class, 'dokter_id');
     }
 
-    // RELASI KE DIAGNOSA
     public function diagnosa()
     {
         return $this->hasOne(Diagnosa::class, 'kunjungan_id');
+    }
+
+    // ← relasi baru
+    public function poli()
+    {
+        return $this->belongsTo(Poli::class, 'poli_id');
     }
 }
