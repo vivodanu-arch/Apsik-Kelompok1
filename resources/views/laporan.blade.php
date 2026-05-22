@@ -9,19 +9,60 @@ if($dari && $sampai){
     $dariTanggal = \Carbon\Carbon::parse($dari);
     $sampaiTanggal = \Carbon\Carbon::parse($sampai);
 
-    if($dariTanggal->format('Y-m') == $sampaiTanggal->format('Y-m')){
+    // CEK APAKAH FULL 1 TAHUN
+    if(
 
-        $periode = 'Periode ' . $dariTanggal->translatedFormat('F Y');
+        $dariTanggal->format('m-d') == '01-01'
+        &&
+        $sampaiTanggal->format('m-d') == '12-31'
+        &&
+        $dariTanggal->format('Y') == $sampaiTanggal->format('Y')
 
-    }elseif($dariTanggal->format('Y') == $sampaiTanggal->format('Y')){
-
-        $periode = 'Tahun ' . $dariTanggal->translatedFormat('Y');
-
-    }else{
+    ){
 
         $periode =
-            $dariTanggal->translatedFormat('d F Y')
+            'Periode Tahunan ' .
+            $dariTanggal->translatedFormat('Y');
+
+    }
+
+    // CEK JIKA 1 BULAN
+    elseif(
+
+        $dariTanggal->format('Y-m') ==
+        $sampaiTanggal->format('Y-m')
+
+    ){
+
+        $periode =
+            'Periode Bulanan ' .
+            $dariTanggal->translatedFormat('F Y');
+
+    }
+
+    // CEK JIKA MASIH 1 TAHUN TAPI BEBERAPA BULAN
+    elseif(
+
+        $dariTanggal->format('Y') ==
+        $sampaiTanggal->format('Y')
+
+    ){
+
+        $periode =
+            'Periode ' .
+            $dariTanggal->translatedFormat('F')
             .' - '.
+            $sampaiTanggal->translatedFormat('F Y');
+
+    }
+
+    // JIKA BEDA TAHUN
+    else{
+
+        $periode =
+            'Periode ' .
+            $dariTanggal->translatedFormat('d F Y')
+            .' s/d '.
             $sampaiTanggal->translatedFormat('d F Y');
 
     }
@@ -156,7 +197,15 @@ if($dari && $sampai){
             font-size: 28px;
             font-weight: bold;
             text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .subjudul{
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
             margin-bottom: 25px;
+            color: #374151;
         }
 
         @page{
@@ -398,7 +447,11 @@ if($dari && $sampai){
                 </div>
 
                 <div class="judul">
-                    Laporan Rekam Medis {{ $periode }}
+                    LAPORAN REKAP DATA REKAM MEDIS PASIEN 
+                </div>
+
+                <div class="subjudul">
+                     {{ $periode }}
                 </div>
 
                 <table>
@@ -496,7 +549,7 @@ if($dari && $sampai){
                         </p>
 
                         <p style="margin-bottom: 90px; font-weight: bold;">
-                            Admin Rekam Medis
+                            Kepala Rekam Medis
                         </p>
 
                         <div style="margin-top: 15px;">
@@ -557,7 +610,11 @@ if($dari && $sampai){
                 </div>
 
                 <div class="judul">
-                    10 Besar Penyakit {{ $periode }}
+                    10 BESAR PENYAKIT RAWAT JALAN
+                </div>
+
+                <div class="subjudul">
+                    {{ $periode }}
                 </div>
 
                 <table>
@@ -664,7 +721,11 @@ if($dari && $sampai){
                 </div>
 
                 <div class="judul">
-                    10 Besar Penyakit Kunjungan {{ $periode }}
+                    10 BESAR PENYAKIT PELAPORAN
+                </div>
+
+                <div class="subjudul">
+                    {{ $periode }}
                 </div>
 
                 <table>
