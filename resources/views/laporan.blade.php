@@ -9,7 +9,7 @@ if($dari && $sampai){
     $dariTanggal = \Carbon\Carbon::parse($dari);
     $sampaiTanggal = \Carbon\Carbon::parse($sampai);
 
-    // CEK APAKAH FULL 1 TAHUN
+    // JIKA FULL 1 TAHUN
     if(
 
         $dariTanggal->format('m-d') == '01-01'
@@ -22,11 +22,16 @@ if($dari && $sampai){
 
         $periode =
             'Periode Tahunan ' .
-            $dariTanggal->translatedFormat('Y');
+            $dariTanggal->translatedFormat('Y')
+            .' ('.
+            $dariTanggal->translatedFormat('d F Y')
+            .' s/d '.
+            $sampaiTanggal->translatedFormat('d F Y')
+            .')';
 
     }
 
-    // CEK JIKA 1 BULAN
+    // JIKA 1 BULAN
     elseif(
 
         $dariTanggal->format('Y-m') ==
@@ -36,11 +41,16 @@ if($dari && $sampai){
 
         $periode =
             'Periode Bulanan ' .
-            $dariTanggal->translatedFormat('F Y');
+            $dariTanggal->translatedFormat('F Y')
+            .' ('.
+            $dariTanggal->translatedFormat('d F Y')
+            .' s/d '.
+            $sampaiTanggal->translatedFormat('d F Y')
+            .')';
 
     }
 
-    // CEK JIKA MASIH 1 TAHUN TAPI BEBERAPA BULAN
+    // JIKA BEBERAPA BULAN DALAM 1 TAHUN
     elseif(
 
         $dariTanggal->format('Y') ==
@@ -52,7 +62,12 @@ if($dari && $sampai){
             'Periode ' .
             $dariTanggal->translatedFormat('F')
             .' - '.
-            $sampaiTanggal->translatedFormat('F Y');
+            $sampaiTanggal->translatedFormat('F Y')
+            .' ('.
+            $dariTanggal->translatedFormat('d F Y')
+            .' s/d '.
+            $sampaiTanggal->translatedFormat('d F Y')
+            .')';
 
     }
 
