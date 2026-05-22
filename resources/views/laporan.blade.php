@@ -1,5 +1,36 @@
 @php
 \Carbon\Carbon::setLocale('id');
+
+$dari = request('dari');
+$sampai = request('sampai');
+
+if($dari && $sampai){
+
+    $dariTanggal = \Carbon\Carbon::parse($dari);
+    $sampaiTanggal = \Carbon\Carbon::parse($sampai);
+
+    if($dariTanggal->format('Y-m') == $sampaiTanggal->format('Y-m')){
+
+        $periode = 'Periode ' . $dariTanggal->translatedFormat('F Y');
+
+    }elseif($dariTanggal->format('Y') == $sampaiTanggal->format('Y')){
+
+        $periode = 'Tahun ' . $dariTanggal->translatedFormat('Y');
+
+    }else{
+
+        $periode =
+            $dariTanggal->translatedFormat('d F Y')
+            .' - '.
+            $sampaiTanggal->translatedFormat('d F Y');
+
+    }
+
+}else{
+
+    $periode = 'Semua Data';
+
+}
 @endphp
 
 <!DOCTYPE html>
@@ -241,34 +272,6 @@
 
         <main class="p-6">
 
-            {{-- EDIT JUDUL --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6 mb-6 max-w-4xl mx-auto no-print">
-
-                <h2 class="text-2xl font-bold text-center mb-4">
-                    Edit Judul Laporan
-                </h2>
-
-                <div class="flex flex-wrap justify-center gap-3">
-
-                    <input
-                        type="text"
-                        id="customJudul"
-                        placeholder="Masukkan Judul Baru"
-                        class="border rounded-lg px-4 py-2 w-80">
-
-                    <button
-                        type="button"
-                        onclick="updateJudul()"
-                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg">
-
-                        Update Judul
-
-                    </button>
-
-                </div>
-
-            </div>
-
             {{-- FILTER --}}
             <div class="bg-white rounded-2xl shadow-sm p-6 mb-6 max-w-4xl mx-auto no-print">
 
@@ -333,7 +336,7 @@
                     onclick="printOnly('penyakitPage')"
                     class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl shadow">
 
-                    🖨 Print 10 Besar Penyakit
+                    🖨 Print 10 Besar Penyakit Kunjungan
 
                 </button>
 
@@ -341,7 +344,7 @@
                     onclick="printOnly('semuaPenyakitPage')"
                     class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl shadow">
 
-                    🖨 Print Penyakit Keseluruhan
+                    🖨 Print 10 Besar Penyakit Pelaporan
 
                 </button>
 
@@ -395,7 +398,7 @@
                 </div>
 
                 <div class="judul">
-                    {{ $judulLaporan }}
+                    Laporan Rekam Medis {{ $periode }}
                 </div>
 
                 <table>
@@ -483,34 +486,35 @@
 
                 </table>
 
-             <div class="ttd">
+                <div class="ttd">
 
-                <div class="ttd-box">
+                    <div class="ttd-box">
 
-                    <p style="margin-bottom: 10px;">
-                        Jember,
-                        {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
-                    </p>
-
-                    <p style="margin-bottom: 90px; font-weight: bold;">
-                        Admin Rekam Medis
-                    </p>
-
-                    <div style="margin-top: 15px;">
-
-                        <p style="margin-bottom: 5px;">
-                            (........................................................)
+                        <p style="margin-bottom: 10px;">
+                            Jember,
+                            {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
                         </p>
 
-                        <p>
-                            Nama Terang
+                        <p style="margin-bottom: 90px; font-weight: bold;">
+                            Admin Rekam Medis
                         </p>
+
+                        <div style="margin-top: 15px;">
+
+                            <p style="margin-bottom: 5px;">
+                                (........................................................)
+                            </p>
+
+                            <p>
+                                Nama Terang
+                            </p>
+
+                        </div>
 
                     </div>
 
                 </div>
 
-            </div>
             </div>
 
             {{-- HALAMAN 2 --}}
@@ -553,7 +557,7 @@
                 </div>
 
                 <div class="judul">
-                    10 Besar Penyakit
+                    10 Besar Penyakit {{ $periode }}
                 </div>
 
                 <table>
@@ -660,7 +664,7 @@
                 </div>
 
                 <div class="judul">
-                    10 Besar Penyakit Keseluruhan
+                    10 Besar Penyakit Kunjungan {{ $periode }}
                 </div>
 
                 <table>
@@ -735,22 +739,6 @@
 </div>
 
 <script>
-
-function updateJudul(){
-
-    let judulBaru = document.getElementById('customJudul').value;
-
-    if(judulBaru.trim() !== ''){
-
-        let semuaJudul = document.querySelectorAll('.judul');
-
-        semuaJudul.forEach(judul => {
-            judul.innerText = judulBaru;
-        });
-
-    }
-
-}
 
 function printOnly(id){
 
