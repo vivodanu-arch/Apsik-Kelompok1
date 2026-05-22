@@ -6,6 +6,8 @@ use App\Http\Controllers\KunjunganController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 | HALAMAN AWAL
@@ -24,7 +26,7 @@ Route::get('/', function () {
 });
 
 /*
-| AUTH
+| AUTH (LOGIN)
 */
 Route::middleware('auth')->group(function () {
 
@@ -42,7 +44,7 @@ Route::middleware('auth')->group(function () {
 });
 
 /*
-| DASHBOARD
+| DASHBOARD BERDASARKAN ROLE
 */
 Route::middleware(['auth', 'role:petugas'])
     ->get('/dashboard', [DashboardController::class, 'index'])
@@ -55,6 +57,23 @@ Route::middleware(['auth', 'role:dokter'])
     ->get('/dashboard-dokter', fn() => view('dashboarddokter'));
 
 /*
+| SUPER ADMIN (is_super_admin = 1)
+*/
+Route::middleware(['auth', 'superadmin'])->group(function () {
+
+    // MANAJEMEN USER
+    Route::get('/users', [UserController::class, 'index'])
+        ->name('users.index');
+
+    // TAMBAH USER
+    Route::get('/register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+
+    Route::post('/register', [RegisteredUserController::class, 'store']);
+
+});
+
+/*
 | LOGOUT PAKSA
 */
 Route::get('/force-logout', function () {
@@ -64,4 +83,7 @@ Route::get('/force-logout', function () {
     return redirect('/');
 });
 
+/*
+| AUTH BAWAAN LARAVEL
+*/
 require __DIR__.'/auth.php';

@@ -17,90 +17,54 @@
         {{-- Dashboard --}}
         <a href="{{ route('dashboard') }}"
            class="sidebar-item {{ request()->routeIs('dashboard') ? 'sidebar-active' : '' }}">
-
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="w-5 h-5 flex-shrink-0"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h6"/>
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="2" d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h6"/>
             </svg>
-
-            <span class="font-semibold text-xs">
-                Dashboard
-            </span>
-
+            <span class="font-semibold text-xs">Dashboard</span>
         </a>
 
         {{-- Data Pasien --}}
         <a href="{{ route('pasien.index') }}"
-        class="sidebar-item {{ request()->routeIs('pasien.*') ? 'sidebar-active' : '' }}">
-
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="w-5 h-5 flex-shrink-0"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+           class="sidebar-item {{ request()->routeIs('pasien.*') ? 'sidebar-active' : '' }}">
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
             </svg>
-
-            <span class="font-semibold text-xs">
-                Data Pasien
-            </span>
-
+            <span class="font-semibold text-xs">Data Pasien</span>
         </a>
 
         {{-- Data Kunjungan --}}
         <a href="{{ route('datakunjungan') }}"
            class="sidebar-item {{ request()->routeIs('datakunjungan') ? 'sidebar-active' : '' }}">
-
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="w-5 h-5 flex-shrink-0"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="2" d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-
-            <span class="font-semibold text-xs">
-                Data Kunjungan
-            </span>
-
+            <span class="font-semibold text-xs">Data Kunjungan</span>
         </a>
 
         {{-- Laporan --}}
         <a href="{{ route('laporan') }}"
            class="sidebar-item {{ request()->routeIs('laporan') ? 'sidebar-active' : '' }}">
-
-            <svg xmlns="http://www.w3.org/2000/svg"
-                 class="w-5 h-5 flex-shrink-0"
-                 fill="none"
-                 viewBox="0 0 24 24"
-                 stroke="currentColor">
-
-                <path stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 17v-6m4 6V7m4 10v-3M5 21h14"/>
+            <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-width="2" d="M9 17v-6m4 6V7m4 10v-3M5 21h14"/>
             </svg>
-
-            <span class="font-semibold text-xs">
-                Laporan
-            </span>
-
+            <span class="font-semibold text-xs">Laporan</span>
         </a>
+
+        {{-- SUPER ADMIN --}}
+        @auth
+        @if(auth()->user()->is_super_admin == 1)
+
+            {{-- Manajemen User --}}
+            <a href="{{ route('users.index') }}"
+               class="sidebar-item {{ request()->routeIs('users.*') ? 'sidebar-active' : '' }}">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-width="2" d="M17 20h5V4H2v16h5m10 0v-6a4 4 0 00-8 0v6"/>
+                </svg>
+                <span class="font-semibold text-xs">Manajemen User</span>
+            </a>
+
+        @endif
+        @endauth
 
     </nav>
 

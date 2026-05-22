@@ -28,8 +28,24 @@
                         {{ Auth::user()->name }}
                     </h3>
 
-                    <p class="text-xs uppercase text-gray-500">
-                        Petugas Rekam Medis
+                    <p class="text-xs text-gray-500">
+                        @switch(auth()->user()->role)
+                            @case('petugas')
+                                PETUGAS REKAM MEDIS
+                                @break
+
+                            @case('kepalarm')
+                                KEPALA REKAM MEDIS
+                                @break
+
+                            @case('dokter')
+                                DOKTER
+                                @break
+
+                            @default
+                                USER
+                        @endswitch
+
                     </p>
                 </div>
 

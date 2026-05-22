@@ -10,24 +10,33 @@ class RegisterController extends Controller
 {
     public function store(Request $request)
     {
-        // VALIDASI
+        if (!auth()->user()->is_super_admin) {
+            abort(403);
+        }
+
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|confirmed|min:6',
-            'role' => 'required|in:petugas,dokter,kepalarm'
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', 'min:6'],
+            'role' => ['required']
         ]);
 
-        // SIMPAN USER
-        User::create([
+        \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role, 
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+            'is_super_admin' => 0
         ]);
 
-        // 🔥 redirect TANPA login
-        return redirect()->route('login')
-            ->with('success', 'Register berhasil! Silakan login.');
+        return redirect()->back()->with('success', 'User berhasil ditambahkan');
+    }
+    public function create()
+    {
+        if (!auth()->user()->is_super_admin) {
+            abort(403);
+        }
+
+        return view('auth.register');
     }
 }
