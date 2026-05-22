@@ -89,36 +89,36 @@
             margin: 30px auto;
             box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             width: 100%;
-                        max-width: 1300px;
-                    }
+            max-width: 1300px;
+        }
 
-            .ttd{
-                margin-top: 120px;
-                display: flex;
-                justify-content: flex-end;
-                padding-right: 40px;
-            }
+        .ttd{
+            margin-top: 120px;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 40px;
+        }
 
-            .ttd-box{
-                width: 250px;
-                text-align: center;
-            }
+        .ttd-box{
+            width: 250px;
+            text-align: center;
+        }
 
-            .ttd-box .jabatan{
-                margin-top: 20px;
-                font-weight: bold;
-            }
+        .ttd-box .jabatan{
+            margin-top: 20px;
+            font-weight: bold;
+        }
 
-           .ttd-box .garis-ttd{
-                margin-top: 90px;
-                text-align: center;
-                font-size: 22px;
-                letter-spacing: 3px;
-            }
+        .ttd-box .garis-ttd{
+            margin-top: 90px;
+            text-align: center;
+            font-size: 22px;
+            letter-spacing: 3px;
+        }
 
-            .ttd-box .nama-terang{
-                margin-top: 50px;
-            }
+        .ttd-box .nama-terang{
+            margin-top: 50px;
+        }
 
         .judul{
             text-align: center;
@@ -195,8 +195,6 @@
         font-size: 24px;
     }
 
-    /* ================= WARNA HEADER ================= */
-
     .bg-blue-600{
         background-color: #2563eb !important;
         color: white !important;
@@ -242,6 +240,34 @@
         </div>
 
         <main class="p-6">
+
+            {{-- EDIT JUDUL --}}
+            <div class="bg-white rounded-2xl shadow-sm p-6 mb-6 max-w-4xl mx-auto no-print">
+
+                <h2 class="text-2xl font-bold text-center mb-4">
+                    Edit Judul Laporan
+                </h2>
+
+                <div class="flex flex-wrap justify-center gap-3">
+
+                    <input
+                        type="text"
+                        id="customJudul"
+                        placeholder="Masukkan Judul Baru"
+                        class="border rounded-lg px-4 py-2 w-80">
+
+                    <button
+                        type="button"
+                        onclick="updateJudul()"
+                        class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg">
+
+                        Update Judul
+
+                    </button>
+
+                </div>
+
+            </div>
 
             {{-- FILTER --}}
             <div class="bg-white rounded-2xl shadow-sm p-6 mb-6 max-w-4xl mx-auto no-print">
@@ -459,32 +485,32 @@
 
              <div class="ttd">
 
-    <div class="ttd-box">
+                <div class="ttd-box">
 
-        <p style="margin-bottom: 10px;">
-            Jember,
-            {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
-        </p>
+                    <p style="margin-bottom: 10px;">
+                        Jember,
+                        {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}
+                    </p>
 
-        <p style="margin-bottom: 90px; font-weight: bold;">
-            Admin Rekam Medis
-        </p>
+                    <p style="margin-bottom: 90px; font-weight: bold;">
+                        Admin Rekam Medis
+                    </p>
 
-        <div style="margin-top: 15px;">
+                    <div style="margin-top: 15px;">
 
-            <p style="margin-bottom: 5px;">
-                (........................................................)
-            </p>
+                        <p style="margin-bottom: 5px;">
+                            (........................................................)
+                        </p>
 
-            <p>
-                Nama Terang
-            </p>
+                        <p>
+                            Nama Terang
+                        </p>
 
-        </div>
+                    </div>
+
+                </div>
 
             </div>
-
-        </div>
             </div>
 
             {{-- HALAMAN 2 --}}
@@ -709,6 +735,22 @@
 </div>
 
 <script>
+
+function updateJudul(){
+
+    let judulBaru = document.getElementById('customJudul').value;
+
+    if(judulBaru.trim() !== ''){
+
+        let semuaJudul = document.querySelectorAll('.judul');
+
+        semuaJudul.forEach(judul => {
+            judul.innerText = judulBaru;
+        });
+
+    }
+
+}
 
 function printOnly(id){
 
