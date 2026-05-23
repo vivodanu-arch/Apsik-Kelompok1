@@ -1,3 +1,11 @@
+@php
+    $dashboardRoute = match(auth()->user()->role) {
+        'petugas' => route('dashboard'),
+        'dokter' => route('dashboard.dokter'),
+        'kepalarm' => route('dashboard.kepala'),
+        default => '/'
+    };
+@endphp
 <aside class="fixed top-0 left-0 w-64 h-screen bg-white border-r flex flex-col">
 
     {{-- Logo --}}
@@ -15,7 +23,7 @@
     <nav class="flex-1 mt-5 px-3 space-y-2 overflow-y-auto">
 
         {{-- Dashboard --}}
-        <a href="{{ route('dashboard') }}"
+        <a href="{{ $dashboardRoute }}"
            class="sidebar-item {{ request()->routeIs('dashboard') ? 'sidebar-active' : '' }}">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-width="2" d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h6"/>
