@@ -11,41 +11,24 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Total pasien
-        $totalPasien = Pasien::count();
-
-        // Laporan hari ini
+        $totalPasien    = Pasien::count();
         $laporanHariIni = Kunjungan::whereDate('tanggal_kunjungan', now())->count();
+        $totalDokter    = User::where('role', 'dokter')->count();
 
-        // Total dokter
-        $totalDokter = User::where('role', 'dokter')->count();
-
-        // =========================
-        // Grafik 10 besar penyakit (dari kunjungan → diagnosa)
-        // =========================
-        $topPenyakit = DB::table('kunjungans')
-            ->join('diagnosas', 'kunjungans.id', '=', 'diagnosas.kunjungan_id')
-            ->select(
-                'diagnosas.diagnosa_utama',
-                DB::raw('COUNT(*) as total')
-            )
-            ->groupBy('diagnosas.diagnosa_utama')
+        // 10 besar penyakit (satu saja, dari diagnosa)
+        $topPenyakit = DB::table('diagnosas')
+            ->select('diagnosa_utama', 'kode_icd', DB::raw('COUNT(*) as total'))
+            ->groupBy('diagnosa_utama', 'kode_icd')
             ->orderByDesc('total')
             ->limit(10)
             ->get();
 
-        // =========================
-        // Grafik laporan (pakai data pasien → kunjungan → diagnosa)
-        // =========================
-        $grafikLaporan = DB::table('pasiens')
-            ->join('kunjungans', 'pasiens.id', '=', 'kunjungans.pasien_id')
-            ->join('diagnosas', 'kunjungans.id', '=', 'diagnosas.kunjungan_id')
-            ->select(
-                'diagnosas.diagnosa_utama',
-                DB::raw('COUNT(*) as total')
-            )
-            ->groupBy('diagnosas.diagnosa_utama')
-            ->orderByDesc('total')
+        // 10 besar dokter berdasarkan jumlah pasien yang ditangani
+        $topDokter = DB::table('kunjungans')
+            ->join('dokters', 'kunjungans.dokter_id', '=', 'dokters.id')
+            ->select('dokters.nama_dokter', 'dokters.spesialis', DB::raw('COUNT(*) as total_pasien'))
+            ->groupBy('dokters.id', 'dokters.nama_dokter', 'dokters.spesialis')
+            ->orderByDesc('total_pasien')
             ->limit(10)
             ->get();
 
@@ -54,7 +37,7 @@ class DashboardController extends Controller
             'laporanHariIni',
             'totalDokter',
             'topPenyakit',
-            'grafikLaporan'
+            'topDokter'
         ));
     }
 }
