@@ -247,7 +247,7 @@ if ($dari && $sampai) {
                     <thead>
                         <tr>
                             <th colspan="10" style="border:none; padding:0 0 4px 0; background:white;">
-                                @include('layouts.kop_surat')
+                                @include('layouts.kopsurat')
                                 <div class="judul">LAPORAN REKAP DATA REKAM MEDIS PASIEN</div>
                                 <div class="subjudul">{{ $periode }}</div>
                             </th>
@@ -307,7 +307,7 @@ if ($dari && $sampai) {
                     <thead>
                         <tr>
                             <th colspan="4" style="border:none; padding:0 0 4px 0; background:white;">
-                                @include('layouts.kop_surat')
+                                @include('layouts.kopsurat')
                                 <div class="judul">10 BESAR PENYAKIT RAWAT JALAN</div>
                                 <div class="subjudul">{{ $periode }}</div>
                             </th>
@@ -353,7 +353,7 @@ if ($dari && $sampai) {
                     <thead>
                         <tr>
                             <th colspan="4" style="border:none; padding:0 0 4px 0; background:white;">
-                                @include('layouts.kop_surat')
+                                @include('layouts.kopsurat')
                                 <div class="judul">10 BESAR PENYAKIT PELAPORAN</div>
                                 <div class="subjudul">Data Keseluruhan (Semua Periode)</div>
                             </th>
