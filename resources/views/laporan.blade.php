@@ -36,12 +36,53 @@ if ($dari && $sampai) {
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #9ca3af; padding: 8px; font-size: 12px; vertical-align: middle; }
         th { text-align: center; font-weight: bold; }
-        .kop { border-bottom: 4px solid #1d4ed8; padding-bottom: 15px; margin-bottom: 25px; }
-        .kop-wrapper { display: flex; align-items: center; gap: 20px; }
-        .kop-logo img { width: 90px; height: 90px; object-fit: contain; }
-        .kop-text { flex: 1; text-align: center; }
-        .kop-text h1 { margin: 0; font-size: 28px; font-weight: bold; color: #1d4ed8; text-transform: uppercase; }
-        .kop-text p { margin: 3px 0; font-size: 13px; }
+        .kop {
+    border-bottom: 3px solid #1d4ed8;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+}
+.kop-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+.kop-logo img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    display: block;
+}
+.kop-text {
+    flex: 1;
+    text-align: center;
+}
+.kop-text h1 {
+    margin: 0 0 5px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #1d4ed8;
+    letter-spacing: 2px;
+    line-height: 1.2;
+}
+.kop-tagline {
+    font-style: italic;
+    color: #4b5563;
+    font-size: 13px;
+    margin: 0 0 8px;
+}
+.kop-divider {
+    width: 60%;
+    height: 1px;
+    background: #d1d5db;
+    margin: 6px auto 8px;
+}
+.kop-text p {
+    margin: 2px 0;
+    font-size: 12px;
+    color: #374151;
+    line-height: 1.6;
+}
         .page-print { background: white; padding: 40px; border-radius: 20px; margin: 30px auto; box-shadow: 0 2px 10px rgba(0,0,0,0.08); width: 100%; max-width: 1300px; }
         .judul { text-align: center; font-size: 26px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
         .subjudul { text-align: center; font-size: 15px; font-weight: bold; margin-bottom: 20px; color: #374151; }
@@ -105,226 +146,188 @@ if ($dari && $sampai) {
             </div>
 
             {{-- TOMBOL PRINT --}}
-            <div class="flex flex-wrap justify-center gap-4 mb-6 no-print">
-                <button onclick="printOnly('laporanPage')"
-                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
-                    🖨 Print Laporan Kunjungan
-                </button>
-                <button onclick="printOnly('penyakitPage')"
-                        class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
-                    🖨 Print 10 Besar (Periode)
-                </button>
-                <button onclick="printOnly('semuaPenyakitPage')"
-                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
-                    🖨 Print 10 Besar (Keseluruhan)
-                </button>
-                <button onclick="window.print()"
-                        class="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
-                    🖨 Print Semua
-                </button>
-            </div>
+           {{-- TOMBOL PRINT --}}
+<div class="flex justify-center mb-6 no-print">
+    <div class="relative inline-block" id="printWrapper">
+        <button onclick="togglePrintMenu()"
+                class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
+            🖨 Print Laporan
+            <span class="border-l border-white/40 pl-2 ml-1" id="printChevron">▾</span>
+        </button>
+        <div id="printDropdown"
+             class="hidden absolute left-0 mt-1 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+            <button onclick="printOnly('laporanPage'); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                Laporan Kunjungan
+            </button>
+            <button onclick="printOnly('penyakitPage'); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
+                10 Besar (Periode)
+            </button>
+            <button onclick="printOnly('semuaPenyakitPage'); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-600 inline-block"></span>
+                10 Besar (Keseluruhan)
+            </button>
+            <button onclick="window.print(); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50">
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block"></span>
+                Semua Data
+            </button>
+        </div>
+    </div>
+</div>
 
-            {{-- ===== HALAMAN 1: LAPORAN KUNJUNGAN ===== --}}
-            <div id="laporanPage" class="page-print">
+         {{-- ===== HALAMAN 1: LAPORAN KUNJUNGAN ===== --}}
+<div id="laporanPage" class="page-print">
 
-                <div class="kop">
-                    <div class="kop-wrapper">
-                        <div class="kop-logo">
-                            <img src="{{ asset('images/logoRS.jpeg') }}" alt="Logo">
-                        </div>
-                        <div class="kop-text">
-                            <h1>Rumah Sakit Kasih</h1>
-                            <p>Melayani Dengan Kasih, Mengutamakan Kesembuhan</p>
-                            <p>Jl. KH. Ahmad Dahlan No. 25, Jember, Jawa Timur</p>
-                            <p>Telp: (0331) 123456 | Email: rskasihjember@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
+    @include('layouts.kopsurat')
 
-                <div class="judul">LAPORAN REKAP DATA REKAM MEDIS PASIEN</div>
-                <div class="subjudul">{{ $periode }}</div>
+    <div class="judul">LAPORAN REKAP DATA REKAM MEDIS PASIEN</div>
+    <div class="subjudul">{{ $periode }}</div>
 
-                <table>
-                    <thead class="bg-blue-600 text-white">
-                        <tr>
-                            <th>NO</th>
-                            <th>NAMA PASIEN</th>
-                            <th>TANGGAL KUNJUNGAN</th>
-                            <th>NAMA DOKTER</th>
-                            <th>NAMA POLI</th>     {{-- ← fix --}}
-                            <th>NO. RM</th>
-                            <th>JK</th>
-                            <th>KELUHAN UTAMA</th>
-                            <th>DIAGNOSA UTAMA</th>
-                            <th>DIAGNOSA SEKUNDER</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($laporans as $l)
-                        <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td>{{ $l->pasien->nama_pasien ?? '-' }}</td>
-                            <td class="text-center">
-                                {{ \Carbon\Carbon::parse($l->tanggal_kunjungan)->translatedFormat('d F Y') }}
-                            </td>
-                            <td>{{ $l->dokter->nama_dokter ?? '-' }}</td>
+    <table>
+        <thead class="bg-blue-600 text-white">
+            <tr>
+                <th>NO</th>
+                <th>NAMA PASIEN</th>
+                <th>TANGGAL KUNJUNGAN</th>
+                <th>NAMA DOKTER</th>
+                <th>NAMA POLI</th>
+                <th>NO. RM</th>
+                <th>JK</th>
+                <th>KELUHAN UTAMA</th>
+                <th>DIAGNOSA UTAMA</th>
+                <th>DIAGNOSA SEKUNDER</th>
+            </tr>
+        </thead>
+        <tbody>
+        @forelse($laporans as $l)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td>{{ $l->pasien->nama_pasien ?? '-' }}</td>
+                <td class="text-center">
+                    {{ \Carbon\Carbon::parse($l->tanggal_kunjungan)->translatedFormat('d F Y') }}
+                </td>
+                <td>{{ $l->dokter->nama_dokter ?? '-' }}</td>
+                <td>{{ $l->poli->nama_poli ?? '-' }}</td>
+                <td class="text-center">{{ $l->pasien->no_rm ?? '-' }}</td>
+                <td class="text-center">{{ $l->pasien->jenis_kelamin ?? '-' }}</td>
+                <td>{{ $l->keluhan_utama ?? '-' }}</td>
+                <td>{{ $l->diagnosa->diagnosa_utama ?? '-' }}</td>
+                <td>{{ $l->diagnosa->diagnosa_sekunder ?? '-' }}</td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="10" class="text-center py-4 text-gray-400">
+                    Tidak ada data laporan untuk periode ini
+                </td>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
 
-                            {{-- ← PERBAIKAN UTAMA: dari $l->pasien->nama_poli ke $l->poli->nama_poli --}}
-                            <td>{{ $l->poli->nama_poli ?? '-' }}</td>
+    <div class="ttd">
+        <div class="ttd-box">
+            <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
+            <p style="margin-bottom:5px;">( ......................................... )</p>
+            <p>Nama Terang</p>
+        </div>
+    </div>
 
-                            <td class="text-center">{{ $l->pasien->no_rm ?? '-' }}</td>
-                            <td class="text-center">{{ $l->pasien->jenis_kelamin ?? '-' }}</td>
-                            <td>{{ $l->keluhan_utama ?? '-' }}</td>
-                            <td>{{ $l->diagnosa->diagnosa_utama ?? '-' }}</td>
-                            <td>{{ $l->diagnosa->diagnosa_sekunder ?? '-' }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="10" class="text-center py-4 text-gray-400">
-                                Tidak ada data laporan untuk periode ini
-                            </td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
+</div>
 
-                <div class="ttd">
-                    <div class="ttd-box">
-                        <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-                        <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
-                        <p style="margin-bottom:5px;">( ......................................... )</p>
-                        <p>Nama Terang</p>
-                    </div>
-                </div>
+{{-- ===== HALAMAN 2: 10 BESAR PENYAKIT (PERIODE) ===== --}}
+<div id="penyakitPage" class="page-print">
 
-            </div>
+    @include('layouts.kopsurat')
 
-            {{-- ===== HALAMAN 2: 10 BESAR PENYAKIT (PERIODE) ===== --}}
-            <div id="penyakitPage" class="page-print">
+    <div class="judul">10 BESAR PENYAKIT RAWAT JALAN</div>
+    <div class="subjudul">{{ $periode }}</div>
 
-                <div class="kop">
-                    <div class="kop-wrapper">
-                        <div class="kop-logo">
-                            <img src="{{ asset('images/logoRS.jpeg') }}" alt="Logo">
-                        </div>
-                        <div class="kop-text">
-                            <h1>Rumah Sakit Kasih</h1>
-                            <p>Melayani Dengan Kasih, Mengutamakan Kesembuhan</p>
-                            <p>Jl. KH. Ahmad Dahlan No. 25, Jember, Jawa Timur</p>
-                            <p>Telp: (0331) 123456 | Email: rskasihjember@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
+    <table style="max-width:700px; margin: 20px auto;">
+        <thead class="bg-red-600 text-white">
+            <tr>
+                <th style="width:50px;">NO</th>
+                <th style="width:120px;">KODE ICD</th>
+                <th>NAMA PENYAKIT</th>
+                <th style="width:100px;">JUMLAH KASUS</th>
+            </tr>
+        </thead>
+        <tbody>
+        @forelse($topPenyakit as $tp)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td class="text-center"><strong>{{ $tp->kode_icd ?? '-' }}</strong></td>
+                <td>{{ $tp->diagnosa_utama }}</td>
+                <td class="text-center"><strong>{{ $tp->total }}</strong></td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4" class="text-center py-4 text-gray-400">
+                    Tidak ada data penyakit untuk periode ini
+                </td>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
 
-                <div class="judul">10 BESAR PENYAKIT RAWAT JALAN</div>
-                <div class="subjudul">{{ $periode }}</div>
+    <div class="ttd">
+        <div class="ttd-box">
+            <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
+            <p style="margin-bottom:5px;">( ......................................... )</p>
+            <p>Nama Terang</p>
+        </div>
+    </div>
 
-                <table style="max-width:700px; margin: 20px auto;">
-                    <thead class="bg-red-600 text-white">
-                        <tr>
-                            <th style="width:50px;">NO</th>
-                            <th style="width:120px;">KODE ICD</th>
-                            <th>NAMA PENYAKIT</th>
-                            <th style="width:100px;">JUMLAH KASUS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($topPenyakit as $tp)
-                        <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td class="text-center">
-                                <strong>{{ $tp->kode_icd ?? '-' }}</strong>
-                            </td>
-                            <td>{{ $tp->diagnosa_utama }}</td>
-                            <td class="text-center">
-                                <strong>{{ $tp->total }}</strong>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-gray-400">
-                                Tidak ada data penyakit untuk periode ini
-                            </td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
+</div>
 
-                <div class="ttd">
-                    <div class="ttd-box">
-                        <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-                        <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
-                        <p style="margin-bottom:5px;">( ......................................... )</p>
-                        <p>Nama Terang</p>
-                    </div>
-                </div>
+{{-- ===== HALAMAN 3: 10 BESAR PENYAKIT (KESELURUHAN) ===== --}}
+<div id="semuaPenyakitPage" class="page-print">
 
-            </div>
+    @include('layouts.kopsurat')
 
-            {{-- ===== HALAMAN 3: 10 BESAR PENYAKIT (KESELURUHAN) ===== --}}
-            <div id="semuaPenyakitPage" class="page-print">
+    <div class="judul">10 BESAR PENYAKIT PELAPORAN</div>
+    <div class="subjudul">Data Keseluruhan (Semua Periode)</div>
 
-                <div class="kop">
-                    <div class="kop-wrapper">
-                        <div class="kop-logo">
-                            <img src="{{ asset('images/logoRS.jpeg') }}" alt="Logo">
-                        </div>
-                        <div class="kop-text">
-                            <h1>Rumah Sakit Kasih</h1>
-                            <p>Melayani Dengan Kasih, Mengutamakan Kesembuhan</p>
-                            <p>Jl. KH. Ahmad Dahlan No. 25, Jember, Jawa Timur</p>
-                            <p>Telp: (0331) 123456 | Email: rskasihjember@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
+    <table style="max-width:700px; margin: 20px auto;">
+        <thead class="bg-green-600 text-white">
+            <tr>
+                <th style="width:50px;">NO</th>
+                <th style="width:120px;">KODE ICD</th>
+                <th>NAMA PENYAKIT</th>
+                <th style="width:100px;">JUMLAH KASUS</th>
+            </tr>
+        </thead>
+        <tbody>
+        @forelse($topPenyakitKeseluruhan as $sp)
+            <tr>
+                <td class="text-center">{{ $loop->iteration }}</td>
+                <td class="text-center"><strong>{{ $sp->kode_icd ?? '-' }}</strong></td>
+                <td>{{ $sp->diagnosa_utama }}</td>
+                <td class="text-center"><strong>{{ $sp->total }}</strong></td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4" class="text-center py-4 text-gray-400">
+                    Tidak ada data penyakit
+                </td>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
 
-                <div class="judul">10 BESAR PENYAKIT PELAPORAN</div>
-                <div class="subjudul">Data Keseluruhan (Semua Periode)</div>
-
-                <table style="max-width:700px; margin: 20px auto;">
-                    <thead class="bg-green-600 text-white">
-                        <tr>
-                            <th style="width:50px;">NO</th>
-                            <th style="width:120px;">KODE ICD</th>
-                            <th>NAMA PENYAKIT</th>
-                            <th style="width:100px;">JUMLAH KASUS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {{-- ← sekarang pakai $topPenyakitKeseluruhan dari controller, bukan query di view --}}
-                    @forelse($topPenyakitKeseluruhan as $sp)
-                        <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td class="text-center">
-                                <strong>{{ $sp->kode_icd ?? '-' }}</strong>
-                            </td>
-                            <td>{{ $sp->diagnosa_utama }}</td>
-                            <td class="text-center">
-                                <strong>{{ $sp->total }}</strong>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-gray-400">
-                                Tidak ada data penyakit
-                            </td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
-
-                <div class="ttd">
-                    <div class="ttd-box">
-                        <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-                        <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
-                        <p style="margin-bottom:5px;">( ......................................... )</p>
-                        <p>Nama Terang</p>
-                    </div>
-                </div>
-
-            </div>
-
-        </main>
+    <div class="ttd">
+        <div class="ttd-box">
+            <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
+            <p style="margin-bottom:5px;">( ......................................... )</p>
+            <p>Nama Terang</p>
+        </div>
     </div>
 </div>
 
@@ -338,6 +341,19 @@ function printOnly(id) {
         pages.forEach(p => p.style.display = 'block');
     }, 300);
 }
+function togglePrintMenu() {
+    document.getElementById('printDropdown').classList.toggle('hidden');
+}
+
+function closePrintMenu() {
+    document.getElementById('printDropdown').classList.add('hidden');
+}
+
+document.addEventListener('click', function(e) {
+    if (!document.getElementById('printWrapper').contains(e.target)) {
+        closePrintMenu();
+    }
+});
 </script>
 
 </body>
