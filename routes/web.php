@@ -8,6 +8,8 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\DokterDashboardController;
+use App\Http\Controllers\KepalaDashboardController;
 
 /*
 | HALAMAN AWAL
@@ -16,8 +18,8 @@ Route::get('/', function () {
     if (auth()->check()) {
         return match (auth()->user()->role) {
             'petugas' => redirect('/dashboard'),
-            'kepalarm' => redirect('/dashboard-kepalarm'),
-            'dokter' => redirect('/dashboard-dokter'),
+            'kepalarm' => redirect('/dashboardkepalarm'),
+            'dokter' => redirect('/dashboarddokter'),
             default => redirect('/'),
         };
     }
@@ -50,11 +52,13 @@ Route::middleware(['auth', 'role:petugas'])
     ->get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
-Route::middleware(['auth', 'role:kepalarm'])
-    ->get('/dashboard-kepalarm', fn() => view('dashboardkepalarm'));
+Route::middleware(['auth', 'role:dokter'])->group(function () {
+    Route::get('/dashboard-dokter', [DokterDashboardController::class, 'index'])->name('dashboarddokter');
+});
 
-Route::middleware(['auth', 'role:dokter'])
-    ->get('/dashboard-dokter', fn() => view('dashboarddokter'));
+Route::middleware(['auth', 'role:kepalarm'])->group(function () {
+    Route::get('/dashboard-kepalarm', [KepalaDashboardController::class, 'index'])->name('dashboardkepalarm');
+});
 
 /*
 | SUPER ADMIN (is_super_admin = 1)

@@ -1,8 +1,8 @@
 @php
     $dashboardRoute = match(auth()->user()->role) {
         'petugas' => route('dashboard'),
-        'dokter' => route('dashboard.dokter'),
-        'kepalarm' => route('dashboard.kepala'),
+        'dokter' => route('dashboarddokter'),
+        'kepalarm' => route('dashboardkepalarm'),
         default => '/'
     };
 @endphp

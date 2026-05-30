@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Dashboard - Rumah Sakit Kasih</title>
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -21,200 +20,91 @@
 
         {{-- Navbar --}}
         @include('layouts.rsnavigation')
-  </div>
-{{-- Main --}}
-        <main class="p-6">
 
-            {{-- Header --}}
-            <div class="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-3xl p-8 text-white shadow-lg mb-6">
+        {{-- Main --}}
+        <main class="p-6 space-y-6">
 
-                <h1 class="text-4xl font-bold">
-                    Dashboard Kepala Rekam Medis
-                </h1>
-
-                <p class="mt-2 text-indigo-100">
-                    Monitoring data laporan dan aktivitas rumah sakit
-                </p>
-
+            {{-- Header Banner --}}
+            <div class="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-2xl p-8 text-white shadow-sm">
+                <h1 class="text-3xl font-bold">Dashboard Kepala Rekam Medis</h1>
+                <p class="mt-1 text-indigo-200 text-sm">Monitoring data laporan dan aktivitas rumah sakit</p>
             </div>
 
             {{-- Statistik --}}
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-
-                {{-- Total Pasien --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm">
-
-                    <p class="text-gray-500 text-sm">
-                        Total Pasien
-                    </p>
-
-                    <h2 class="text-4xl font-bold text-blue-600 mt-2">
-                        320
-                    </h2>
-
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                    <p class="text-gray-400 text-xs mb-2">Total Pasien</p>
+                    <h2 class="text-3xl font-bold text-indigo-600">{{ number_format($totalPasien) }}</h2>
                 </div>
-
-                {{-- Total Kunjungan --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm">
-
-                    <p class="text-gray-500 text-sm">
-                        Total Kunjungan
-                    </p>
-
-                    <h2 class="text-4xl font-bold text-green-600 mt-2">
-                        1.245
-                    </h2>
-
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                    <p class="text-gray-400 text-xs mb-2">Total Kunjungan</p>
+                    <h2 class="text-3xl font-bold text-emerald-600">{{ number_format($totalKunjungan) }}</h2>
                 </div>
-
-                {{-- Dokter --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm">
-
-                    <p class="text-gray-500 text-sm">
-                        Data Dokter
-                    </p>
-
-                    <h2 class="text-4xl font-bold text-red-500 mt-2">
-                        15
-                    </h2>
-
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                    <p class="text-gray-400 text-xs mb-2">Data Dokter</p>
+                    <h2 class="text-3xl font-bold text-red-500">{{ $totalDokter }}</h2>
                 </div>
-
-                {{-- Petugas --}}
-                <div class="bg-white rounded-2xl p-6 shadow-sm">
-
-                    <p class="text-gray-500 text-sm">
-                        Petugas Aktif
-                    </p>
-
-                    <h2 class="text-4xl font-bold text-purple-600 mt-2">
-                        8
-                    </h2>
-
+                <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                    <p class="text-gray-400 text-xs mb-2">Petugas Aktif</p>
+                    <h2 class="text-3xl font-bold text-purple-600">{{ $totalPetugas }}</h2>
                 </div>
-
             </div>
 
-            {{-- Grafik --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+            {{-- Grafik + Petugas (berdampingan) --}}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
-                <div class="flex justify-between items-center mb-4">
+                {{-- Grafik Bulanan --}}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h2 class="text-base font-semibold text-gray-700">Grafik Laporan Bulanan</h2>
+                    <p class="text-xs text-gray-400 mt-0.5 mb-4">Statistik kunjungan pasien per bulan</p>
+                    <canvas id="kepalaChart" height="160"></canvas>
+                </div>
 
-                    <div>
-                        <h2 class="text-xl font-bold text-gray-700">
-                            Grafik Laporan Bulanan
-                        </h2>
-
-                        <p class="text-sm text-gray-500">
-                            Statistik kunjungan pasien per bulan
-                        </p>
+                {{-- Daftar Petugas --}}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h2 class="text-base font-semibold text-gray-700 mb-4">Daftar Petugas</h2>
+                    <div class="space-y-1">
+                        @forelse($petugasAktif as $p)
+                        <div class="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+                            <div class="flex items-center gap-2.5">
+                                <div class="w-7 h-7 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-semibold text-indigo-700">
+                                    {{ strtoupper(substr($p->name, 0, 2)) }}
+                                </div>
+                                <span class="text-sm text-gray-700">{{ $p->name }}</span>
+                            </div>
+                            <span class="bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full text-xs font-medium">Aktif</span>
+                        </div>
+                        @empty
+                        <p class="text-sm text-gray-400 py-4 text-center">Tidak ada petugas aktif</p>
+                        @endforelse
                     </div>
-
                 </div>
-
-                <canvas id="kepalaChart" height="100"></canvas>
 
             </div>
 
-            {{-- Aktivitas --}}
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {{-- Aktivitas + Status Sistem --}}
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
 
                 {{-- Aktivitas Petugas --}}
-                <div class="bg-white rounded-2xl shadow-sm p-6">
-
-                    <h2 class="text-xl font-bold text-gray-700 mb-4">
-                        Aktivitas Petugas
-                    </h2>
-
-                    <div class="space-y-4">
-
-                        <div class="flex items-center justify-between border-b pb-3">
-
-                            <div>
-                                <p class="font-semibold">
-                                    Admin 1
-                                </p>
-
-                                <p class="text-sm text-gray-500">
-                                    Menambahkan data pasien
-                                </p>
-                            </div>
-
-                            <span class="text-xs text-gray-400">
-                                10 menit lalu
-                            </span>
-
-                        </div>
-
-                        <div class="flex items-center justify-between border-b pb-3">
-
-                            <div>
-                                <p class="font-semibold">
-                                    Admin 2
-                                </p>
-
-                                <p class="text-sm text-gray-500">
-                                    Mengupdate laporan kunjungan
-                                </p>
-                            </div>
-
-                            <span class="text-xs text-gray-400">
-                                30 menit lalu
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
+               
 
                 {{-- Status Sistem --}}
-                <div class="bg-white rounded-2xl shadow-sm p-6">
-
-                    <h2 class="text-xl font-bold text-gray-700 mb-4">
-                        Status Sistem
-                    </h2>
-
-                    <div class="space-y-4">
-
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <h2 class="text-base font-semibold text-gray-700 mb-4">Status Sistem</h2>
+                    <div class="space-y-3">
                         <div class="flex items-center justify-between">
-
-                            <span>
-                                Database
-                            </span>
-
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                                Online
-                            </span>
-
+                            <span class="text-sm text-gray-600">Database</span>
+                            <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-medium">Online</span>
                         </div>
-
                         <div class="flex items-center justify-between">
-
-                            <span>
-                                Server Laravel
-                            </span>
-
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                                Aktif
-                            </span>
-
+                            <span class="text-sm text-gray-600">Server Laravel</span>
+                            <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-medium">Aktif</span>
                         </div>
-
                         <div class="flex items-center justify-between">
-
-                            <span>
-                                Backup Data
-                            </span>
-
-                            <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                                Pending
-                            </span>
-
+                            <span class="text-sm text-gray-600">Backup Data</span>
+                            <span class="bg-yellow-50 text-yellow-700 px-3 py-1 rounded-full text-xs font-medium">Pending</span>
                         </div>
-
                     </div>
-
                 </div>
 
             </div>
@@ -222,48 +112,39 @@
         </main>
 
     </div>
-
 </div>
 
-{{-- Chart --}}
+{{-- Chart Script --}}
 <script>
-
-const ctx = document.getElementById('kepalaChart');
-
-new Chart(ctx, {
-
+new Chart(document.getElementById('kepalaChart'), {
     type: 'bar',
-
     data: {
-
-        labels: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'Mei',
-            'Jun'
-        ],
-
+        labels: {!! json_encode($labelBulan) !!},
         datasets: [{
-
             label: 'Jumlah Kunjungan',
-
-            data: [120, 190, 150, 220, 180, 250],
-
-            borderWidth: 1
-
+            data: {!! json_encode($grafikData) !!},
+            backgroundColor: '#4F46E5',
+            borderRadius: 4,
+            borderSkipped: false,
         }]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: { color: '#f3f4f6' },
+                ticks: { font: { size: 11 }, color: '#9ca3af' }
+            },
+            x: {
+                grid: { display: false },
+                ticks: { font: { size: 11 }, color: '#9ca3af' }
+            }
+        }
     }
-
 });
-
 </script>
 
 </body>
 </html>
-</div>
-
-</body>
-</html>
-Kepala RM

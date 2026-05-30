@@ -41,131 +41,50 @@
 
             </div>
 
-            {{-- Card Statistik --}}
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+           {{-- Card Statistik --}}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white p-6 rounded-2xl shadow-sm">
+        <p class="text-gray-500 text-sm">Pasien Hari Ini</p>
+        <h2 class="text-4xl font-bold text-blue-600 mt-2">{{ $pasienHariIni }}</h2>
+    </div>
+    <div class="bg-white p-6 rounded-2xl shadow-sm">
+        <p class="text-gray-500 text-sm">Diagnosa Hari Ini</p>
+        <h2 class="text-4xl font-bold text-green-600 mt-2">{{ $diagnosaHariIni }}</h2>
+    </div>
+</div>
 
-                {{-- Pasien Hari Ini --}}
-                <div class="bg-white p-6 rounded-2xl shadow-sm">
+{{-- Grafik --}}
+<div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
+    <h2 class="text-xl font-bold text-gray-700 mb-4">Grafik Kunjungan Minggu Ini</h2>
+    <canvas id="dokterChart" height="100"></canvas>
+</div>
 
-                    <p class="text-gray-500 text-sm">
-                        Pasien Hari Ini
-                    </p>
-
-                    <h2 class="text-4xl font-bold text-blue-600 mt-2">
-                        25
-                    </h2>
-
-                </div>
-
-                {{-- Diagnosa --}}
-                <div class="bg-white p-6 rounded-2xl shadow-sm">
-
-                    <p class="text-gray-500 text-sm">
-                        Diagnosa Hari Ini
-                    </p>
-
-                    <h2 class="text-4xl font-bold text-green-600 mt-2">
-                        18
-                    </h2>
-
-                </div>
-
-                {{-- Jadwal --}}
-                <div class="bg-white p-6 rounded-2xl shadow-sm">
-
-                    <p class="text-gray-500 text-sm">
-                        Jadwal Hari Ini
-                    </p>
-
-                    <h2 class="text-2xl font-bold text-red-500 mt-2">
-                        08.00 - 14.00
-                    </h2>
-
-                </div>
-
-            </div>
-
-            {{-- Grafik --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
-
-                <h2 class="text-xl font-bold text-gray-700 mb-4">
-                    Grafik Kunjungan Pasien
-                </h2>
-
-                <canvas id="dokterChart" height="100"></canvas>
-
-            </div>
-
-            {{-- Tabel Pasien --}}
-            <div class="bg-white rounded-2xl shadow-sm p-6">
-
-                <h2 class="text-xl font-bold text-gray-700 mb-4">
-                    Pasien Terbaru
-                </h2>
-
-                <table class="w-full">
-
-                    <thead>
-                        <tr class="border-b">
-
-                            <th class="text-left py-3">
-                                Nama Pasien
-                            </th>
-
-                            <th class="text-left py-3">
-                                Poli
-                            </th>
-
-                            <th class="text-left py-3">
-                                Status
-                            </th>
-
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <tr class="border-b hover:bg-gray-50">
-
-                            <td class="py-3">
-                                Budi Santoso
-                            </td>
-
-                            <td>
-                                Umum
-                            </td>
-
-                            <td>
-                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                                    Selesai
-                                </span>
-                            </td>
-
-                        </tr>
-
-                        <tr class="border-b hover:bg-gray-50">
-
-                            <td class="py-3">
-                                Siti Aminah
-                            </td>
-
-                            <td>
-                                Anak
-                            </td>
-
-                            <td>
-                                <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                                    Menunggu
-                                </span>
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
+{{-- Tabel Pasien Terbaru --}}
+<div class="bg-white rounded-2xl shadow-sm p-6">
+    <h2 class="text-xl font-bold text-gray-700 mb-4">Pasien Terbaru</h2>
+    <table class="w-full">
+        <thead>
+            <tr class="border-b">
+                <th class="text-left py-3">Nama Pasien</th>
+                <th class="text-left py-3">Poli</th>
+                <th class="text-left py-3">Tanggal</th>
+            </tr>
+        </thead>
+        <tbody>
+        @forelse($pasienTerbaru as $k)
+            <tr class="border-b hover:bg-gray-50">
+                <td class="py-3">{{ $k->pasien->nama_pasien ?? '-' }}</td>
+                <td>{{ $k->poli->nama_poli ?? '-' }}</td>
+                <td class="text-sm text-gray-500">
+                    {{ \Carbon\Carbon::parse($k->tanggal_kunjungan)->translatedFormat('d F Y') }}
+                </td>
+            </tr>
+        @empty
+            <tr><td colspan="3" class="text-center py-4 text-gray-400">Belum ada data</td></tr>
+        @endforelse
+        </tbody>
+    </table>
+</div>
 
         </main>
 
@@ -175,40 +94,19 @@
 
 {{-- Chart --}}
 <script>
-
-const ctx = document.getElementById('dokterChart');
-
-new Chart(ctx, {
-
+new Chart(document.getElementById('dokterChart'), {
     type: 'line',
-
     data: {
-
-        labels: [
-            'Sen',
-            'Sel',
-            'Rab',
-            'Kam',
-            'Jum',
-            'Sab',
-            'Min'
-        ],
-
+        labels: {!! json_encode($labelHari) !!},
         datasets: [{
-
             label: 'Jumlah Pasien',
-
-            data: [12, 19, 10, 15, 20, 14, 8],
-
+            data: {!! json_encode($grafikData) !!},
             borderWidth: 3,
             tension: 0.4,
             fill: true
-
         }]
     }
-
 });
-
 </script>
 
 </body>
