@@ -29,7 +29,8 @@
         <main class="p-6">
 
             {{-- Header --}}
-            <div class="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl p-8 text-white shadow-lg mb-6">
+            <div class="rounded-2xl p-8 text-white shadow-sm mb-6"
+                 style="background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%)">
 
                 <h1 class="text-4xl font-bold">
                     Dashboard Dokter

@@ -4,56 +4,40 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
+    <title>{{ config('app.name', 'Rumah Sakit Kasih') }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Scripts -->
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet"/>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        /* Fade ringan saat halaman pertama kali muncul — tidak ada lompatan */
+        .page-fade { animation: pageFade 0.25s ease both; }
+        @keyframes pageFade {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+    </style>
 </head>
 
 <body class="font-sans antialiased bg-gray-100">
-
 <div class="flex min-h-screen">
 
-    <!-- Sidebar -->
     @include('layouts.sidebar')
 
-    <!-- Content Area -->
-    <div class="flex-1">
-
-        <!-- Top Navigation -->
+    <div class="flex-1 ml-64 flex flex-col">
         @include('layouts.rsnavigation')
 
-        <!-- Page Heading -->
         @isset($header)
-            <header class="bg-white shadow">
-                <div class="px-6 py-6">
-                    {{ $header }}
-                </div>
+            <header class="bg-white shadow px-6 py-5">
+                {{ $header }}
             </header>
         @endisset
 
-        <!-- Page Content -->
-        <main class="ml-64 p-6">
-            <div x-data="{ show: false }"
-                x-init="setTimeout(() => show = true, 50)"
-                x-show="show"
-                x-transition:enter="transition ease-out duration-500"
-                x-transition:enter-start="opacity-0 translate-y-10"
-                x-transition:enter-end="opacity-100 translate-y-0">
-
-                @yield('content')
-
-            </div>
+        {{-- ← hapus x-data/x-show/x-transition Alpine — ganti CSS fade biasa --}}
+        <main class="p-6 page-fade">
+            @yield('content')
         </main>
-
     </div>
 
 </div>
-
 </body>
 </html>

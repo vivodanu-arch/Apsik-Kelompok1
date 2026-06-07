@@ -18,9 +18,10 @@
         <main class="p-6">
 
             {{-- Header --}}
-            <div class="bg-blue-700 rounded-2xl p-6 mb-6 shadow-sm">
-                <h1 class="text-3xl font-bold text-white uppercase">Data Kunjungan</h1>
-                <p class="text-blue-100 mt-2">Daftar data kunjungan pasien Rumah Sakit Kasih</p>
+            <div class="rounded-2xl p-8 mb-6 text-white shadow-sm"
+                 style="background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);">
+                <h1 class="text-3xl font-bold">Data Kunjungan</h1>
+                <p class="mt-2 text-blue-200 text-sm">Daftar data kunjungan pasien Rumah Sakit Kasih</p>
             </div>
 
             {{-- Card Table --}}

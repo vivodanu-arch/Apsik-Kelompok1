@@ -18,10 +18,11 @@
 
         <main class="p-6">
 
-            {{-- Header --}}
-            <div class="bg-white rounded-2xl shadow-sm p-8 mb-6">
-                <h1 class="text-3xl font-bold text-gray-800">Dashboard</h1>
-                <p class="text-gray-500 mt-2">Selamat datang di Sistem Pelaporan Rekam Medis Rumah Sakit Kasih.</p>
+            {{-- ── Header — gradient sama dengan dashboarddokter & kepalarm ── --}}
+            <div class="rounded-2xl p-8 mb-6 text-white shadow-sm"
+                 style="background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);">
+                <h1 class="text-3xl font-bold">Dashboard</h1>
+                <p class="mt-2 text-blue-200 text-sm">Selamat datang di Sistem Pelaporan Rekam Medis Rumah Sakit Kasih.</p>
             </div>
 
             {{-- Kartu Statistik --}}
@@ -71,64 +72,38 @@
             {{-- Grafik 2 kolom --}}
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-                {{-- ============================================
-                     GRAFIK 1: 10 Besar Penyakit (toggle pie/bar)
-                     ============================================ --}}
+                {{-- 10 Besar Penyakit --}}
                 <div class="bg-white rounded-2xl shadow-sm p-5">
-
-                    {{-- Header + Toggle --}}
                     <div class="flex items-center justify-between mb-4">
                         <div>
                             <h2 class="text-lg font-bold text-gray-800">10 Besar Penyakit</h2>
                             <p class="text-xs text-gray-400 mt-0.5">Berdasarkan jumlah diagnosa</p>
                         </div>
                         <div class="flex items-center gap-1 bg-gray-100 p-1 rounded-xl">
-                            <button id="btnBar"
-                                    onclick="switchChart('bar')"
-                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition
-                                           bg-blue-600 text-white shadow">
-                                {{-- Bar icon --}}
-                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <rect x="1" y="10" width="3" height="9" rx="1"/>
-                                    <rect x="6" y="6"  width="3" height="13" rx="1"/>
-                                    <rect x="11" y="3" width="3" height="16" rx="1"/>
-                                    <rect x="16" y="7" width="3" height="12" rx="1"/>
-                                </svg>
+                            <button id="btnBar" onclick="switchChart('bar')"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-blue-600 text-white shadow">
                                 Batang
                             </button>
-                            <button id="btnPie"
-                                    onclick="switchChart('pie')"
-                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition
-                                           text-gray-500 hover:bg-white">
-                                {{-- Pie icon --}}
-                                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm0 2v6h6a6 6 0 01-6 6V4z"/>
-                                </svg>
+                            <button id="btnPie" onclick="switchChart('pie')"
+                                    class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition text-gray-500 hover:bg-white">
                                 Pie
                             </button>
                         </div>
                     </div>
-
                     <div class="relative" style="height:340px;">
                         <canvas id="penyakitChart"></canvas>
                     </div>
-
                 </div>
 
-                {{-- ============================================
-                     GRAFIK 2: 10 Besar Dokter (bar horizontal)
-                     ============================================ --}}
+                {{-- 10 Besar Dokter --}}
                 <div class="bg-white rounded-2xl shadow-sm p-5">
-
                     <div class="mb-4">
                         <h2 class="text-lg font-bold text-gray-800">10 Besar Dokter</h2>
                         <p class="text-xs text-gray-400 mt-0.5">Berdasarkan jumlah pasien yang ditangani</p>
                     </div>
-
                     <div class="relative" style="height:340px;">
                         <canvas id="dokterChart"></canvas>
                     </div>
-
                 </div>
 
             </div>
@@ -138,83 +113,33 @@
 </div>
 
 @php
-    $penyakitLabels = $topPenyakit->map(fn($p) => $p->diagnosa_utama)->toArray();
-    $penyakitData   = $topPenyakit->pluck('total')->toArray();
-    $dokterLabels   = $topDokter->map(fn($d) => $d->nama_dokter)->toArray();
-    $dokterData     = $topDokter->pluck('total_pasien')->toArray();
-    $dokterSpesialis= $topDokter->map(fn($d) => $d->spesialis)->toArray();
-
-    $warna10 = ['#2563eb','#16a34a','#dc2626','#ca8a04','#9333ea',
-                '#0891b2','#ea580c','#4f46e5','#db2777','#059669'];
+    $penyakitLabels  = $topPenyakit->map(fn($p) => $p->diagnosa_utama)->toArray();
+    $penyakitData    = $topPenyakit->pluck('total')->toArray();
+    $dokterLabels    = $topDokter->map(fn($d) => $d->nama_dokter)->toArray();
+    $dokterData      = $topDokter->pluck('total_pasien')->toArray();
+    $dokterSpesialis = $topDokter->map(fn($d) => $d->spesialis)->toArray();
+    $warna10 = ['#2563eb','#16a34a','#dc2626','#ca8a04','#9333ea','#0891b2','#ea580c','#4f46e5','#db2777','#059669'];
 @endphp
 
 <script>
-// ─── Data dari Laravel ───────────────────────────────────────────
-const penyakitLabels   = @json($penyakitLabels);
-const penyakitData     = @json($penyakitData);
-const dokterLabels     = @json($dokterLabels);
-const dokterData       = @json($dokterData);
-const dokterSpesialis  = @json($dokterSpesialis);
-const warna10          = @json($warna10);
+const penyakitLabels  = @json($penyakitLabels);
+const penyakitData    = @json($penyakitData);
+const dokterLabels    = @json($dokterLabels);
+const dokterData      = @json($dokterData);
+const dokterSpesialis = @json($dokterSpesialis);
+const warna10         = @json($warna10);
 
-// ─── Grafik Penyakit (toggle bar/pie) ───────────────────────────
 const penyakitCtx = document.getElementById('penyakitChart').getContext('2d');
 
 const barConfig = {
     type: 'bar',
-    data: {
-        labels: penyakitLabels,
-        datasets: [{
-            label: 'Jumlah Kasus',
-            data: penyakitData,
-            backgroundColor: warna10,
-            borderRadius: 6,
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { display: false },
-            tooltip: {
-                callbacks: {
-                    label: ctx => ' ' + ctx.parsed.y + ' kasus'
-                }
-            }
-        },
-        scales: {
-            x: { ticks: { font: { size: 9 }, maxRotation: 30 } },
-            y: { beginAtZero: true, ticks: { precision: 0 } }
-        }
-    }
+    data: { labels: penyakitLabels, datasets: [{ label: 'Jumlah Kasus', data: penyakitData, backgroundColor: warna10, borderRadius: 6 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { ticks: { font: { size: 9 }, maxRotation: 30 } }, y: { beginAtZero: true, ticks: { precision: 0 } } } }
 };
-
 const pieConfig = {
     type: 'pie',
-    data: {
-        labels: penyakitLabels,
-        datasets: [{
-            data: penyakitData,
-            backgroundColor: warna10,
-            borderWidth: 2,
-            borderColor: '#fff',
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                position: 'right',
-                labels: { font: { size: 10 }, padding: 10, boxWidth: 12 }
-            },
-            tooltip: {
-                callbacks: {
-                    label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + ' kasus'
-                }
-            }
-        }
-    }
+    data: { labels: penyakitLabels, datasets: [{ data: penyakitData, backgroundColor: warna10, borderWidth: 2, borderColor: '#fff' }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { font: { size: 10 }, padding: 10, boxWidth: 12 } } } }
 };
 
 let penyakitChart = new Chart(penyakitCtx, barConfig);
@@ -225,8 +150,6 @@ function switchChart(type) {
     currentType = type;
     penyakitChart.destroy();
     penyakitChart = new Chart(penyakitCtx, type === 'bar' ? barConfig : pieConfig);
-
-    // Update tombol aktif
     document.getElementById('btnBar').className = (type === 'bar')
         ? 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition bg-blue-600 text-white shadow'
         : 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition text-gray-500 hover:bg-white';
@@ -235,39 +158,15 @@ function switchChart(type) {
         : 'flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition text-gray-500 hover:bg-white';
 }
 
-// ─── Grafik Dokter (bar horizontal) ─────────────────────────────
-const dokterCtx = document.getElementById('dokterChart').getContext('2d');
-
-new Chart(dokterCtx, {
+new Chart(document.getElementById('dokterChart').getContext('2d'), {
     type: 'bar',
-    data: {
-        labels: dokterLabels,
-        datasets: [{
-            label: 'Jumlah Pasien',
-            data: dokterData,
-            backgroundColor: warna10,
-            borderRadius: 6,
-        }]
-    },
+    data: { labels: dokterLabels, datasets: [{ label: 'Jumlah Pasien', data: dokterData, backgroundColor: warna10, borderRadius: 6 }] },
     options: {
-        indexAxis: 'y',   // ← horizontal bar
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: { display: false },
-            tooltip: {
-                callbacks: {
-                    afterLabel: (ctx) => 'Spesialis: ' + dokterSpesialis[ctx.dataIndex]
-                }
-            }
-        },
-        scales: {
-            x: { beginAtZero: true, ticks: { precision: 0 } },
-            y: { ticks: { font: { size: 10 } } }
-        }
+        indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { afterLabel: ctx => 'Spesialis: ' + dokterSpesialis[ctx.dataIndex] } } },
+        scales: { x: { beginAtZero: true, ticks: { precision: 0 } }, y: { ticks: { font: { size: 10 } } } }
     }
 });
 </script>
-
 </body>
 </html>

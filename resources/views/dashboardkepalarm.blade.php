@@ -25,7 +25,8 @@
         <main class="p-6 space-y-6">
 
             {{-- Header Banner --}}
-            <div class="bg-gradient-to-r from-indigo-600 to-blue-700 rounded-2xl p-8 text-white shadow-sm">
+            <div class="rounded-2xl p-8 text-white shadow-sm"
+                 style="background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%)">
                 <h1 class="text-3xl font-bold">Dashboard Kepala Rekam Medis</h1>
                 <p class="mt-1 text-indigo-200 text-sm">Monitoring data laporan dan aktivitas rumah sakit</p>
             </div>
