@@ -116,6 +116,14 @@ if ($dari && $sampai) {
             width: 100%;
             max-width: 1300px;
         }
+        /* ===== REPORT VIEW ===== */
+        .report-page {
+            display: none;
+        }
+
+        .report-page.active {
+            display: block;
+        }
 
         /* ===== TTD ===== */
         .ttd { margin-top: 60px; display: flex; justify-content: flex-end; padding-right: 40px; }
@@ -125,6 +133,24 @@ if ($dari && $sampai) {
         @page { size: A4 landscape; margin: 15mm; }
 
         @media print {
+            .no-print {
+                display: none !important;
+            }
+
+            .report-page {
+                display: none !important;
+            }
+
+            .report-page.active {
+                display: block !important;
+            }
+            .report-page {
+                display: none !important;
+            }
+
+            .report-page.active {
+                display: block !important;
+            }
             html, body {
                 background: white !important;
                 margin: 0 !important;
@@ -208,41 +234,99 @@ if ($dari && $sampai) {
             </div>
 
             {{-- TOMBOL PRINT (DROPDOWN) --}}
-            <div class="flex justify-center mb-6 no-print">
-                <div class="relative inline-block" id="printWrapper">
-                    <button onclick="togglePrintMenu()"
-                            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
-                        🖨 Print Laporan
-                        <span class="border-l border-white/40 pl-2 ml-1" id="printChevron">▾</span>
+            <div class="flex justify-center gap-3 mb-6 no-print">
+
+                <div class="relative inline-block" >
+
+                    <button
+                        type="button"
+                        onclick="togglePrintMenu()"
+                        class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
+                        Pilih Laporan
+                        <span class="border-l border-white/40 pl-2 ml-1">▾</span>
                     </button>
+
                     <div id="printDropdown"
-                         class="hidden absolute left-0 mt-1 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
-                        <button onclick="printOnly('laporanPage'); closePrintMenu()"
-                                class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
-                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                        class="hidden absolute left-0 mt-1 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+
+                        <button
+                            type="button"
+                            onclick="showPage('laporanPage')"
+                            class="w-full text-left px-4 py-3 hover:bg-gray-50 border-b">
                             Laporan Kunjungan
                         </button>
-                        <button onclick="printOnly('penyakitPage'); closePrintMenu()"
-                                class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
-                            <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
+
+                        <button
+                            type="button"
+                            onclick="showPage('penyakitPage')"
+                            class="w-full text-left px-4 py-3 hover:bg-gray-50 border-b">
                             10 Besar (Periode)
                         </button>
-                        <button onclick="printOnly('semuaPenyakitPage'); closePrintMenu()"
-                                class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
-                            <span class="w-2.5 h-2.5 rounded-full bg-green-600 inline-block"></span>
+
+                        <button
+                            type="button"
+                            onclick="showPage('semuaPenyakitPage')"
+                            class="w-full text-left px-4 py-3 hover:bg-gray-50">
                             10 Besar (Keseluruhan)
                         </button>
-                        <button onclick="window.print(); closePrintMenu()"
-                                class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50">
-                            <span class="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block"></span>
-                            Semua Data
-                        </button>
+
                     </div>
                 </div>
+
+                <button
+                    type="button"
+                    onclick="window.print()"
+                    class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
+                    🖨 Cetak
+                </button>
+
+            </div>
+            <!-- Dropdown Pilih Laporan -->
+            <div class="relative inline-block" id="printWrapper">
+
+                    <button type="button"
+                            onclick="togglePrintMenu()"
+                            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
+                        Pilih Laporan
+                        <span id="printChevron">▾</span>
+                    </button>
+
+                    <div id="printDropdown"
+                        class="hidden absolute left-0 mt-1 w-56 bg-white border rounded-xl shadow-lg z-50">
+
+                        <button type="button"
+                                onclick="showPage('laporanPage')"
+                                class="w-full text-left px-4 py-3 hover:bg-gray-50">
+                            Laporan Kunjungan
+                        </button>
+
+                        <button type="button"
+                                onclick="showPage('penyakitPage')"
+                                class="w-full text-left px-4 py-3 hover:bg-gray-50">
+                            10 Besar (Periode)
+                        </button>
+
+                        <button type="button"
+                                onclick="showPage('semuaPenyakitPage')"
+                                class="w-full text-left px-4 py-3 hover:bg-gray-50">
+                            10 Besar (Keseluruhan)
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- Tombol Cetak -->
+                <button type="button"
+                        onclick="window.print()"
+                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
+                    🖨 Cetak
+                </button>
+
             </div>
 
             {{-- ===== HALAMAN 1: LAPORAN KUNJUNGAN ===== --}}
-            <div id="laporanPage" class="page-print">
+     
+            <div id="laporanPage" class="page-print report-page active">
                 <table>
                     <thead>
                         <tr>
@@ -302,7 +386,7 @@ if ($dari && $sampai) {
             </div>
 
             {{-- ===== HALAMAN 2: 10 BESAR PENYAKIT (PERIODE) ===== --}}
-            <div id="penyakitPage" class="page-print">
+            <div id="penyakitPage" class="page-print report-page">
                 <table style="max-width:700px; margin:0 auto;">
                     <thead>
                         <tr>
@@ -348,7 +432,7 @@ if ($dari && $sampai) {
             </div>
 
             {{-- ===== HALAMAN 3: 10 BESAR PENYAKIT (KESELURUHAN) ===== --}}
-            <div id="semuaPenyakitPage" class="page-print">
+            <div id="semuaPenyakitPage" class="page-print report-page">
                 <table style="max-width:700px; margin:0 auto;">
                     <thead>
                         <tr>
@@ -398,26 +482,41 @@ if ($dari && $sampai) {
 </div>
 
 <script>
-function printOnly(id) {
-    const pages = document.querySelectorAll('.page-print');
-    pages.forEach(p => p.style.display = 'none');
-    document.getElementById(id).style.display = 'block';
-    setTimeout(() => {
-        window.print();
-        pages.forEach(p => p.style.display = 'block');
-    }, 300);
+function showPage(id)
+{
+    document
+        .querySelectorAll('.report-page')
+        .forEach(page => {
+            page.classList.remove('active');
+        });
+
+    document
+        .getElementById(id)
+        .classList.add('active');
+
+    closePrintMenu();
 }
 
-function togglePrintMenu() {
-    document.getElementById('printDropdown').classList.toggle('hidden');
+function togglePrintMenu()
+{
+    document
+        .getElementById('printDropdown')
+        .classList.toggle('hidden');
 }
 
-function closePrintMenu() {
-    document.getElementById('printDropdown').classList.add('hidden');
+function closePrintMenu()
+{
+    document
+        .getElementById('printDropdown')
+        .classList.add('hidden');
 }
 
-document.addEventListener('click', function(e) {
-    if (!document.getElementById('printWrapper').contains(e.target)) {
+document.addEventListener('click', function(e)
+{
+    const wrapper = document.getElementById('printWrapper');
+
+    if (wrapper && !wrapper.contains(e.target))
+    {
         closePrintMenu();
     }
 });
