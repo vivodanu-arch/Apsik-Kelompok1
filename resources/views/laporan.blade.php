@@ -163,10 +163,6 @@ if ($dari && $sampai) {
                                 class="w-full text-left px-4 py-3 hover:bg-gray-50 border-b">
                             Laporan Kunjungan
                         </button>
-                        <button type="button" onclick="showPage('penyakitPage')"
-                                class="w-full text-left px-4 py-3 hover:bg-gray-50 border-b">
-                            10 Besar (Periode)
-                        </button>
                         <button type="button" onclick="showPage('semuaPenyakitPage')"
                                 class="w-full text-left px-4 py-3 hover:bg-gray-50 border-b">
                             10 Besar (Keseluruhan)
@@ -235,52 +231,6 @@ if ($dari && $sampai) {
                         <tr>
                             <td colspan="10" class="text-center py-4 text-gray-400">
                                 Tidak ada data laporan untuk periode ini
-                            </td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
-
-                <div class="ttd">
-                    <div class="ttd-box">
-                        <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-                        <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
-                        <p style="margin-bottom:5px;">( ......................................... )</p>
-                        <p>Nama Terang</p>
-                    </div>
-                </div>
-            </div>
-
-            {{-- ===== HALAMAN 2: 10 BESAR PENYAKIT (PERIODE) ===== --}}
-            <div id="penyakitPage" class="page-print report-page">
-                <table style="max-width:700px; margin:0 auto;">
-                    <thead>
-                        <tr>
-                            <th colspan="4" style="border:none; padding:0 0 4px 0; background:white;">
-                                @include('layouts.kopsurat')
-                                <div class="judul">10 BESAR PENYAKIT RAWAT JALAN</div>
-                                <div class="subjudul">{{ $periode }}</div>
-                            </th>
-                        </tr>
-                        <tr class="bg-red-600 text-white">
-                            <th style="width:50px;">NO</th>
-                            <th style="width:120px;">KODE ICD</th>
-                            <th>NAMA PENYAKIT</th>
-                            <th style="width:100px;">JUMLAH KASUS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($topPenyakit as $tp)
-                        <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td class="text-center"><strong>{{ $tp->kode_icd ?? '-' }}</strong></td>
-                            <td>{{ $tp->diagnosa_utama }}</td>
-                            <td class="text-center"><strong>{{ $tp->total }}</strong></td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-gray-400">
-                                Tidak ada data penyakit untuk periode ini
                             </td>
                         </tr>
                     @endforelse
