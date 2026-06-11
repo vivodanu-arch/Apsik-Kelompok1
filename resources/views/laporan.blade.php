@@ -236,7 +236,7 @@ if ($dari && $sampai) {
             {{-- TOMBOL PRINT (DROPDOWN) --}}
             <div class="flex justify-center gap-3 mb-6 no-print">
 
-                <div class="relative inline-block" >
+                <div class="relative inline-block" id="printWrapper">
 
                     <button
                         type="button"
@@ -277,48 +277,6 @@ if ($dari && $sampai) {
                     type="button"
                     onclick="window.print()"
                     class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
-                    🖨 Cetak
-                </button>
-
-            </div>
-            <!-- Dropdown Pilih Laporan -->
-            <div class="relative inline-block" id="printWrapper">
-
-                    <button type="button"
-                            onclick="togglePrintMenu()"
-                            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
-                        Pilih Laporan
-                        <span id="printChevron">▾</span>
-                    </button>
-
-                    <div id="printDropdown"
-                        class="hidden absolute left-0 mt-1 w-56 bg-white border rounded-xl shadow-lg z-50">
-
-                        <button type="button"
-                                onclick="showPage('laporanPage')"
-                                class="w-full text-left px-4 py-3 hover:bg-gray-50">
-                            Laporan Kunjungan
-                        </button>
-
-                        <button type="button"
-                                onclick="showPage('penyakitPage')"
-                                class="w-full text-left px-4 py-3 hover:bg-gray-50">
-                            10 Besar (Periode)
-                        </button>
-
-                        <button type="button"
-                                onclick="showPage('semuaPenyakitPage')"
-                                class="w-full text-left px-4 py-3 hover:bg-gray-50">
-                            10 Besar (Keseluruhan)
-                        </button>
-
-                    </div>
-                </div>
-
-                <!-- Tombol Cetak -->
-                <button type="button"
-                        onclick="window.print()"
-                        class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
                     🖨 Cetak
                 </button>
 
