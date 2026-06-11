@@ -59,7 +59,7 @@
                         <div class="flex flex-col gap-1">
                             <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Status</label>
                             <select name="status"
-                                    class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-36">
                                 <option value="">Semua Status</option>
                                 <option value="menunggu"  {{ request('status') == 'menunggu'  ? 'selected' : '' }}>Menunggu</option>
                                 <option value="diperiksa" {{ request('status') == 'diperiksa' ? 'selected' : '' }}>Diperiksa</option>
