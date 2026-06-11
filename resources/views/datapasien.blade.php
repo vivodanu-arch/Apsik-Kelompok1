@@ -17,22 +17,77 @@
 
         <main class="p-6">
 
-            {{-- Notifikasi --}}
-            @foreach (['success', 'error'] as $msg)
-                @if(session($msg))
-                    <div id="alertBox"
-                         class="mb-4 px-4 py-3 rounded-xl border transition-opacity duration-500
-                         {{ $msg == 'success' ? 'bg-green-100 text-green-700 border-green-400' : 'bg-red-100 text-red-700 border-red-400' }}">
-                        {{ session($msg) }}
+           {{--Notifikasi --}}   
+        @if(session('success'))
+        <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px] z-[9999]">
+
+            <div id="successCard"
+                     class="bg-white rounded-3xl shadow-xl p-8 w-[400px] max-w-[90%] text-center transition-all duration-300">
+
+                <div class="mx-auto w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center text-white text-4xl font-bold shadow-md">
+                    ✓
+                </div>
+
+                <h2 class="text-3xl font-bold mt-5 text-gray-800">
+                    Perubahan Berhasil
+                </h2>
+
+                <p class="text-gray-500 mt-2">
+                    {{ session('success') }}
+                </p>
+
+                <div class="mt-6 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div id="progressBar"
+                        class="h-full bg-green-500 rounded-full">
                     </div>
-                @endif
-            @endforeach
-            <script>
+                </div>
+
+            </div>
+
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const modal = document.getElementById('successModal');
+            const progress = document.getElementById('progressBar');
+            const card = document.getElementById('successCard');
+            
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 120);
+            progress.animate(
+                [
+                    { width: '100%' },
+                    { width: '0%' }
+                ],
+                {
+                    duration: 1500,
+                    fill: 'forwards'
+                }
+            );
+
+            setTimeout(() => {
+
+                modal.style.transition = 'all .2s ease';
+                modal.style.opacity = '0';
+
+                const card = document.getElementById('successCard');
+                card.style.transform = 'scale(.8)';
+
                 setTimeout(() => {
-                    const el = document.getElementById('alertBox');
-                    if (el) { el.style.opacity = '0'; setTimeout(() => el.remove(), 500); }
-                }, 2500);
-            </script>
+                    modal.remove();
+                }, 400);
+
+            }, 1500);
+
+        });
+        </script>
+        @endif
 
             {{-- Header --}}
             <div class="rounded-2xl p-8 mb-6 text-white shadow-sm"

@@ -37,7 +37,7 @@
             {{-- Form Card --}}
             <div class="bg-white rounded-2xl shadow-sm p-6 max-w-3xl">
 
-                <form action="{{ route('pasien.update', $pasien->id) }}" method="POST">
+                <form id="editPasienForm" action="{{ route('pasien.update', $pasien->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -87,7 +87,8 @@
                     </div>
 
                     <div class="mt-6 flex gap-3">
-                        <button type="submit"
+                       <button type="button"
+                            onclick="openConfirmModal()"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
                             Simpan Perubahan
                         </button>
@@ -107,6 +108,70 @@
     </div>
 
 </div>
+    <!-- Modal Konfirmasi -->
+    <div id="confirmModal"
+        class="hidden fixed inset-0 bg-black/20 flex items-center justify-center z-[9999]">
 
+        <div class="bg-white rounded-2xl shadow-xl w-[420px] max-w-[90%] p-6">
+
+            <div class="flex items-center gap-3 mb-4">
+
+                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 h-6 text-blue-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-lg text-gray-800">
+                        Simpan Perubahan?
+                    </h3>
+
+                    <p class="text-sm text-gray-500">
+                        Data pasien akan diperbarui.
+                    </p>
+                </div>
+
+            </div>
+
+            <div class="border-t pt-4 flex justify-end gap-3">
+
+                <button type="button"
+                        onclick="closeConfirmModal()"
+                        class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700">
+                    Batal
+                </button>
+
+                <button type="button"
+                        onclick="submitEditForm()"
+                        class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white">
+                    Ya, Simpan
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+<script>
+function openConfirmModal() {
+    document.getElementById('confirmModal').classList.remove('hidden');
+}
+
+function closeConfirmModal() {
+    document.getElementById('confirmModal').classList.add('hidden');
+}
+
+function submitEditForm() {
+    document.getElementById('editPasienForm').submit();
+}
+</script>
 </body>
 </html>
