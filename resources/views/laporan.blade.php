@@ -207,40 +207,61 @@ if ($dari && $sampai) {
                 </form>
             </div>
 
-            {{-- TOMBOL PRINT (DROPDOWN) --}}
-            <div class="flex justify-center mb-6 no-print">
-                <div class="relative inline-block" id="printWrapper">
-                    <button onclick="togglePrintMenu()"
-                            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
-                        🖨 Print Laporan
-                        <span class="border-l border-white/40 pl-2 ml-1" id="printChevron">▾</span>
-                    </button>
-                    <div id="printDropdown"
-                         class="hidden absolute left-0 mt-1 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
-                        <button onclick="printOnly('laporanPage'); closePrintMenu()"
-                                class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
-                            <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
-                            Laporan Kunjungan
-                        </button>
-                        <button onclick="printOnly('penyakitPage'); closePrintMenu()"
-                                class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
-                            <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
-                            10 Besar (Periode)
-                        </button>
-                        <button onclick="printOnly('semuaPenyakitPage'); closePrintMenu()"
-                                class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
-                            <span class="w-2.5 h-2.5 rounded-full bg-green-600 inline-block"></span>
-                            10 Besar (Keseluruhan)
-                        </button>
-                        <button onclick="window.print(); closePrintMenu()"
-                                class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50">
-                            <span class="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block"></span>
-                            Semua Data
-                        </button>
-                    </div>
-                </div>
-            </div>
+           {{-- TOMBOL PRINT (DROPDOWN) --}}
+<div class="flex justify-center mb-6 no-print">
+    <div class="relative inline-block" id="printWrapper">
+        <button onclick="togglePrintMenu()"
+                class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl shadow text-sm font-semibold">
+            🖨 Print Laporan
+            <span class="border-l border-white/40 pl-2 ml-1" id="printChevron">▾</span>
+        </button>
+        <div id="printDropdown"
+             class="hidden absolute left-0 mt-1 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+            <button onclick="printOnly('laporanPage'); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                Laporan Kunjungan
+            </button>
+            <button onclick="printOnly('penyakitPage'); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-600 inline-block"></span>
+                10 Besar (Periode)
+            </button>
+            <button onclick="printOnly('semuaPenyakitPage'); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+                <span class="w-2.5 h-2.5 rounded-full bg-green-600 inline-block"></span>
+                10 Besar (Keseluruhan)
+            </button>
 
+            {{-- RL 5.1 --}}
+<button onclick="printOnly('rl51Page'); closePrintMenu()"
+        class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+    <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 inline-block"></span>
+    RL 5.1 – Morbiditas
+</button>
+
+            {{-- RL 5.2 --}}
+            <button onclick="printOnly('rl52Page'); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+                <span class="w-2.5 h-2.5 rounded-full bg-purple-600 inline-block"></span>
+                RL 5.2 – Kasus Baru
+            </button>
+
+            {{-- RL 5.3 --}}
+            <button onclick="printOnly('rl53Page'); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50 border-b border-gray-100">
+                <span class="w-2.5 h-2.5 rounded-full bg-pink-500 inline-block"></span>
+                RL 5.3 – Kunjungan
+            </button>
+
+            <button onclick="window.print(); closePrintMenu()"
+                    class="flex items-center gap-3 w-full text-left px-4 py-3 text-sm hover:bg-gray-50">
+                <span class="w-2.5 h-2.5 rounded-full bg-orange-500 inline-block"></span>
+                Semua Data
+            </button>
+        </div>
+    </div>
+</div>
             {{-- ===== HALAMAN 1: LAPORAN KUNJUNGAN ===== --}}
             <div id="laporanPage" class="page-print">
                 <table>
@@ -301,7 +322,278 @@ if ($dari && $sampai) {
                 </div>
             </div>
 
-            {{-- ===== HALAMAN 2: 10 BESAR PENYAKIT (PERIODE) ===== --}}
+            {{-- ===== HALAMAN 2: RL 5.2 - 10 BESAR KASUS BARU PENYAKIT RAWAT JALAN ===== --}}
+<div id="rl52Page" class="page-print">
+    <table>
+        <thead>
+            <tr>
+                <th colspan="4" style="border:none; padding:0 0 4px 0; background:white;">
+                    @include('layouts.kopsurat')
+                    <div class="judul">FORMULIR RL 5.2</div>
+                    <div class="subjudul">10 BESAR KASUS BARU PENYAKIT RAWAT JALAN</div>
+                    <div class="subjudul">{{ $periode }}</div>
+                </th>
+            </tr>
+            <tr class="bg-blue-600 text-white">
+                <th>NO</th>
+                <th>NAMA PENYAKIT / DIAGNOSA</th>
+                <th>KODE ICD-10</th>
+                <th>JUMLAH KASUS BARU</th>
+            </tr>
+        </thead>
+        <tbody>
+        @php
+            // Kasus baru = pasien unik per diagnosa utama
+            $kasusBaru = $laporans
+                ->whereNotNull('diagnosa')
+                ->whereNotNull('diagnosa.diagnosa_utama')
+                ->groupBy(fn($l) => $l->diagnosa->diagnosa_utama)
+                ->map(fn($group) => [
+                    'diagnosa'  => $group->first()->diagnosa->diagnosa_utama,
+                    'kode_icd'  => $group->first()->diagnosa->kode_icd ?? '-',
+                    'jumlah'    => $group->pluck('pasien.no_rm')->unique()->count(),
+                ])
+                ->sortByDesc('jumlah')
+                ->take(10)
+                ->values();
+        @endphp
+
+        @forelse($kasusBaru as $index => $item)
+            <tr>
+                <td class="text-center">{{ $index + 1 }}</td>
+                <td>{{ $item['diagnosa'] }}</td>
+                <td class="text-center">{{ $item['kode_icd'] }}</td>
+                <td class="text-center">{{ $item['jumlah'] }}</td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4" class="text-center py-4 text-gray-400">
+                    Tidak ada data untuk periode ini
+                </td>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
+
+    <div class="ttd">
+        <div class="ttd-box">
+            <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
+            <p style="margin-bottom:5px;">( ......................................... )</p>
+            <p>Nama Terang</p>
+        </div>
+    </div>
+</div>
+
+{{-- ===== HALAMAN 3: RL 5.3 - 10 BESAR KUNJUNGAN PENYAKIT RAWAT JALAN ===== --}}
+<div id="rl53Page" class="page-print">
+    <table>
+        <thead>
+            <tr>
+                <th colspan="4" style="border:none; padding:0 0 4px 0; background:white;">
+                    @include('layouts.kopsurat')
+                    <div class="judul">FORMULIR RL 5.3</div>
+                    <div class="subjudul">10 BESAR KUNJUNGAN PENYAKIT RAWAT JALAN</div>
+                    <div class="subjudul">{{ $periode }}</div>
+                </th>
+            </tr>
+            <tr class="bg-blue-600 text-white">
+                <th>NO</th>
+                <th>NAMA PENYAKIT / DIAGNOSA</th>
+                <th>KODE ICD-10</th>
+                <th>JUMLAH KUNJUNGAN</th>
+            </tr>
+        </thead>
+        <tbody>
+        @php
+            // Kunjungan = total baris (termasuk kunjungan ulang) per diagnosa utama
+            $kunjungan = $laporans
+                ->whereNotNull('diagnosa')
+                ->whereNotNull('diagnosa.diagnosa_utama')
+                ->groupBy(fn($l) => $l->diagnosa->diagnosa_utama)
+                ->map(fn($group) => [
+                    'diagnosa' => $group->first()->diagnosa->diagnosa_utama,
+                    'kode_icd' => $group->first()->diagnosa->kode_icd ?? '-',
+                    'jumlah'   => $group->count(),
+                ])
+                ->sortByDesc('jumlah')
+                ->take(10)
+                ->values();
+        @endphp
+
+        @forelse($kunjungan as $index => $item)
+            <tr>
+                <td class="text-center">{{ $index + 1 }}</td>
+                <td>{{ $item['diagnosa'] }}</td>
+                <td class="text-center">{{ $item['kode_icd'] }}</td>
+                <td class="text-center">{{ $item['jumlah'] }}</td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="4" class="text-center py-4 text-gray-400">
+                    Tidak ada data untuk periode ini
+                </td>
+            </tr>
+        @endforelse
+        </tbody>
+    </table>
+
+    <div class="ttd">
+        <div class="ttd-box">
+            <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
+            <p style="margin-bottom:5px;">( ......................................... )</p>
+            <p>Nama Terang</p>
+        </div>
+    </div>
+</div>
+
+{{-- ===== HALAMAN 4: RL 5.1 - KOMPILASI MORBIDITAS PASIEN RAWAT JALAN ===== --}}
+<div id="rl51Page" class="page-print">
+    <table>
+        <thead>
+            <tr>
+                <th colspan="10" style="border:none; padding:0 0 4px 0; background:white;">
+                    @include('layouts.kopsurat')
+                    <div class="judul">FORMULIR RL 5.1</div>
+                    <div class="subjudul">KOMPILASI MORBIDITAS PASIEN RAWAT JALAN</div>
+                    <div class="subjudul">{{ $periode }}</div>
+                </th>
+            </tr>
+            <tr class="bg-blue-600 text-white">
+                <th rowspan="2">NO</th>
+                <th rowspan="2">NAMA PENYAKIT / DIAGNOSA</th>
+                <th rowspan="2">KODE ICD-10</th>
+                <th colspan="7">GOLONGAN UMUR & JENIS KELAMIN</th>
+            </tr>
+            <tr class="bg-blue-500 text-white">
+                <th>&lt;1 thn</th>
+                <th>1–4 thn</th>
+                <th>5–14 thn</th>
+                <th>15–44 thn</th>
+                <th>45–64 thn</th>
+                <th>≥65 thn</th>
+                <th>TOTAL</th>
+            </tr>
+            <tr class="bg-blue-400 text-white text-xs">
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>L / P</th>
+                <th>L / P</th>
+                <th>L / P</th>
+                <th>L / P</th>
+                <th>L / P</th>
+                <th>L / P</th>
+                <th>L / P</th>
+            </tr>
+        </thead>
+        <tbody>
+        @php
+            // Fungsi hitung umur dari tanggal_lahir
+            $hitungUmur = function($tgl) {
+                if (!$tgl) return null;
+                return \Carbon\Carbon::parse($tgl)->age;
+            };
+
+            // Fungsi golongan umur
+            $golUmur = function($umur) {
+                if ($umur === null) return null;
+                if ($umur < 1)  return 0;
+                if ($umur <= 4)  return 1;
+                if ($umur <= 14) return 2;
+                if ($umur <= 44) return 3;
+                if ($umur <= 64) return 4;
+                return 5;
+            };
+
+            $golLabel = ['<1', '1-4', '5-14', '15-44', '45-64', '≥65'];
+
+            // Kelompokkan per diagnosa
+            $morbiditas = $laporans
+                ->whereNotNull('diagnosa')
+                ->whereNotNull('diagnosa.diagnosa_utama')
+                ->groupBy(fn($l) => $l->diagnosa->diagnosa_utama)
+                ->map(function($group) use ($hitungUmur, $golUmur) {
+                    // Inisiasi grid [golongan_umur][L/P] = 0
+                    $grid = array_fill(0, 6, ['L' => 0, 'P' => 0]);
+
+                    foreach ($group as $l) {
+                        $umur = $hitungUmur($l->pasien->tanggal_lahir ?? null);
+                        $gol  = $golUmur($umur);
+                        $jk   = strtoupper($l->pasien->jenis_kelamin ?? '');
+
+                        if ($gol !== null && in_array($jk, ['L', 'P'])) {
+                            $grid[$gol][$jk]++;
+                        }
+                    }
+
+                    return [
+                        'diagnosa' => $group->first()->diagnosa->diagnosa_utama,
+                        'kode_icd' => $group->first()->diagnosa->kode_icd ?? '-',
+                        'grid'     => $grid,
+                        'total_l'  => array_sum(array_column($grid, 'L')),
+                        'total_p'  => array_sum(array_column($grid, 'P')),
+                    ];
+                })
+                ->sortByDesc(fn($d) => $d['total_l'] + $d['total_p'])
+                ->values();
+        @endphp
+
+        @forelse($morbiditas as $index => $item)
+            <tr>
+                <td class="text-center">{{ $index + 1 }}</td>
+                <td>{{ $item['diagnosa'] }}</td>
+                <td class="text-center">{{ $item['kode_icd'] }}</td>
+                @foreach($item['grid'] as $gol)
+                    <td class="text-center text-xs">
+                        {{ $gol['L'] }} / {{ $gol['P'] }}
+                    </td>
+                @endforeach
+                <td class="text-center font-semibold">
+                    {{ $item['total_l'] }} / {{ $item['total_p'] }}
+                </td>
+            </tr>
+        @empty
+            <tr>
+                <td colspan="10" class="text-center py-4 text-gray-400">
+                    Tidak ada data untuk periode ini
+                </td>
+            </tr>
+        @endforelse
+
+        {{-- Baris Total Keseluruhan --}}
+        @php
+            $totalGrid = array_fill(0, 6, ['L' => 0, 'P' => 0]);
+            foreach ($morbiditas as $item) {
+                foreach ($item['grid'] as $i => $gol) {
+                    $totalGrid[$i]['L'] += $gol['L'];
+                    $totalGrid[$i]['P'] += $gol['P'];
+                }
+            }
+            $grandL = array_sum(array_column($totalGrid, 'L'));
+            $grandP = array_sum(array_column($totalGrid, 'P'));
+        @endphp
+        <tr class="bg-blue-50 font-bold">
+            <td colspan="3" class="text-center">TOTAL</td>
+            @foreach($totalGrid as $gol)
+                <td class="text-center text-xs">{{ $gol['L'] }} / {{ $gol['P'] }}</td>
+            @endforeach
+            <td class="text-center">{{ $grandL }} / {{ $grandP }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="ttd">
+        <div class="ttd-box">
+            <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+            <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
+            <p style="margin-bottom:5px;">( ......................................... )</p>
+            <p>Nama Terang</p>
+        </div>
+    </div>
+</div>
+            {{-- ===== HALAMAN 5: 10 BESAR PENYAKIT (PERIODE) ===== --}}
             <div id="penyakitPage" class="page-print">
                 <table style="max-width:700px; margin:0 auto;">
                     <thead>
@@ -347,7 +639,7 @@ if ($dari && $sampai) {
                 </div>
             </div>
 
-            {{-- ===== HALAMAN 3: 10 BESAR PENYAKIT (KESELURUHAN) ===== --}}
+            {{-- ===== HALAMAN 6: 10 BESAR PENYAKIT (KESELURUHAN) ===== --}}
             <div id="semuaPenyakitPage" class="page-print">
                 <table style="max-width:700px; margin:0 auto;">
                     <thead>
