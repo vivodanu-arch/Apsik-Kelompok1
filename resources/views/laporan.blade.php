@@ -125,6 +125,59 @@ if ($dari && $sampai) {
             display: block;
         }
 
+        /* ===== RL 5.1 TABLE ===== */
+        .rl51-table {
+            width: max-content;
+            min-width: 100%;
+            border-collapse: collapse;
+            font-size: 9px;
+        }
+        .rl51-table th, .rl51-table td {
+            border: 1px solid #9ca3af;
+            padding: 2px 3px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .rl51-table td:nth-child(3) {
+            text-align: left;
+            white-space: nowrap;
+        }
+        .rl51-table th.rl51-vertical {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            font-size: 8px;
+            font-weight: normal;
+            height: 70px;
+            min-width: 16px;
+            max-width: 16px;
+            padding: 2px 0;
+            line-height: 1.1;
+        }
+        .rl51-table th.rl51-vertical .lp {
+            font-weight: bold;
+        }
+        .rl51-keterangan {
+            font-size: 11px;
+            font-style: italic;
+            margin-top: 8px;
+            text-align: center;
+        }
+        #semuaPenyakitPage.page-print {
+            overflow-x: auto;
+        }
+
+        @media print {
+            .rl51-table { font-size: 7px; }
+            .rl51-table th, .rl51-table td { padding: 1px 2px; }
+            .rl51-table th.rl51-vertical { font-size: 6px; height: 55px; }
+            #semuaPenyakitPage.page-print {
+                overflow: visible;
+                transform: scale(0.85);
+                transform-origin: top left;
+                width: 117.6%;
+            }
+        }
+
         /* ===== TTD ===== */
         .ttd { margin-top: 60px; display: flex; justify-content: flex-end; padding-right: 40px; }
         .ttd-box { width: 250px; text-align: center; font-size: 13px; }
@@ -389,41 +442,72 @@ if ($dari && $sampai) {
                 </div>
             </div>
 
-            {{-- ===== HALAMAN 3: 10 BESAR PENYAKIT (KESELURUHAN) ===== --}}
+            {{-- ===== HALAMAN 3: RL 5.1 KOMPILASI MORBIDITAS PASIEN RAWAT JALAN (KESELURUHAN) ===== --}}
             <div id="semuaPenyakitPage" class="page-print report-page">
-                <table style="max-width:700px; margin:0 auto;">
+                <table class="rl51-table">
                     <thead>
                         <tr>
-                            <th colspan="4" style="border:none; padding:0 0 4px 0; background:white;">
+                            <th colspan="{{ 4 + (count($rl51['kelompok_umur']) * 2) + 6 }}"
+                                style="border:none; padding:0 0 4px 0; background:white;">
                                 @include('layouts.kopsurat')
-                                <div class="judul">10 BESAR PENYAKIT PELAPORAN</div>
+                                <div class="judul">RL 5.1 KOMPILASI MORBIDITAS PASIEN RAWAT JALAN</div>
                                 <div class="subjudul">Data Keseluruhan (Semua Periode)</div>
                             </th>
                         </tr>
                         <tr class="bg-green-600 text-white">
-                            <th style="width:50px;">NO</th>
-                            <th style="width:120px;">KODE ICD</th>
-                            <th>NAMA PENYAKIT</th>
-                            <th style="width:100px;">JUMLAH KASUS</th>
+                            <th rowspan="2" style="width:35px;">NO</th>
+                            <th rowspan="2" style="width:70px;">KODE<br>ICD</th>
+                            <th rowspan="2" style="min-width:140px;">DIAGNOSIS<br>PENYAKIT</th>
+                            <th colspan="{{ count($rl51['kelompok_umur']) * 2 }}">
+                                JUMLAH KASUS BARU MENURUT KELOMPOK UMUR &amp; JENIS KELAMIN
+                            </th>
+                            <th colspan="3">JUMLAH KASUS BARU<br>MENURUT JENIS KELAMIN</th>
+                            <th colspan="3">JUMLAH<br>KUNJUNGAN</th>
+                        </tr>
+                        <tr class="bg-green-600 text-white">
+                            @foreach($rl51['kelompok_umur'] as $kel)
+                                <th class="rl51-vertical">{{ $kel }}<br><span class="lp">L</span></th>
+                                <th class="rl51-vertical">{{ $kel }}<br><span class="lp">P</span></th>
+                            @endforeach
+                            <th style="width:32px;">L</th>
+                            <th style="width:32px;">P</th>
+                            <th style="width:40px;">Total</th>
+                            <th style="width:32px;">L</th>
+                            <th style="width:32px;">P</th>
+                            <th style="width:40px;">Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @forelse($topPenyakitKeseluruhan as $sp)
+                    @forelse($rl51['rows'] as $r)
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
-                            <td class="text-center"><strong>{{ $sp->kode_icd ?? '-' }}</strong></td>
-                            <td>{{ $sp->diagnosa_utama }}</td>
-                            <td class="text-center"><strong>{{ $sp->total }}</strong></td>
+                            <td class="text-center"><strong>{{ $r['kode_icd'] }}</strong></td>
+                            <td>{{ $r['diagnosa_utama'] }}</td>
+                            @foreach($rl51['kelompok_umur'] as $kel)
+                                <td class="text-center">{{ $r['umur'][$kel]['L'] ?: '' }}</td>
+                                <td class="text-center">{{ $r['umur'][$kel]['P'] ?: '' }}</td>
+                            @endforeach
+                            <td class="text-center"><strong>{{ $r['total_kasus_L'] ?: '' }}</strong></td>
+                            <td class="text-center"><strong>{{ $r['total_kasus_P'] ?: '' }}</strong></td>
+                            <td class="text-center"><strong>{{ $r['total_kasus'] }}</strong></td>
+                            <td class="text-center">{{ $r['kunjungan_L'] ?: '' }}</td>
+                            <td class="text-center">{{ $r['kunjungan_P'] ?: '' }}</td>
+                            <td class="text-center"><strong>{{ $r['kunjungan_total'] }}</strong></td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="text-center py-4 text-gray-400">
-                                Tidak ada data penyakit
+                            <td colspan="{{ 4 + (count($rl51['kelompok_umur']) * 2) + 6 }}" class="text-center py-4 text-gray-400">
+                                Tidak ada data morbiditas
                             </td>
                         </tr>
                     @endforelse
                     </tbody>
                 </table>
+
+                <p class="rl51-keterangan">
+                    *) L = Laki-laki, P = Perempuan&nbsp;&nbsp;&nbsp;&nbsp;
+                    **) jam = jam, hr = hari, bln = bulan, th = tahun
+                </p>
 
                 <div class="ttd">
                     <div class="ttd-box">
@@ -434,6 +518,7 @@ if ($dari && $sampai) {
                     </div>
                 </div>
             </div>
+
 
         </main>
     </div>
