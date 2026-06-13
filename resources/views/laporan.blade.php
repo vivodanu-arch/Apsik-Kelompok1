@@ -111,28 +111,39 @@ if ($dari && $sampai) {
         }
         .rl51-table th, .rl51-table td {
             border: 1px solid #9ca3af;
-            padding: 3px 4px;
+            padding: 2px 3px;
             text-align: center;
             vertical-align: middle;
         }
         .rl51-table td.diagnosa-cell { text-align: left; white-space: nowrap; padding-left: 6px; }
-        .rl51-table th.rl51-vertical {
-            writing-mode: vertical-rl;
-            transform: rotate(180deg);
-            font-size: 8px;
-            font-weight: normal;
-            height: 80px;
-            min-width: 18px;
-            max-width: 18px;
-            padding: 2px 0;
-            line-height: 1.1;
+        /* Header kelompok umur: teks horizontal, lebar minimal */
+        .rl51-table th.rl51-umur {
+            font-size: 7.5px;
+            font-weight: 600;
+            min-width: 30px;
+            max-width: 40px;
             white-space: nowrap;
+            padding: 3px 2px;
         }
-        .rl51-table th.rl51-vertical .lp { font-weight: bold; }
+        /* Subkolom L/P di bawah kelompok umur */
+        .rl51-table th.rl51-lp {
+            font-size: 8px;
+            font-weight: 700;
+            min-width: 14px;
+            max-width: 18px;
+            padding: 2px 1px;
+        }
         .rl51-keterangan { font-size: 11px; font-style: italic; margin-top: 8px; text-align: center; }
 
         /* ===== TTD ===== */
-        .ttd { margin-top: 60px; display: flex; justify-content: flex-end; padding-right: 40px; }
+        .ttd {
+            margin-top: 40px;
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 40px;
+            page-break-inside: avoid;
+            break-inside: avoid;
+        }
         .ttd-box { width: 250px; text-align: center; font-size: 13px; }
 
         /* ===== BADGE FILTER ===== */
@@ -232,8 +243,7 @@ if ($dari && $sampai) {
             margin-bottom: 14px;
         }
 
-        /* ===== PRINT ===== */
-        @page { size: A4 landscape; margin: 15mm; }
+        @page { size: A4 landscape; margin: 10mm 8mm; }
 
         @media print {
             html, body { background: white !important; margin: 0 !important; padding: 0 !important;
@@ -248,30 +258,76 @@ if ($dari && $sampai) {
 
             .report-page { display: none !important; }
             .report-page.active { display: block !important; }
-
-            /* Jika halaman kunjungan aktif saat cetak → tidak ada yang tercetak */
             #laporanPage.active { display: none !important; }
 
             .page-print { width: 100% !important; max-width: 100% !important; margin: 0 !important;
-                padding: 20px !important; border-radius: 0 !important; box-shadow: none !important;
+                padding: 16px !important; border-radius: 0 !important; box-shadow: none !important;
                 page-break-after: always; }
             .page-print:last-child { page-break-after: auto; }
 
             thead { display: table-header-group; }
+            tfoot { display: table-footer-group; }
             tbody { display: table-row-group; }
             tbody tr { page-break-inside: avoid; }
 
-            th, td { border: 1px solid black !important; font-size: 11px !important; padding: 5px !important; }
+            /* Warna umum tabel non-RL51 */
+            th, td { border: 1px solid black !important; font-size: 10px !important; padding: 4px !important; }
             .bg-blue-600  { background-color: #2563eb !important; color: white !important; }
-            .bg-red-600   { background-color: #dc2626 !important; color: white !important; }
+            .bg-blue-500  { background-color: #3b82f6 !important; color: white !important; }
+            .bg-blue-400  { background-color: #60a5fa !important; color: white !important; }
             .bg-green-600 { background-color: #16a34a !important; color: white !important; }
             thead th { color: white !important; }
-            thead tr:first-child th { border: none !important; padding: 0 0 8px 0 !important; background: white !important; }
+            thead tr:first-child th { border: none !important; padding: 0 0 6px 0 !important; background: white !important; color: black !important; }
 
-            .rl51-scroll-wrapper { overflow: visible !important; }
-            .rl51-table { font-size: 7px !important; width: 100% !important; }
-            .rl51-table th, .rl51-table td { padding: 1px 2px !important; }
-            .rl51-table th.rl51-vertical { font-size: 6px !important; height: 55px !important; }
+            /* RL 5.1: cetak landscape, paksa muat dalam 1 lebar halaman */
+            .rl51-scroll-wrapper { overflow: visible !important; width: 100% !important; }
+            .rl51-table {
+                font-size: 5.5px !important;
+                width: 100% !important;
+                table-layout: auto !important;
+            }
+            .rl51-table th, .rl51-table td {
+                padding: 1px 0px !important;
+                font-size: 5.5px !important;
+                border: 0.5px solid black !important;
+            }
+            .rl51-table thead th { color: white !important; }
+            .rl51-table thead tr:first-child th { border: none !important; }
+            .rl51-table th.rl51-umur {
+                font-size: 5px !important;
+                min-width: unset !important; max-width: unset !important;
+                padding: 1px 0 !important;
+                white-space: nowrap !important;
+            }
+            .rl51-table th.rl51-lp {
+                font-size: 5.5px !important;
+                min-width: unset !important; max-width: unset !important;
+                padding: 1px 0 !important;
+            }
+            .rl51-table td.diagnosa-cell {
+                font-size: 5.5px !important;
+                white-space: normal !important;
+                word-break: break-word !important;
+                max-width: 80px !important;
+                text-align: left !important;
+            }
+            /* TTD: tidak pernah terpisah ke halaman baru */
+            .ttd {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                page-break-before: avoid !important;
+                break-before: avoid !important;
+                margin-top: 16px !important;
+            }
+            .ttd-box { font-size: 10px !important; }
+            .rl51-keterangan {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                page-break-before: avoid !important;
+            }
+            tfoot tr { page-break-inside: avoid !important; break-inside: avoid !important; }
+            #rl52Page table, #rl53Page table { page-break-inside: avoid !important; }
+            #rl52Page .ttd, #rl53Page .ttd { page-break-before: avoid !important; break-before: avoid !important; }
         }
     </style>
 </head>
@@ -431,27 +487,35 @@ if ($dari && $sampai) {
                 <div class="rl51-scroll-wrapper">
                     <table class="rl51-table">
                         <thead>
+                            {{-- Baris 1: header utama --}}
                             <tr class="bg-blue-600 text-white">
-                                <th rowspan="2" style="width:35px; min-width:35px;">NO</th>
-                                <th rowspan="2" style="width:65px; min-width:65px;">KODE ICD</th>
-                                <th rowspan="2" style="min-width:160px; text-align:left; padding-left:6px;">NAMA PENYAKIT / DIAGNOSA</th>
+                                <th rowspan="3" style="width:28px; min-width:28px;">NO</th>
+                                <th rowspan="3" style="width:55px; min-width:55px;">KODE ICD</th>
+                                <th rowspan="3" style="min-width:150px; text-align:left; padding-left:6px;">NAMA PENYAKIT / DIAGNOSA</th>
                                 <th colspan="{{ count($rl51['kelompok_umur']) * 2 }}">
                                     JUMLAH KASUS BARU MENURUT KELOMPOK UMUR &amp; JENIS KELAMIN
                                 </th>
                                 <th colspan="3">JUMLAH KASUS BARU<br>MENURUT JENIS KELAMIN</th>
                                 <th colspan="3">JUMLAH KUNJUNGAN</th>
                             </tr>
+                            {{-- Baris 2: label kelompok umur, masing-masing colspan=2 --}}
                             <tr class="bg-blue-500 text-white">
                                 @foreach($rl51['kelompok_umur'] as $kel)
-                                    <th class="rl51-vertical">{{ $kel }}<br><span class="lp">L</span></th>
-                                    <th class="rl51-vertical">{{ $kel }}<br><span class="lp">P</span></th>
+                                    <th colspan="2" class="rl51-umur">{{ $kel }}</th>
                                 @endforeach
-                                <th style="min-width:28px;">L</th>
-                                <th style="min-width:28px;">P</th>
-                                <th style="min-width:38px;">Total</th>
-                                <th style="min-width:28px;">L</th>
-                                <th style="min-width:28px;">P</th>
-                                <th style="min-width:38px;">Total</th>
+                                <th rowspan="2" style="min-width:24px;">L</th>
+                                <th rowspan="2" style="min-width:24px;">P</th>
+                                <th rowspan="2" style="min-width:32px;">Total</th>
+                                <th rowspan="2" style="min-width:24px;">L</th>
+                                <th rowspan="2" style="min-width:24px;">P</th>
+                                <th rowspan="2" style="min-width:32px;">Total</th>
+                            </tr>
+                            {{-- Baris 3: subkolom L/P di bawah setiap kelompok umur --}}
+                            <tr class="bg-blue-400 text-white">
+                                @foreach($rl51['kelompok_umur'] as $kel)
+                                    <th class="rl51-lp">L</th>
+                                    <th class="rl51-lp">P</th>
+                                @endforeach
                             </tr>
                         </thead>
                         <tbody>
@@ -479,20 +543,30 @@ if ($dari && $sampai) {
                             </tr>
                         @endforelse
                         </tbody>
+                        {{-- tfoot: keterangan + TTD melekat di akhir tabel, tidak terpisah --}}
+                        <tfoot>
+                            <tr>
+                                <td colspan="{{ 3 + (count($rl51['kelompok_umur']) * 2) + 6 }}"
+                                    style="border:none; padding:6px 0 0 0; page-break-inside:avoid; break-inside:avoid;">
+                                    <p class="rl51-keterangan" style="margin:4px 0 0;">
+                                        *) L = Laki-laki, P = Perempuan &nbsp;&nbsp;
+                                        **) jam = jam, hr = hari, bln = bulan, th = tahun
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr style="page-break-inside:avoid; break-inside:avoid;">
+                                <td colspan="{{ 3 + (count($rl51['kelompok_umur']) * 2) + 6 }}"
+                                    style="border:none; padding:30px 40px 0 0; text-align:right; page-break-inside:avoid; break-inside:avoid;">
+                                    <div style="display:inline-block; width:240px; text-align:center; font-size:12px;">
+                                        <p style="margin:0 0 4px;">Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                                        <p style="margin:8px 0 70px; font-weight:bold;">Kepala Rekam Medis</p>
+                                        <p style="margin-bottom:4px;">( ......................................... )</p>
+                                        <p style="margin:0;">Nama Terang</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
-                </div>
-
-                <p class="rl51-keterangan">
-                    *) L = Laki-laki, P = Perempuan &nbsp;&nbsp;&nbsp;&nbsp;
-                    **) jam = jam, hr = hari, bln = bulan, th = tahun
-                </p>
-                <div class="ttd">
-                    <div class="ttd-box">
-                        <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-                        <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
-                        <p style="margin-bottom:5px;">( ......................................... )</p>
-                        <p>Nama Terang</p>
-                    </div>
                 </div>
             </div>
 
@@ -542,16 +616,18 @@ if ($dari && $sampai) {
                             <td colspan="4" class="text-center py-4 text-gray-400">Tidak ada data untuk periode ini</td>
                         </tr>
                     @endforelse
+                    <tr>
+                        <td colspan="4" style="border:none; padding:40px 40px 0 0; text-align:right; page-break-inside:avoid;">
+                            <div style="display:inline-block; width:240px; text-align:center; font-size:12px;">
+                                <p style="margin:0 0 4px;">Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                                <p style="margin:8px 0 70px; font-weight:bold;">Kepala Rekam Medis</p>
+                                <p style="margin-bottom:4px;">( ......................................... )</p>
+                                <p style="margin:0;">Nama Terang</p>
+                            </div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
-                <div class="ttd">
-                    <div class="ttd-box">
-                        <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-                        <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
-                        <p style="margin-bottom:5px;">( ......................................... )</p>
-                        <p>Nama Terang</p>
-                    </div>
-                </div>
             </div>
 
             {{-- ===== HALAMAN 4: RL 5.3 – KUNJUNGAN ===== --}}
@@ -600,16 +676,18 @@ if ($dari && $sampai) {
                             <td colspan="4" class="text-center py-4 text-gray-400">Tidak ada data untuk periode ini</td>
                         </tr>
                     @endforelse
+                    <tr>
+                        <td colspan="4" style="border:none; padding:40px 40px 0 0; text-align:right; page-break-inside:avoid;">
+                            <div style="display:inline-block; width:240px; text-align:center; font-size:12px;">
+                                <p style="margin:0 0 4px;">Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+                                <p style="margin:8px 0 70px; font-weight:bold;">Kepala Rekam Medis</p>
+                                <p style="margin-bottom:4px;">( ......................................... )</p>
+                                <p style="margin:0;">Nama Terang</p>
+                            </div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
-                <div class="ttd">
-                    <div class="ttd-box">
-                        <p>Jember, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-                        <p style="margin: 12px 0 80px; font-weight:bold;">Kepala Rekam Medis</p>
-                        <p style="margin-bottom:5px;">( ......................................... )</p>
-                        <p>Nama Terang</p>
-                    </div>
-                </div>
             </div>
 
         </div>{{-- end content-area --}}
