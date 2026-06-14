@@ -4,24 +4,33 @@ namespace App\Http\Controllers;
 
 use App\Models\Pasien;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PasienController extends Controller
 {
     public function index()
     {
+        $user  = Auth::user();
         $query = Pasien::query();
 
-        // ← fitur search yang sudah ada di view tapi belum diimplementasi di controller
+        // Jika dokter: hanya tampilkan pasien yang pernah berkunjung ke dokter ini
+        if ($user->role === 'dokter' && $user->dokter) {
+            $dokterId = $user->dokter->id;
+            $query->whereHas('kunjungans', function ($q) use ($dokterId) {
+                $q->where('dokter_id', $dokterId);
+            });
+        }
+
+        // Search
         if (request()->filled('search')) {
             $search = request('search');
             $query->where(function ($q) use ($search) {
                 $q->where('nama_pasien', 'like', "%{$search}%")
-                  ->orWhere('no_rm', 'like', "%{$search}%")
-                  ->orWhere('telepon', 'like', "%{$search}%");
+                  ->orWhere('no_rm',      'like', "%{$search}%")
+                  ->orWhere('telepon',    'like', "%{$search}%");
             });
         }
 
-        // ← naikkan dari 10 ke 15 agar lebih banyak terlihat, dengan pagination
         $pasien = $query->orderBy('nama_pasien')->paginate(15)->withQueryString();
 
         return view('datapasien', compact('pasien'));
