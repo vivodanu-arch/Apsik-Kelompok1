@@ -1,107 +1,104 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Rumah Sakit Kasih</title>
+@extends('layouts.app')
 
-    @vite(['resources/css/auth.css', 'resources/js/app.js'])
-</head>
+@section('content')
 
-<body class="auth-page min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-
-    <!-- BUBBLE -->
-    <div class="bubbles">
-        @for ($i = 0; $i < 15; $i++)
-            <span></span>
-        @endfor
+{{-- Header --}}
+<div class="flex items-center justify-between mb-6">
+    <div>
+        <h1 class="text-2xl font-bold text-gray-800">Tambah User</h1>
+        <p class="text-sm text-gray-500 mt-1">Buat akun pengguna baru untuk sistem</p>
     </div>
+    <a href="{{ route('users.index') }}"
+       class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700
+              px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Kembali
+    </a>
+</div>
 
-    <!-- CARD -->
-    <div class="relative z-10 w-full max-w-xl bg-white p-5 rounded-2xl shadow-xl">
+{{-- ERROR --}}
+@if($errors->any())
+    <div class="bg-red-100 text-red-700 p-3 rounded-xl mb-4 text-sm">
+        {{ $errors->first() }}
+    </div>
+@endif
 
-        {{-- Logo --}}
-        <div class="flex justify-center mb-3">
-            <img src="{{ asset('images/logo1.png') }}" class="w-24 h-24 object-contain">
+{{-- NOTIF SUCCESS --}}
+@if(session('success'))
+    <div class="bg-green-100 text-green-700 p-3 rounded-xl mb-4 text-sm">
+        {{ session('success') }}
+    </div>
+@endif
+
+{{-- Form --}}
+<div class="bg-white rounded-2xl shadow-sm border p-6 max-w-2xl">
+    <h2 class="text-base font-semibold text-gray-700 mb-4 flex items-center gap-2">
+        <span class="w-1 h-5 bg-blue-600 rounded-full inline-block"></span>
+        Data Akun Pengguna
+    </h2>
+
+    <form method="POST" action="{{ route('register') }}" class="grid grid-cols-2 gap-4">
+        @csrf
+
+        {{-- NAME --}}
+        <div class="col-span-2">
+            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Nama</label>
+            <input type="text" name="name" value="{{ old('name') }}"
+                class="w-full mt-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Masukkan nama">
         </div>
 
-        {{-- Judul --}}
-        <h1 class="text-xl font-bold text-center text-black mb-4">
-            RUMAH SAKIT KASIH
-        </h1>
+        {{-- EMAIL --}}
+        <div>
+            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Email</label>
+            <input type="email" name="email" value="{{ old('email') }}"
+                class="w-full mt-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Masukkan email">
+        </div>
 
-        {{-- NOTIF SUCCESS --}}
-        @if(session('success'))
-            <div class="bg-green-100 text-green-700 p-2 rounded mb-3 text-sm text-center">
-                {{ session('success') }}
-            </div>
-        @endif
+        {{-- ROLE --}}
+        <div>
+            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Role</label>
+            <select name="role" required
+                class="w-full mt-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <option value="">-- Pilih Role --</option>
+                <option value="petugas" {{ old('role') === 'petugas' ? 'selected' : '' }}>Petugas</option>
+                <option value="dokter" {{ old('role') === 'dokter' ? 'selected' : '' }}>Dokter</option>
+                <option value="kepalarm" {{ old('role') === 'kepalarm' ? 'selected' : '' }}>Kepala RM</option>
+            </select>
+        </div>
 
-        {{-- ERROR --}}
-        @if($errors->any())
-            <div class="bg-red-100 text-red-700 p-2 rounded mb-3 text-sm">
-                {{ $errors->first() }}
-            </div>
-        @endif
+        {{-- PASSWORD --}}
+        <div>
+            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Password</label>
+            <input type="password" name="password"
+                class="w-full mt-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Masukkan password">
+        </div>
 
-        <form method="POST" action="{{ route('register') }}" class="grid grid-cols-2 gap-3">
-            @csrf
+        {{-- CONFIRM --}}
+        <div>
+            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Konfirmasi Password</label>
+            <input type="password" name="password_confirmation"
+                class="w-full mt-1 border border-gray-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Ulangi password">
+        </div>
 
-            {{-- NAME --}}
-            <div class="col-span-2">
-                <label class="text-xs font-medium text-gray-700">Nama</label>
-                <input type="text" name="name" value="{{ old('name') }}"
-                    class="mt-1 w-full rounded-xl border-gray-300 text-sm py-1.5"
-                    placeholder="Masukkan nama">
-            </div>
+        {{-- BUTTONS --}}
+        <div class="col-span-2 mt-2 flex gap-3">
+            <button type="submit"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-semibold">
+                Simpan User
+            </button>
+            <a href="{{ route('users.index') }}"
+               class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2 rounded-xl text-sm font-semibold">
+                Batal
+            </a>
+        </div>
 
-            {{-- EMAIL --}}
-            <div>
-                <label class="text-xs font-medium text-gray-700">Email</label>
-                <input type="email" name="email" value="{{ old('email') }}"
-                    class="mt-1 w-full rounded-xl border-gray-300 text-sm py-1.5"
-                    placeholder="Masukkan email">
-            </div>
+    </form>
+</div>
 
-            {{-- ROLE --}}
-            <div>
-                <label class="text-xs font-medium text-gray-700">Role</label>
-                <select name="role" required
-                    class="mt-1 w-full rounded-xl border-gray-300 text-sm py-1.5">
-                    <option value="">-- Pilih Role --</option>
-                    <option value="petugas">Petugas</option>
-                    <option value="dokter">Dokter</option>
-                    <option value="kepalarm">Kepala RM</option>
-                </select>
-            </div>
-
-            {{-- PASSWORD --}}
-            <div>
-                <label class="text-xs font-medium text-gray-700">Password</label>
-                <input type="password" name="password"
-                    class="mt-1 w-full rounded-xl border-gray-300 text-sm py-1.5"
-                    placeholder="Masukkan password">
-            </div>
-
-            {{-- CONFIRM --}}
-            <div>
-                <label class="text-xs font-medium text-gray-700">Konfirmasi Password</label>
-                <input type="password" name="password_confirmation"
-                    class="mt-1 w-full rounded-xl border-gray-300 text-sm py-1.5"
-                    placeholder="Ulangi password">
-            </div>
-
-            {{-- BUTTON --}}
-            <div class="col-span-2 mt-2">
-                <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl text-sm font-semibold">
-                    Register
-                </button>
-            </div>
-
-        </form>
-
-    </div>
-
-</body>
-</html>
+@endsection

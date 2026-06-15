@@ -45,6 +45,13 @@
             </script>
             @endif
 
+            {{-- Notifikasi error --}}
+            @if(session('error'))
+            <div class="rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">
+                {{ session('error') }}
+            </div>
+            @endif
+
             {{-- Header --}}
             <div class="rounded-2xl p-7 text-white shadow-sm"
                  style="background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);">
@@ -195,53 +202,151 @@
                                 <span id="toggle-label-{{ $k->id }}">Edit Diagnosa</span>
                             </button>
 
-                            {{-- Form diagnosa (hidden by default) --}}
+                            {{-- Form diagnosa (hidden by default) — input ikut disubmit lewat editPasienForm --}}
                             <div id="form-diagnosa-{{ $k->id }}" class="hidden mt-3">
-                                <form action="{{ route('kunjungan.updateDiagnosa', $k->id) }}" method="POST">
-                                    @csrf
-                                    <div class="grid grid-cols-2 gap-3">
-                                        <div>
-                                            <label class="text-xs font-semibold text-gray-500">Kode ICD-10</label>
-                                            <input type="text" name="kode_icd"
-                                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                value="{{ $k->diagnosa->kode_icd ?? '' }}"
-                                                placeholder="Contoh: J06.9">
-                                        </div>
-                                        <div>
-                                            <label class="text-xs font-semibold text-gray-500">Diagnosa Utama <span class="text-red-500">*</span></label>
-                                            <input type="text" name="diagnosa_utama" required
-                                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                value="{{ $k->diagnosa->diagnosa_utama ?? '' }}"
-                                                placeholder="Nama penyakit / diagnosa">
-                                        </div>
-                                        <div>
-                                            <label class="text-xs font-semibold text-gray-500">Diagnosa Sekunder</label>
-                                            <input type="text" name="diagnosa_sekunder"
-                                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                value="{{ $k->diagnosa->diagnosa_sekunder ?? '' }}"
-                                                placeholder="Opsional">
-                                        </div>
-                                        <div>
-                                            <label class="text-xs font-semibold text-gray-500">Catatan</label>
-                                            <input type="text" name="catatan"
-                                                class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                value="{{ $k->diagnosa->catatan ?? '' }}"
-                                                placeholder="Anjuran / catatan dokter">
-                                        </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-xs font-semibold text-gray-500">Kode ICD-10</label>
+                                        <input type="text"
+                                            class="w-full mt-1 border border-gray-200 bg-gray-100 rounded-lg px-3 py-1.5 text-xs font-mono text-gray-500 cursor-not-allowed"
+                                            value="{{ $k->diagnosa->kode_icd ?? '-' }}"
+                                            placeholder="Diisi oleh petugas"
+                                            readonly disabled>
+                                        <p class="text-[10px] text-gray-400 mt-1">Kode ICD hanya dapat diubah oleh petugas.</p>
                                     </div>
-                                    <div class="mt-3 flex gap-2">
-                                        <button type="submit"
-                                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-1.5 rounded-lg text-xs font-semibold">
-                                            Simpan Diagnosa
-                                        </button>
-                                        <button type="button"
-                                            onclick="toggleDiagnosa({{ $k->id }})"
-                                            class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-1.5 rounded-lg text-xs">
-                                            Batal
-                                        </button>
+                                    <div>
+                                        <label class="text-xs font-semibold text-gray-500">Diagnosa Utama <span class="text-red-500">*</span></label>
+                                        <input type="text" name="diagnosa_utama[{{ $k->id }}]" form="editPasienForm" required
+                                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            value="{{ $k->diagnosa->diagnosa_utama ?? '' }}"
+                                            placeholder="Nama penyakit / diagnosa">
                                     </div>
-                                </form>
+                                    <div>
+                                        <label class="text-xs font-semibold text-gray-500">Diagnosa Sekunder</label>
+                                        <input type="text" name="diagnosa_sekunder[{{ $k->id }}]" form="editPasienForm"
+                                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            value="{{ $k->diagnosa->diagnosa_sekunder ?? '' }}"
+                                            placeholder="Opsional">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-semibold text-gray-500">Catatan</label>
+                                        <input type="text" name="catatan[{{ $k->id }}]" form="editPasienForm"
+                                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            value="{{ $k->diagnosa->catatan ?? '' }}"
+                                            placeholder="Anjuran / catatan dokter">
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                @endforeach
+                </div>
+            </div>
+            @endif
+
+            {{-- ── SECTION DIAGNOSA / KODE ICD — hanya petugas ── --}}
+            @if(Auth::user()->role === 'petugas' && $kunjungans->isNotEmpty())
+            <div class="bg-white rounded-2xl shadow-sm p-6">
+                <h2 class="text-base font-semibold text-gray-700 mb-1 flex items-center gap-2">
+                    <span class="w-1 h-5 bg-green-500 rounded-full inline-block"></span>
+                    Riwayat Kunjungan & Kode ICD
+                </h2>
+                <p class="text-xs text-gray-400 mb-4">Diagnosa diisi oleh dokter dan tidak dapat diubah. Petugas hanya dapat mengisi/mengubah Kode ICD-10.</p>
+
+                <div class="space-y-4">
+                @foreach($kunjungans as $k)
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+
+                        {{-- Header kunjungan --}}
+                        <div class="flex items-center justify-between bg-gray-50 px-4 py-3 border-b border-gray-200">
+                            <div class="flex items-center gap-3">
+                                <div class="text-sm font-semibold text-gray-700">
+                                    {{ \Carbon\Carbon::parse($k->tanggal_kunjungan)->translatedFormat('d F Y') }}
+                                </div>
+                                <span class="text-xs text-gray-400">·</span>
+                                <span class="text-xs text-gray-500">{{ $k->poli->nama_poli ?? '-' }}</span>
+                                <span class="text-xs text-gray-400">·</span>
+                                <span class="text-xs text-gray-500">{{ $k->dokter->nama_dokter ?? '-' }}</span>
+                            </div>
+                            @php
+                                $sc = match($k->status) {
+                                    'selesai'   => 'bg-green-100 text-green-700',
+                                    'diperiksa' => 'bg-blue-100 text-blue-700',
+                                    default     => 'bg-yellow-100 text-yellow-700',
+                                };
+                                $sl = match($k->status) {
+                                    'selesai'   => 'Selesai',
+                                    'diperiksa' => 'Diperiksa',
+                                    default     => 'Menunggu',
+                                };
+                            @endphp
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full {{ $sc }}">{{ $sl }}</span>
+                        </div>
+
+                        <div class="px-4 py-3">
+                            {{-- Keluhan --}}
+                            <p class="text-xs text-gray-500 mb-3">
+                                <span class="font-semibold text-gray-600">Keluhan: </span>{{ $k->keluhan_utama ?? '-' }}
+                            </p>
+
+                            @if(!$k->diagnosa)
+                            <div class="bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 mb-3 text-xs text-yellow-700">
+                                Diagnosa belum diisi oleh dokter. Kode ICD belum dapat diisi.
+                            </div>
+                            @else
+                            {{-- Diagnosa saat ini --}}
+                            <div class="bg-blue-50 rounded-lg p-3 mb-3 text-xs grid grid-cols-2 gap-x-4 gap-y-1">
+                                <div><span class="text-gray-400">Kode ICD:</span> <span class="font-mono font-semibold text-blue-700">{{ $k->diagnosa->kode_icd ?? '-' }}</span></div>
+                                <div><span class="text-gray-400">Diagnosa Utama:</span> <span class="font-medium text-gray-800">{{ $k->diagnosa->diagnosa_utama }}</span></div>
+                                <div><span class="text-gray-400">Diagnosa Sekunder:</span> <span class="text-gray-600">{{ $k->diagnosa->diagnosa_sekunder ?? '-' }}</span></div>
+                                <div class="col-span-2"><span class="text-gray-400">Catatan:</span> <span class="text-gray-600">{{ $k->diagnosa->catatan ?? '-' }}</span></div>
+                            </div>
+
+                            {{-- Toggle form edit kode ICD --}}
+                            <button type="button"
+                                onclick="toggleDiagnosa({{ $k->id }})"
+                                class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                                <span id="toggle-label-{{ $k->id }}">Edit Diagnosa</span>
+                            </button>
+
+                            {{-- Form edit kode ICD (hidden by default) — input ikut disubmit lewat editPasienForm --}}
+                            <div id="form-diagnosa-{{ $k->id }}" class="hidden mt-3">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-xs font-semibold text-gray-500">Kode ICD-10</label>
+                                        <input type="text" name="kode_icd[{{ $k->id }}]" form="editPasienForm"
+                                            class="w-full mt-1 border border-gray-300 rounded-lg px-3 py-1.5 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            value="{{ $k->diagnosa->kode_icd ?? '' }}"
+                                            placeholder="Contoh: J06.9">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-semibold text-gray-500">Diagnosa Utama <span class="text-red-500">*</span></label>
+                                        <input type="text"
+                                            class="w-full mt-1 border border-gray-200 bg-gray-100 rounded-lg px-3 py-1.5 text-xs text-gray-500 cursor-not-allowed"
+                                            value="{{ $k->diagnosa->diagnosa_utama ?? '-' }}"
+                                            readonly disabled>
+                                        <p class="text-[10px] text-gray-400 mt-1">Diagnosa hanya dapat diubah oleh dokter.</p>
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-semibold text-gray-500">Diagnosa Sekunder</label>
+                                        <input type="text"
+                                            class="w-full mt-1 border border-gray-200 bg-gray-100 rounded-lg px-3 py-1.5 text-xs text-gray-500 cursor-not-allowed"
+                                            value="{{ $k->diagnosa->diagnosa_sekunder ?? '-' }}"
+                                            readonly disabled>
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-semibold text-gray-500">Catatan</label>
+                                        <input type="text"
+                                            class="w-full mt-1 border border-gray-200 bg-gray-100 rounded-lg px-3 py-1.5 text-xs text-gray-500 cursor-not-allowed"
+                                            value="{{ $k->diagnosa->catatan ?? '-' }}"
+                                            readonly disabled>
+                                    </div>
+                                </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 @endforeach
@@ -265,7 +370,7 @@
             </div>
             <div>
                 <h3 class="font-bold text-lg text-gray-800">Simpan Perubahan?</h3>
-                <p class="text-sm text-gray-500">Data identitas pasien akan diperbarui.</p>
+                <p class="text-sm text-gray-500">Seluruh perubahan pada form ini akan disimpan.</p>
             </div>
         </div>
         <div class="border-t pt-4 flex justify-end gap-3">

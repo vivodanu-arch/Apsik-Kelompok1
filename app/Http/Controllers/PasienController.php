@@ -90,6 +90,14 @@ class PasienController extends Controller
                 ->get();
         }
 
+        // Petugas: tampilkan seluruh riwayat kunjungan+diagnosa pasien (hanya kode ICD yang bisa diubah)
+        if ($user->role === 'petugas') {
+            $kunjungans = $pasien->kunjungans()
+                ->with('diagnosa', 'poli', 'dokter')
+                ->orderBy('tanggal_kunjungan', 'desc')
+                ->get();
+        }
+
         // Kepala RM tidak boleh edit
         if ($user->role === 'kepalarm') {
             abort(403, 'Kepala RM tidak memiliki akses untuk mengedit data pasien.');
@@ -100,6 +108,9 @@ class PasienController extends Controller
 
     public function update(Request $request, $id)
     {
+        $user   = Auth::user();
+        $pasien = Pasien::findOrFail($id);
+
         $request->validate([
             'no_rm' => [
                 'required',
@@ -115,50 +126,120 @@ class PasienController extends Controller
             'no_rm.regex' => 'Format No RM harus 00-00-00',
         ]);
 
-        Pasien::findOrFail($id)->update($request->only([
+        $pasien->update($request->only([
             'no_rm', 'nama_pasien', 'jenis_kelamin', 'ttl', 'alamat', 'telepon'
         ]));
+
+        // Dokter: simpan diagnosa_utama / diagnosa_sekunder / catatan per kunjungan
+        if ($user->role === 'dokter' && $user->dokter) {
+            $request->validate([
+                'diagnosa_utama.*'    => 'required|string|max:255',
+                'diagnosa_sekunder.*' => 'nullable|string|max:255',
+                'catatan.*'           => 'nullable|string',
+            ]);
+
+            foreach ($request->input('diagnosa_utama', []) as $kunjunganId => $diagnosaUtama) {
+                $kunjungan = Kunjungan::where('id', $kunjunganId)
+                    ->where('dokter_id', $user->dokter->id)
+                    ->first();
+
+                if (!$kunjungan) {
+                    continue;
+                }
+
+                $diagnosa = Diagnosa::firstOrNew(['kunjungan_id' => $kunjungan->id]);
+                $diagnosa->kunjungan_id      = $kunjungan->id;
+                $diagnosa->diagnosa_utama    = $diagnosaUtama;
+                $diagnosa->diagnosa_sekunder = $request->input("diagnosa_sekunder.$kunjunganId");
+                $diagnosa->catatan           = $request->input("catatan.$kunjunganId");
+                $diagnosa->save();
+
+                if ($kunjungan->status === 'menunggu') {
+                    $kunjungan->update(['status' => 'diperiksa']);
+                }
+            }
+        }
+
+        // Petugas: simpan kode ICD per kunjungan
+        if ($user->role === 'petugas') {
+            $request->validate([
+                'kode_icd.*' => 'nullable|string|max:20',
+            ]);
+
+            foreach ($request->input('kode_icd', []) as $kunjunganId => $kodeIcd) {
+                $kunjungan = Kunjungan::where('id', $kunjunganId)
+                    ->where('pasien_id', $pasien->id)
+                    ->first();
+
+                if (!$kunjungan || !$kunjungan->diagnosa) {
+                    continue;
+                }
+
+                $kunjungan->diagnosa->update(['kode_icd' => $kodeIcd]);
+            }
+        }
 
         return redirect()->route('pasien.index')->with('success', 'Data pasien berhasil diperbarui');
     }
 
-    // Dokter: update diagnosa untuk kunjungan tertentu
+    // Dokter: update diagnosa utama/sekunder/catatan untuk kunjungan tertentu
+    // Petugas: update kode ICD saja untuk kunjungan tertentu
     public function updateDiagnosa(Request $request, $kunjunganId)
     {
         $user = Auth::user();
-        if ($user->role !== 'dokter' || !$user->dokter) {
-            abort(403);
+
+        if ($user->role === 'dokter' && $user->dokter) {
+            // Dokter hanya boleh mengubah diagnosa kunjungan miliknya sendiri
+            $kunjungan = Kunjungan::where('id', $kunjunganId)
+                ->where('dokter_id', $user->dokter->id)
+                ->firstOrFail();
+
+            $request->validate([
+                'diagnosa_utama'    => 'required|string|max:255',
+                'diagnosa_sekunder' => 'nullable|string|max:255',
+                'catatan'           => 'nullable|string',
+            ]);
+
+            $diagnosa = Diagnosa::firstOrNew(['kunjungan_id' => $kunjungan->id]);
+            $diagnosa->diagnosa_utama    = $request->diagnosa_utama;
+            $diagnosa->diagnosa_sekunder = $request->diagnosa_sekunder;
+            $diagnosa->catatan           = $request->catatan;
+            $diagnosa->kunjungan_id      = $kunjungan->id;
+            $diagnosa->save();
+
+            // Update status kunjungan jadi diperiksa jika masih menunggu
+            if ($kunjungan->status === 'menunggu') {
+                $kunjungan->update(['status' => 'diperiksa']);
+            }
+
+            return redirect()
+                ->route('pasien.edit', $kunjungan->pasien_id)
+                ->with('success', 'Diagnosa kunjungan berhasil diperbarui.');
         }
 
-        $kunjungan = Kunjungan::where('id', $kunjunganId)
-            ->where('dokter_id', $user->dokter->id)
-            ->firstOrFail();
+        if ($user->role === 'petugas') {
+            $kunjungan = Kunjungan::findOrFail($kunjunganId);
 
-        $request->validate([
-            'kode_icd'          => 'nullable|string|max:20',
-            'diagnosa_utama'    => 'required|string|max:255',
-            'diagnosa_sekunder' => 'nullable|string|max:255',
-            'catatan'           => 'nullable|string',
-        ]);
+            $request->validate([
+                'kode_icd' => 'nullable|string|max:20',
+            ]);
 
-        Diagnosa::updateOrCreate(
-            ['kunjungan_id' => $kunjungan->id],
-            [
-                'kode_icd'          => $request->kode_icd,
-                'diagnosa_utama'    => $request->diagnosa_utama,
-                'diagnosa_sekunder' => $request->diagnosa_sekunder,
-                'catatan'           => $request->catatan,
-            ]
-        );
+            $diagnosa = $kunjungan->diagnosa;
+            if (!$diagnosa) {
+                return redirect()
+                    ->route('pasien.edit', $kunjungan->pasien_id)
+                    ->with('error', 'Diagnosa belum diisi oleh dokter, kode ICD belum bisa diubah.');
+            }
 
-        // Update status kunjungan jadi diperiksa jika masih menunggu
-        if ($kunjungan->status === 'menunggu') {
-            $kunjungan->update(['status' => 'diperiksa']);
+            $diagnosa->kode_icd = $request->kode_icd;
+            $diagnosa->save();
+
+            return redirect()
+                ->route('pasien.edit', $kunjungan->pasien_id)
+                ->with('success', 'Kode ICD kunjungan berhasil diperbarui.');
         }
 
-        return redirect()
-            ->route('pasien.edit', $kunjungan->pasien_id)
-            ->with('success', 'Diagnosa kunjungan berhasil diperbarui.');
+        abort(403);
     }
 
     public function destroy($id)
