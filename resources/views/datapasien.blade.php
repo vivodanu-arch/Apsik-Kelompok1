@@ -178,10 +178,14 @@
                                 </td>
 
                                 <td class="px-4 py-4 text-center">
+                                    @if(Auth::user()->role === 'petugas' || Auth::user()->role === 'dokter' || Auth::user()->is_super_admin)
                                     <a href="{{ route('pasien.edit', $p->id) }}"
                                        class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">
                                         Edit
                                     </a>
+                                    @else
+                                    <span class="text-gray-300 text-xs">—</span>
+                                    @endif
                                 </td>
 
                             </tr>
