@@ -26,14 +26,25 @@
         <main class="p-6 space-y-6">
 
             {{-- Header --}}
-            <div class="bg-white rounded-2xl shadow-sm p-8">
-                <h1 class="text-3xl font-bold text-gray-800">
-                    Profile
-                </h1>
+            <div class="bg-white rounded-2xl shadow-sm p-8 flex items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">
+                        Profile
+                    </h1>
 
-                <p class="text-gray-500 mt-2">
-                    Kelola informasi akun dan keamanan profile Anda.
-                </p>
+                    <p class="text-gray-500 mt-2">
+                        Kelola informasi akun dan keamanan profile Anda.
+                    </p>
+                </div>
+
+                <a href="{{ session('profile_return_to', url('/')) }}"
+                   class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700
+                          px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-sm shrink-0">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    Kembali
+                </a>
             </div>
 
             {{-- Update Profile --}}

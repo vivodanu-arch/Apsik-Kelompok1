@@ -1,5 +1,33 @@
 <nav class="bg-white border-b h-16 px-6 flex items-center justify-between sticky top-0 z-30 shadow-sm">
 
+    {{-- Notifikasi Berhasil (update profile/password) --}}
+    @if(session('profile_success'))
+    <div id="profileSuccessModal" class="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px] z-[9999]">
+        <div id="profileSuccessCard" class="bg-white rounded-3xl shadow-xl p-8 w-[400px] max-w-[90%] text-center transition-all duration-300">
+            <div class="mx-auto w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center text-white text-4xl font-bold shadow-md">✓</div>
+            <h2 class="text-3xl font-bold mt-5 text-gray-800">Berhasil</h2>
+            <p class="text-gray-500 mt-2">{{ session('profile_success') }}</p>
+            <div class="mt-6 h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="profileProgressBar" class="h-full bg-green-500 rounded-full"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('profileSuccessModal');
+        const card  = document.getElementById('profileSuccessCard');
+        card.style.opacity = '0'; card.style.transform = 'translateY(20px)';
+        setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 120);
+        document.getElementById('profileProgressBar').animate([{width:'100%'},{width:'0%'}],{duration:1500,fill:'forwards'});
+        setTimeout(() => {
+            modal.style.transition = 'all .2s ease'; modal.style.opacity = '0';
+            card.style.transform = 'scale(.8)';
+            setTimeout(() => modal.remove(), 400);
+        }, 1500);
+    });
+    </script>
+    @endif
+
     {{-- Breadcrumb / Judul halaman --}}
     <div class="flex items-center gap-2 text-sm text-gray-500">
         <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -43,6 +43,10 @@ Route::middleware('auth')->group(function () {
 
     // PASIEN CRUD
     Route::resource('/pasien', PasienController::class);
+
+    // DOKTER: update diagnosa kunjungan pasien
+    Route::post('/kunjungan/{kunjungan}/diagnosa', [PasienController::class, 'updateDiagnosa'])
+        ->name('kunjungan.updateDiagnosa');
 });
 
 /*

@@ -16,6 +16,12 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        // Simpan halaman sebelumnya agar bisa kembali setelah menyimpan profile
+        $previous = url()->previous();
+        if (!str_contains($previous, route('profile.edit', [], false))) {
+            $request->session()->put('profile_return_to', $previous);
+        }
+
         return view('profile.edit', [
             'user' => $request->user(),
         ]);
@@ -33,6 +39,12 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+
+        $returnTo = $request->session()->get('profile_return_to');
+
+        if ($returnTo) {
+            return Redirect::to($returnTo)->with('profile_success', 'Profile berhasil diperbarui.');
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
