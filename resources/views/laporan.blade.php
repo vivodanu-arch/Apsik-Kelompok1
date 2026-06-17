@@ -243,142 +243,125 @@ if ($dari && $sampai) {
             margin-bottom: 14px;
         }
 
-        @page { size: A4 landscape; margin: 10mm 8mm; }
+        @page { size: A4 landscape; margin: 8mm 10mm; }
 
-        @media print {
-<<<<<<< HEAD
+@media print {
+    html, body {
+        background: white !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
 
-    html, body { background: white !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .no-print { display: none !important; }
-    aside, nav, .sidebar { display: none !important; }
-    .flex-1 { margin-left: 0 !important; width: 100% !important; }
-    main { padding: 0 !important; margin: 0 !important; }
+    .no-print,
+    .sidebar-wrapper,
+    .topbar-wrapper {
+        display: none !important;
+    }
 
+    .main-wrapper { margin-left: 0 !important; }
+    .content-area { padding: 0 !important; overflow: visible !important; }
+
+    #laporanPage { display: none !important; }
     .report-page { display: none !important; }
     .report-page.active { display: block !important; }
 
-    .page-print { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 20px !important; border-radius: 0 !important; box-shadow: none !important; page-break-after: always; }
+    .page-print {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 10px 14px !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+    }
     .page-print:last-child { page-break-after: auto; }
 
-    /* ===== THEAD REPEAT ===== */
+    /* Kop surat */
+    .kop { border-bottom: 2px solid #1d4ed8 !important; padding-bottom: 10px !important; margin-bottom: 10px !important; }
+    .kop-text h1 { font-size: 18px !important; }
+    .kop-text p, .kop-tagline { font-size: 10px !important; }
+    .kop-logo img { width: 70px !important; height: 70px !important; }
+
+    /* Judul laporan */
+    .judul { font-size: 13px !important; margin: 6px 0 2px !important; }
+    .subjudul { font-size: 11px !important; margin-bottom: 8px !important; }
+
+    /* Wrapper tidak scroll saat print */
+    .rl51-scroll-wrapper {
+        overflow: visible !important;
+        width: 100% !important;
+    }
+
+    /* Tabel RL 5.1 — font lebih besar, muat landscape */
+    .rl51-table {
+        font-size: 7.5px !important;
+        width: 100% !important;
+        table-layout: fixed !important;
+        border-collapse: collapse !important;
+    }
+
+    .rl51-table th,
+    .rl51-table td {
+        padding: 2px 2px !important;
+        font-size: 7.5px !important;
+        border: 0.5px solid #374151 !important;
+        word-break: break-word !important;
+    }
+
+    .rl51-table th.rl51-umur { font-size: 7px !important; }
+    .rl51-table th.rl51-lp  { font-size: 7px !important; }
+
+    /* Kolom diagnosa lebih lebar */
+    .rl51-table td.diagnosa-cell {
+        font-size: 7.5px !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        text-align: left !important;
+        min-width: 120px !important;
+    }
+
+    /* Warna header tetap tampil saat print */
+    .bg-blue-600, .rl51-table thead tr:nth-child(1) th {
+        background-color: #2563eb !important;
+        color: white !important;
+    }
+    .bg-blue-500, .rl51-table thead tr:nth-child(2) th {
+        background-color: #3b82f6 !important;
+        color: white !important;
+    }
+    .bg-blue-400, .rl51-table thead tr:nth-child(3) th {
+        background-color: #60a5fa !important;
+        color: white !important;
+    }
+
     thead { display: table-header-group; }
+    tfoot { display: table-footer-group; }
     tbody { display: table-row-group; }
     tbody tr { page-break-inside: avoid; }
 
-    /* Baris kop (tr pertama thead) — tanpa border, background putih */
-    thead tr:first-child th {
-        border: none !important;
-        padding: 0 0 8px 0 !important;
-        background: white !important;
-        color: black !important;
+    /* Keterangan & TTD */
+    .rl51-keterangan { font-size: 9px !important; margin-top: 6px !important; }
+
+    /* Tabel RL 5.2 & 5.3 */
+    table { width: 100% !important; }
+    th, td {
+        border: 0.5px solid #374151 !important;
+        font-size: 9px !important;
+        padding: 3px 4px !important;
     }
 
-    /* Header kolom biasa */
-    th, td { border: 1px solid black !important; font-size: 11px !important; padding: 5px !important; }
+    thead tr:first-child th {
+        border: none !important;
+        background: white !important;
+        color: black !important;
+        padding: 0 0 6px 0 !important;
+    }
 
-    /* Warna header tabel */
-    .bg-blue-600 { background-color: #2563eb !important; color: white !important; }
-    .bg-blue-500 { background-color: #3b82f6 !important; color: white !important; }
-    .bg-blue-400 { background-color: #60a5fa !important; color: white !important; }
-    .bg-red-600  { background-color: #dc2626 !important; color: white !important; }
-    .bg-green-600 { background-color: #16a34a !important; color: white !important; }
     thead th { color: white !important; }
-
-    /* RL 5.1 keseluruhan */
-    .rl51-table { font-size: 7px; }
-    .rl51-table th, .rl51-table td { padding: 1px 2px; }
-    .rl51-table th.rl51-vertical { font-size: 6px; height: 55px; }
-    #semuaPenyakitPage.page-print { overflow: visible; transform: scale(0.85); transform-origin: top left; width: 117.6%; }
 }
-=======
->>>>>>> 790640e6f31f9438c0759e414f6095baa8d0f4d2
-            html, body { background: white !important; margin: 0 !important; padding: 0 !important;
-                -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            .no-print { display: none !important; }
-            .sidebar-wrapper, .topbar-wrapper { display: none !important; }
-            .main-wrapper { margin-left: 0 !important; }
-            .content-area { padding: 0 !important; overflow: visible !important; }
 
-            /* Sembunyikan halaman kunjungan saat cetak */
-            #laporanPage { display: none !important; }
-
-            .report-page { display: none !important; }
-            .report-page.active { display: block !important; }
-            #laporanPage.active { display: none !important; }
-
-            .page-print { width: 100% !important; max-width: 100% !important; margin: 0 !important;
-                padding: 16px !important; border-radius: 0 !important; box-shadow: none !important;
-                page-break-after: always; }
-            .page-print:last-child { page-break-after: auto; }
-
-            thead { display: table-header-group; }
-            tfoot { display: table-footer-group; }
-            tbody { display: table-row-group; }
-            tbody tr { page-break-inside: avoid; }
-
-            /* Warna umum tabel non-RL51 */
-            th, td { border: 1px solid black !important; font-size: 10px !important; padding: 4px !important; }
-            .bg-blue-600  { background-color: #2563eb !important; color: white !important; }
-            .bg-blue-500  { background-color: #3b82f6 !important; color: white !important; }
-            .bg-blue-400  { background-color: #60a5fa !important; color: white !important; }
-            .bg-green-600 { background-color: #16a34a !important; color: white !important; }
-            thead th { color: white !important; }
-            thead tr:first-child th { border: none !important; padding: 0 0 6px 0 !important; background: white !important; color: black !important; }
-
-            /* RL 5.1: cetak landscape, paksa muat dalam 1 lebar halaman */
-            .rl51-scroll-wrapper { overflow: visible !important; width: 100% !important; }
-            .rl51-table {
-                font-size: 5.5px !important;
-                width: 100% !important;
-                table-layout: auto !important;
-            }
-            .rl51-table th, .rl51-table td {
-                padding: 1px 0px !important;
-                font-size: 5.5px !important;
-                border: 0.5px solid black !important;
-            }
-            .rl51-table thead th { color: white !important; }
-            .rl51-table thead tr:first-child th { border: none !important; }
-            .rl51-table th.rl51-umur {
-                font-size: 5px !important;
-                min-width: unset !important; max-width: unset !important;
-                padding: 1px 0 !important;
-                white-space: nowrap !important;
-            }
-            .rl51-table th.rl51-lp {
-                font-size: 5.5px !important;
-                min-width: unset !important; max-width: unset !important;
-                padding: 1px 0 !important;
-            }
-            .rl51-table td.diagnosa-cell {
-                font-size: 5.5px !important;
-                white-space: normal !important;
-                word-break: break-word !important;
-                max-width: 80px !important;
-                text-align: left !important;
-            }
-            /* TTD: tidak pernah terpisah ke halaman baru */
-            .ttd {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                page-break-before: avoid !important;
-                break-before: avoid !important;
-                margin-top: 16px !important;
-            }
-            .ttd-box { font-size: 10px !important; }
-            .rl51-keterangan {
-                page-break-inside: avoid !important;
-                break-inside: avoid !important;
-                page-break-before: avoid !important;
-            }
-            tfoot tr { page-break-inside: avoid !important; break-inside: avoid !important; }
-            #rl52Page table, #rl53Page table { page-break-inside: avoid !important; }
-            #rl52Page .ttd, #rl53Page .ttd { page-break-before: avoid !important; break-before: avoid !important; }
-<<<<<<< HEAD
-
-=======
-        }
->>>>>>> 790640e6f31f9438c0759e414f6095baa8d0f4d2
     </style>
 </head>
 
@@ -467,65 +450,179 @@ if ($dari && $sampai) {
             </div>
 
             {{-- ===== HALAMAN 1: LAPORAN KUNJUNGAN (default, tidak bisa cetak) ===== --}}
-            <div id="laporanPage" class="page-print report-page active">
+            <div id="laporanPage" class="report-page active">
 
-                {{-- Banner info tidak bisa cetak --}}
-                <div class="no-print-banner no-print">
-                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                    Halaman ini hanya untuk tampilan. Untuk mencetak laporan, pilih RL 5.1, RL 5.2, atau RL 5.3 dari menu <strong>Pilih Laporan</strong>.
-                </div>
+    {{-- Banner --}}
+    <div class="no-print-banner no-print mb-4">
+        Halaman ini hanya untuk tampilan. Untuk mencetak laporan, pilih RL 5.1, RL 5.2, atau RL 5.3.
+    </div>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th colspan="10" style="border:none; padding:0 0 4px 0; background:white;">
-                                @include('layouts.kopsurat')
-                                <div class="judul">LAPORAN REKAP DATA REKAM MEDIS PASIEN</div>
-                                <div class="subjudul">{{ $periode }}</div>
-                            </th>
-                        </tr>
-                        <tr class="bg-blue-600 text-white">
-                            <th>NO</th>
-                            <th>NAMA PASIEN</th>
-                            <th>TANGGAL KUNJUNGAN</th>
-                            <th>NAMA DOKTER</th>
-                            <th>NAMA POLI</th>
-                            <th>NO. RM</th>
-                            <th>JK</th>
-                            <th>KELUHAN UTAMA</th>
-                            <th>DIAGNOSA UTAMA</th>
-                            <th>DIAGNOSA SEKUNDER</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($laporans as $l)
-                        <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td>{{ $l->pasien->nama_pasien ?? '-' }}</td>
-                            <td class="text-center">{{ \Carbon\Carbon::parse($l->tanggal_kunjungan)->translatedFormat('d F Y') }}</td>
-                            <td>{{ $l->dokter->nama_dokter ?? '-' }}</td>
-                            <td>{{ $l->poli->nama_poli ?? '-' }}</td>
-                            <td class="text-center">{{ $l->pasien->no_rm ?? '-' }}</td>
-                            <td class="text-center">{{ $l->pasien->jenis_kelamin ?? '-' }}</td>
-                            <td>{{ $l->keluhan_utama ?? '-' }}</td>
-                            <td>{{ $l->diagnosa->diagnosa_utama ?? '-' }}</td>
-                            <td>{{ $l->diagnosa->diagnosa_sekunder ?? '-' }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="10" class="text-center py-4 text-gray-400">
-                                Tidak ada data laporan untuk periode ini
-                            </td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
-            </div>
+    {{-- Header --}}
+    <div class="rounded-2xl p-8 mb-6 text-white shadow-sm"
+         style="background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);">
+        <h1 class="text-3xl font-bold">
+            Laporan Rekap Data Rekam Medis Pasien
+        </h1>
+        <p class="mt-2 text-blue-200 text-sm">
+            {{ $periode }}
+        </p>
+    </div>
+
+    {{-- Card --}}
+    <div class="bg-white rounded-10sx4 shadow-sm overflow-hidden">
+
+                        {{-- Info jumlah --}}
+                        <div class="ml-auto flex items-end">
+                            <p class="text-sm text-gray-400">
+                                Total: <strong class="text-gray-700">{{ $laporans->total() }}</strong> data
+                            </p>
+                        </div>
+           
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full text-sm text-left">
+
+                <thead class="bg-gray-50 text-gray-500 uppercase text-xs border-b">
+                <tr>
+                    <th class="px-4 py-3">No</th>
+                    <th class="px-4 py-3">Tanggal</th>
+                    <th class="px-4 py-3">No RM</th>
+                    <th class="px-4 py-3">Nama Pasien</th>
+                    <th class="px-4 py-3">Keluhan Utama</th>
+                    <th class="px-4 py-3">Dokter</th>
+                    <th class="px-4 py-3">Poli</th>
+                    <th class="px-4 py-3">Diagnosa</th>
+                </tr>
+                </thead>
+
+                <tbody class="divide-y divide-gray-100">
+
+                @forelse($laporans as $item)
+
+                    <tr class="hover:bg-gray-50 transition">
+
+                        <td class="px-4 py-4 text-gray-500">
+                            {{ $loop->iteration }}
+                        </td>
+
+                        <td class="px-4 py-4 whitespace-nowrap">
+                            {{ \Carbon\Carbon::parse($item->tanggal_kunjungan)->translatedFormat('d F Y') }}
+                        </td>
+
+                        <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded text-xs">
+                                        {{ $item->pasien->no_rm ?? '-' }}
+                                    </span>
+                                </td>
+                        
+                        <td class="px-4 py-4 font-semibold text-gray-800">
+                            {{ $item->pasien->nama_pasien ?? '-' }}
+                        </td>
+
+                        <td class="px-4 py-4 text-gray-600">
+                            {{ $item->keluhan_utama }}
+                        </td>
+
+                        <td class="px-4 py-4 text-gray-700">
+                            {{ $item->dokter->nama_dokter ?? '-' }}
+                        </td>
+
+                        <td class="px-4 py-4">
+                            <span class="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-xs font-semibold px-2 py-1 rounded-full">
+                                {{ $item->poli->nama_poli ?? '-' }}
+                            </span>
+                        </td>
+
+                        <td class="px-4 py-4 text-gray-700">
+                            @if($item->diagnosa)
+                                <div class="font-medium">
+                                    {{ $item->diagnosa->diagnosa_utama }}
+                                </div>
+
+                                <div class="text-xs text-gray-400">
+                                    {{ $item->diagnosa->kode_icd }}
+                                </div>
+                            @endif
+                        </td>
+
+                    </tr>
+
+                @empty
+
+                    <tr>
+                        <td colspan="8"
+                            class="text-center py-12 text-gray-400">
+                            Belum ada data laporan
+                        </td>
+                    </tr>
+
+                @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+{{-- Pagination --}}
+                <div class="px-5 py-4 border-t flex items-center justify-between">
+                    <p class="text-sm text-gray-500">
+                        Halaman {{ $laporans->currentPage() }} dari {{ $laporans->lastPage() }}
+                    </p>
+
+                    <div class="flex items-center gap-1">
+
+                        {{-- Prev --}}
+                        @if ($laporans->onFirstPage())
+                            <span class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-gray-300 text-sm">‹</span>
+                        @else
+                            <a href="{{ $laporans->appends(request()->query())->previousPageUrl() }}"
+                               class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100 text-sm transition">‹</a>
+                        @endif
+
+                        {{-- Nomor halaman — tampilkan maks 7 angka --}}
+                        @php
+                            $current  = $laporans->currentPage();
+                            $last     = $laporans->lastPage();
+                            $start    = max(1, $current - 3);
+                            $end      = min($last, $current + 3);
+                        @endphp
+
+                        @if($start > 1)
+                            <a href="{{ $laporans->url(1) }}" class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 text-sm">1</a>
+                            @if($start > 2)<span class="px-1 text-gray-400 text-sm">…</span>@endif
+                        @endif
+
+                        @for ($i = $start; $i <= $end; $i++)
+                            <a href="{{ $laporans->appends(request()->query())->url($i) }}"
+                               class="w-9 h-9 flex items-center justify-center rounded-lg text-sm transition
+                               {{ $current == $i ? 'bg-blue-600 text-white shadow' : 'border border-gray-200 text-gray-600 hover:bg-gray-100' }}">
+                                {{ $i }}
+                            </a>
+                        @endfor
+
+                        @if($end < $last)
+                            @if($end < $last - 1)<span class="px-1 text-gray-400 text-sm">…</span>@endif
+                            <a href="{{ $laporans->url($last) }}" class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-100 text-sm">{{ $last }}</a>
+                        @endif
+
+                        {{-- Next --}}
+                        @if ($laporans->hasMorePages())
+                            <a href="{{ $laporans->appends(request()->query())->nextPageUrl() }}"
+                               class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-100 text-sm transition">›</a>
+                        @else
+                            <span class="w-9 h-9 flex items-center justify-center rounded-lg border border-gray-200 text-gray-300 text-sm">›</span>
+                        @endif
+
+                    </div>
 
             {{-- ===== HALAMAN 2: RL 5.1 – MORBIDITAS (tabel lengkap kelompok umur) ===== --}}
-            <div id="rl51Page" class="page-print report-page">
+            <div id="rl51Page">
 
                 {{-- Kop & judul di luar scroll wrapper agar tidak terpotong --}}
                 @include('layouts.kopsurat')
@@ -680,11 +777,8 @@ if ($dari && $sampai) {
                 </table>
             </div>
 
-<<<<<<< HEAD
-            {{-- ===== HALAMAN 4: RL 5.3 – KUNJUNGAN PENYAKIT RAWAT JALAN ===== --}}
-=======
             {{-- ===== HALAMAN 4: RL 5.3 – KUNJUNGAN ===== --}}
->>>>>>> 790640e6f31f9438c0759e414f6095baa8d0f4d2
+
             <div id="rl53Page" class="page-print report-page">
                 <table>
                     <thead>

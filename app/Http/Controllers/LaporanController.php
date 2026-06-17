@@ -39,8 +39,13 @@ class LaporanController extends Controller
             $query->whereBetween('tanggal_kunjungan', [$request->dari, $request->sampai]);
             $judulLaporan = 'LAPORAN PERIODE';
         }
-
-        $laporans = $query->orderBy('tanggal_kunjungan', 'desc')->get();
+   
+        if ($request->filled('tanggal')) {
+    $query->whereDate('tanggal_kunjungan', $request->tanggal);
+}
+        $laporans = $query->orderBy('tanggal_kunjungan', 'desc')
+                  ->paginate(10)
+                  ->withQueryString();
 
         // 10 besar penyakit dari data yang difilter (query DB langsung agar akurat)
         $topPenyakit = DB::table('diagnosas')
@@ -66,7 +71,7 @@ class LaporanController extends Controller
 
         // ===== RL 5.1: KOMPILASI MORBIDITAS PASIEN RAWAT JALAN (KESELURUHAN) =====
         $rl51 = $this->buildRl51();
-        
+
         return view('laporan', compact(
             'laporans',
             'judulLaporan',
