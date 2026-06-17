@@ -8,14 +8,6 @@
         <h1 class="text-2xl font-bold text-gray-800">Tambah User</h1>
         <p class="text-sm text-gray-500 mt-1">Buat akun pengguna baru untuk sistem</p>
     </div>
-    <a href="{{ route('users.index') }}"
-       class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700
-              px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-        </svg>
-        Kembali
-    </a>
 </div>
 
 {{-- ERROR --}}

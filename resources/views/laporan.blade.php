@@ -246,50 +246,6 @@ if ($dari && $sampai) {
         @page { size: A4 landscape; margin: 10mm 8mm; }
 
         @media print {
-<<<<<<< HEAD
-    html, body { background: white !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-    .no-print { display: none !important; }
-    aside, nav, .sidebar { display: none !important; }
-    .flex-1 { margin-left: 0 !important; width: 100% !important; }
-    main { padding: 0 !important; margin: 0 !important; }
-
-    .report-page { display: none !important; }
-    .report-page.active { display: block !important; }
-
-    .page-print { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 20px !important; border-radius: 0 !important; box-shadow: none !important; page-break-after: always; }
-    .page-print:last-child { page-break-after: auto; }
-
-    /* ===== THEAD REPEAT ===== */
-    thead { display: table-header-group; }
-    tbody { display: table-row-group; }
-    tbody tr { page-break-inside: avoid; }
-
-    /* Baris kop (tr pertama thead) — tanpa border, background putih */
-    thead tr:first-child th {
-        border: none !important;
-        padding: 0 0 8px 0 !important;
-        background: white !important;
-        color: black !important;
-    }
-
-    /* Header kolom biasa */
-    th, td { border: 1px solid black !important; font-size: 11px !important; padding: 5px !important; }
-
-    /* Warna header tabel */
-    .bg-blue-600 { background-color: #2563eb !important; color: white !important; }
-    .bg-blue-500 { background-color: #3b82f6 !important; color: white !important; }
-    .bg-blue-400 { background-color: #60a5fa !important; color: white !important; }
-    .bg-red-600  { background-color: #dc2626 !important; color: white !important; }
-    .bg-green-600 { background-color: #16a34a !important; color: white !important; }
-    thead th { color: white !important; }
-
-    /* RL 5.1 keseluruhan */
-    .rl51-table { font-size: 7px; }
-    .rl51-table th, .rl51-table td { padding: 1px 2px; }
-    .rl51-table th.rl51-vertical { font-size: 6px; height: 55px; }
-    #semuaPenyakitPage.page-print { overflow: visible; transform: scale(0.85); transform-origin: top left; width: 117.6%; }
-}
-=======
             html, body { background: white !important; margin: 0 !important; padding: 0 !important;
                 -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; }
@@ -373,7 +329,6 @@ if ($dari && $sampai) {
             #rl52Page table, #rl53Page table { page-break-inside: avoid !important; }
             #rl52Page .ttd, #rl53Page .ttd { page-break-before: avoid !important; break-before: avoid !important; }
         }
->>>>>>> 592785df4f4ba202f6cf1cee68a3d4feff497ba1
     </style>
 </head>
 
@@ -674,12 +629,8 @@ if ($dari && $sampai) {
                     </tbody>
                 </table>
             </div>
-<<<<<<< HEAD
-            {{-- ===== HALAMAN 6: RL 5.3 – KUNJUNGAN PENYAKIT RAWAT JALAN ===== --}}
-=======
 
             {{-- ===== HALAMAN 4: RL 5.3 – KUNJUNGAN ===== --}}
->>>>>>> 592785df4f4ba202f6cf1cee68a3d4feff497ba1
             <div id="rl53Page" class="page-print report-page">
                 <table>
                     <thead>

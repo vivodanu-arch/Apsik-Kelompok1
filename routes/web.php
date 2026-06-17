@@ -72,6 +72,8 @@ Route::middleware(['auth', 'superadmin'])->group(function () {
     // MANAJEMEN USER
     Route::get('/users', [UserController::class, 'index'])
         ->name('users.index');
+    Route::delete('/users/{user}', [UserController::class, 'destroy'])
+        ->name('users.destroy');
 
     // TAMBAH USER
     Route::get('/register', [RegisteredUserController::class, 'create'])
