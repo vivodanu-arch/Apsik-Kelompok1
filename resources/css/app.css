@@ -1,5 +1,3 @@
-[x-cloak] { display: none !important; }
-
 @import './auth.css';
 @import './sidebar.css';
 
@@ -8,6 +6,8 @@
 @tailwind utilities;
 
 /* ─── Topbar avatar ─────────────────────────────── */
+[x-cloak] { display: none !important; }
+
 @layer components {
     .profile-avatar {
         transition: transform 0.2s ease, box-shadow 0.2s ease;
