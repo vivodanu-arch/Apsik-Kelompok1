@@ -246,6 +246,7 @@ if ($dari && $sampai) {
         @page { size: A4 landscape; margin: 10mm 8mm; }
 
         @media print {
+<<<<<<< HEAD
 
     html, body { background: white !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     .no-print { display: none !important; }
@@ -289,6 +290,8 @@ if ($dari && $sampai) {
     .rl51-table th.rl51-vertical { font-size: 6px; height: 55px; }
     #semuaPenyakitPage.page-print { overflow: visible; transform: scale(0.85); transform-origin: top left; width: 117.6%; }
 }
+=======
+>>>>>>> 790640e6f31f9438c0759e414f6095baa8d0f4d2
             html, body { background: white !important; margin: 0 !important; padding: 0 !important;
                 -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; }
@@ -371,7 +374,11 @@ if ($dari && $sampai) {
             tfoot tr { page-break-inside: avoid !important; break-inside: avoid !important; }
             #rl52Page table, #rl53Page table { page-break-inside: avoid !important; }
             #rl52Page .ttd, #rl53Page .ttd { page-break-before: avoid !important; break-before: avoid !important; }
+<<<<<<< HEAD
 
+=======
+        }
+>>>>>>> 790640e6f31f9438c0759e414f6095baa8d0f4d2
     </style>
 </head>
 
@@ -673,7 +680,11 @@ if ($dari && $sampai) {
                 </table>
             </div>
 
+<<<<<<< HEAD
             {{-- ===== HALAMAN 4: RL 5.3 – KUNJUNGAN PENYAKIT RAWAT JALAN ===== --}}
+=======
+            {{-- ===== HALAMAN 4: RL 5.3 – KUNJUNGAN ===== --}}
+>>>>>>> 790640e6f31f9438c0759e414f6095baa8d0f4d2
             <div id="rl53Page" class="page-print report-page">
                 <table>
                     <thead>
