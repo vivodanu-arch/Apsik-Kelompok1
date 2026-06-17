@@ -106,26 +106,24 @@
        class="fixed top-0 left-0 w-64 h-screen flex flex-col z-40">
 
     {{-- ── Logo ── --}}
-    <div class="px-5 py-5 flex items-center gap-3"
-        style="border-bottom: 1px solid rgba(255,255,255,0.12);">
+        {{-- ── Logo ── --}}
+<div class="px-5 py-4 flex items-center gap-3"
+    style="border-bottom: 1px solid rgba(255,255,255,0.12);">
 
-        <div class="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0"
-            style="background: rgba(255,255,255,0.18);">
-            <img src="{{ asset('images/logo1.png') }}"
-                alt="Logo Rumah Sakit Kasih"
-                class="w-8 h-8 object-contain">
-        </div>
+    <img src="{{ asset('images/logo1.png') }}"
+        alt="Logo Rumah Sakit Kasih"
+        class="w-12 h-12 object-contain flex-shrink-0 rounded-full">
 
-        <div>
-            <h1 class="text-sm font-bold text-white leading-tight tracking-wide">
-                RUMAH SAKIT KASIH
-            </h1>
-            <p class="text-[10px] tracking-widest uppercase mt-0.5"
-            style="color: rgba(255,255,255,0.40);">
-                Sistem Pelaporan
-            </p>
-        </div>
+    <div>
+        <h1 class="text-sm font-bold text-white leading-tight tracking-wide">
+            RUMAH SAKIT KASIH
+        </h1>
+        <p class="text-[10px] tracking-widest uppercase mt-0.5"
+        style="color: rgba(255,255,255,0.50);">
+            Sistem Pelaporan
+        </p>
     </div>
+</div>
 
     {{-- ── Navigasi ── --}}
     <nav class="flex-1 px-3 py-4 overflow-y-auto" style="display: flex; flex-direction: column; gap: 2px;">
