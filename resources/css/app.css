@@ -1,3 +1,5 @@
+[x-cloak] { display: none !important; }
+
 @import './auth.css';
 @import './sidebar.css';
 
