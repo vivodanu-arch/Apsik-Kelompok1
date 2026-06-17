@@ -66,7 +66,7 @@ class LaporanController extends Controller
 
         // ===== RL 5.1: KOMPILASI MORBIDITAS PASIEN RAWAT JALAN (KESELURUHAN) =====
         $rl51 = $this->buildRl51();
-
+        
         return view('laporan', compact(
             'laporans',
             'judulLaporan',

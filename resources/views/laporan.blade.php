@@ -30,7 +30,7 @@ if ($dari && $sampai) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+   <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
         * { box-sizing: border-box; }
@@ -246,7 +246,7 @@ if ($dari && $sampai) {
         @page { size: A4 landscape; margin: 10mm 8mm; }
 
         @media print {
-<<<<<<< HEAD
+
     html, body { background: white !important; margin: 0 !important; padding: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     .no-print { display: none !important; }
     aside, nav, .sidebar { display: none !important; }
@@ -289,7 +289,6 @@ if ($dari && $sampai) {
     .rl51-table th.rl51-vertical { font-size: 6px; height: 55px; }
     #semuaPenyakitPage.page-print { overflow: visible; transform: scale(0.85); transform-origin: top left; width: 117.6%; }
 }
-=======
             html, body { background: white !important; margin: 0 !important; padding: 0 !important;
                 -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; }
@@ -372,8 +371,7 @@ if ($dari && $sampai) {
             tfoot tr { page-break-inside: avoid !important; break-inside: avoid !important; }
             #rl52Page table, #rl53Page table { page-break-inside: avoid !important; }
             #rl52Page .ttd, #rl53Page .ttd { page-break-before: avoid !important; break-before: avoid !important; }
-        }
->>>>>>> 592785df4f4ba202f6cf1cee68a3d4feff497ba1
+
     </style>
 </head>
 
@@ -674,12 +672,8 @@ if ($dari && $sampai) {
                     </tbody>
                 </table>
             </div>
-<<<<<<< HEAD
-            {{-- ===== HALAMAN 6: RL 5.3 – KUNJUNGAN PENYAKIT RAWAT JALAN ===== --}}
-=======
 
-            {{-- ===== HALAMAN 4: RL 5.3 – KUNJUNGAN ===== --}}
->>>>>>> 592785df4f4ba202f6cf1cee68a3d4feff497ba1
+            {{-- ===== HALAMAN 4: RL 5.3 – KUNJUNGAN PENYAKIT RAWAT JALAN ===== --}}
             <div id="rl53Page" class="page-print report-page">
                 <table>
                     <thead>
@@ -789,7 +783,6 @@ if ($dari && $sampai) {
         </div>
     </div>
 </div>
-
 
 <script>
     // Halaman yang sedang aktif (default: laporan kunjungan)
