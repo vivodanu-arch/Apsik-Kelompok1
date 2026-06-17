@@ -84,6 +84,61 @@
 
             </div>
 
+            {{-- ── RL 5.1 — Tabel Morbiditas Rawat Jalan ── --}}
+            <div class="mb-6">
+                <div class="bg-white rounded-2xl shadow-sm p-5">
+                    <div class="mb-4">
+                        <h2 class="text-lg font-bold text-gray-800">RL 5.1 – Kompilasi Morbiditas Pasien Rawat Jalan</h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Jumlah kasus per kelompok umur dan jenis kelamin</p>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-blue-600 text-white">
+                                    <th rowspan="2" class="border border-blue-500 px-2 py-2 text-left min-w-[180px]">Nama Penyakit</th>
+                                    <th rowspan="2" class="border border-blue-500 px-2 py-2 whitespace-nowrap">Kode ICD</th>
+                                    @foreach($rl51['kelompok_umur'] as $kel)
+                                        <th colspan="2" class="border border-blue-500 px-1 py-1 text-center whitespace-nowrap">{{ $kel }}</th>
+                                    @endforeach
+                                    <th colspan="2" class="border border-blue-500 px-1 py-1 text-center">Total Kasus</th>
+                                    <th rowspan="2" class="border border-blue-500 px-2 py-2 text-center">Total</th>
+                                </tr>
+                                <tr class="bg-blue-500 text-white">
+                                    @foreach($rl51['kelompok_umur'] as $kel)
+                                        <th class="border border-blue-400 px-1 py-1 text-center w-7">L</th>
+                                        <th class="border border-blue-400 px-1 py-1 text-center w-7">P</th>
+                                    @endforeach
+                                    <th class="border border-blue-400 px-1 py-1 text-center w-7">L</th>
+                                    <th class="border border-blue-400 px-1 py-1 text-center w-7">P</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse($rl51['rows'] as $i => $r)
+                                <tr class="{{ $i % 2 === 0 ? 'bg-white' : 'bg-gray-50' }} hover:bg-blue-50 transition">
+                                    <td class="border border-gray-200 px-2 py-1.5 font-medium text-gray-800">{{ $r['diagnosa_utama'] }}</td>
+                                    <td class="border border-gray-200 px-2 py-1.5 text-center font-mono text-gray-500">{{ $r['kode_icd'] }}</td>
+                                    @foreach($rl51['kelompok_umur'] as $kel)
+                                        <td class="border border-gray-200 px-1 py-1.5 text-center text-gray-600">{{ $r['umur'][$kel]['L'] ?: '-' }}</td>
+                                        <td class="border border-gray-200 px-1 py-1.5 text-center text-gray-600">{{ $r['umur'][$kel]['P'] ?: '-' }}</td>
+                                    @endforeach
+                                    <td class="border border-gray-200 px-1 py-1.5 text-center font-semibold text-blue-700">{{ $r['total_kasus_L'] ?: '-' }}</td>
+                                    <td class="border border-gray-200 px-1 py-1.5 text-center font-semibold text-pink-600">{{ $r['total_kasus_P'] ?: '-' }}</td>
+                                    <td class="border border-gray-200 px-2 py-1.5 text-center font-bold text-gray-800">{{ $r['total_kasus'] }}</td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="{{ 3 + count($rl51['kelompok_umur']) * 2 + 2 }}" class="text-center py-6 text-gray-400">
+                                        Tidak ada data morbiditas
+                                    </td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-xs text-gray-400 italic mt-3">*) L = Laki-laki, P = Perempuan</p>
+                </div>
+            </div>
+
             {{-- ── Baris 1: RL 5.2 (full width) ── --}}
             <div class="mb-6">
                 <div class="bg-white rounded-2xl shadow-sm p-5">
@@ -102,7 +157,25 @@
                 </div>
             </div>
 
-            {{-- ── Baris 2: 10 Besar Dokter (full width) ── --}}
+            {{-- ── Baris 2: RL 5.3 (full width) ── --}}
+            <div class="mb-6">
+                <div class="bg-white rounded-2xl shadow-sm p-5">
+                    <div class="mb-4">
+                        <h2 class="text-lg font-bold text-gray-800">RL 5.3 – 10 Besar Kunjungan Penyakit</h2>
+                        <p class="text-xs text-gray-400 mt-0.5">Berdasarkan total kunjungan per diagnosa</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                        {{-- Pie chart --}}
+                        <div class="relative" style="height:340px;">
+                            <canvas id="rl53Chart"></canvas>
+                        </div>
+                        {{-- Legenda di sebelah kanan --}}
+                        <div class="space-y-2 pt-2" id="rl53Legend"></div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- ── Baris 3: 10 Besar Dokter (full width) ── --}}
             <div class="bg-white rounded-2xl shadow-sm p-5">
                 <div class="mb-4">
                     <h2 class="text-lg font-bold text-gray-800">10 Besar Dokter</h2>
@@ -126,6 +199,10 @@
     $rl52Labels = $rl52->map(fn($p) => $p->diagnosa_utama)->toArray();
     $rl52Data   = $rl52->pluck('total')->toArray();
     $rl52Kode   = $rl52->pluck('kode_icd')->toArray();
+
+    $rl53Labels = $rl53->map(fn($p) => $p->diagnosa_utama)->toArray();
+    $rl53Data   = $rl53->pluck('total')->toArray();
+    $rl53Kode   = $rl53->pluck('kode_icd')->toArray();
 
     $dokterLabels    = $topDokter->map(fn($d) => $d->nama_dokter)->toArray();
     $dokterData      = $topDokter->pluck('total_pasien')->toArray();
@@ -208,6 +285,12 @@ function buatPieChart(canvasId, legendId, labels, data, kodes) {
 buatPieChart(
     'rl52Chart', 'rl52Legend',
     @json($rl52Labels), @json($rl52Data), @json($rl52Kode)
+);
+
+// RL 5.3
+buatPieChart(
+    'rl53Chart', 'rl53Legend',
+    @json($rl53Labels), @json($rl53Data), @json($rl53Kode)
 );
 
 // 10 Besar Dokter — horizontal bar

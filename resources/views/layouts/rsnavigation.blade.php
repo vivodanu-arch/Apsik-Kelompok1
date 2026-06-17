@@ -117,7 +117,7 @@
             </button>
 
             {{-- Dropdown --}}
-            <div x-show="open"
+            <div x-cloak x-show="open"
                  @click.outside="open = false"
                  x-transition:enter="transition ease-out duration-150"
                  x-transition:enter-start="opacity-0 scale-95"

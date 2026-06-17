@@ -87,37 +87,66 @@ class DatabaseSeeder extends Seeder
     ];
 
     // Diagnosa pool: [kode, nama, sekunder, bobot, poli_idx(0-9)]
+    // [kode_icd, diagnosa_utama, diagnosa_sekunder, bobot, poli_idx]
     private array $diagnosaPool = [
-        ['J06.9','Infeksi saluran napas atas akut tidak spesifik','J00',   120, 0],
-        ['J00',  'Nasofaringitis akut (pilek)',                   'J06.9', 100, 0],
-        ['I10',  'Hipertensi esensial (primer)',                  'I11.9',  90, 0],
-        ['A09',  'Diare dan gastroenteritis akut',                'K59.1',  85, 0],
-        ['E11.9','Diabetes melitus tipe 2 tanpa komplikasi',      'E78.5',  80, 0],
-        ['R50.9','Demam tidak spesifik',                          'R51',    75, 1], // anak
-        ['K29.7','Gastritis tidak spesifik',                      'K21.0',  70, 0],
-        ['M54.5','Nyeri punggung bawah (low back pain)',          'M54.4',  60, 0],
-        ['J18.9','Pneumonia tidak spesifik',                      'J22',    50, 1],
-        ['A90',  'Demam berdarah dengue (DBD)',                   'A91',    45, 1],
-        ['N39.0','Infeksi saluran kemih (ISK)',                   'N30.0',  42, 0],
-        ['J45.9','Asma tidak spesifik',                           'J44.1',  38, 0],
-        ['L23',  'Dermatitis kontak alergi',                      'L50.0',  35, 5], // kulit
-        ['B01',  'Varisela (cacar air)',                           'B09',    30, 1],
-        ['J03.9','Tonsilitis akut tidak spesifik',                'J02.9',  28, 7], // THT
-        ['K21.0','GERD (penyakit refluks gastroesofagus)',        'K29.7',  26, 0],
-        ['G43.9','Migrain tidak spesifik',                        'R51',    24, 4], // saraf
-        ['E78.5','Hiperlipidemia tidak spesifik',                 'E11.9',  22, 0],
-        ['H10.9','Konjungtivitis tidak spesifik',                 'H10.1',  20, 6], // mata
-        ['K04.0','Pulpitis gigi',                                 'K08.8',  18, 9], // gigi
-        ['A15',  'Tuberkulosis paru',                             'J18.9',  15, 0],
-        ['B86',  'Skabies',                                       'L30.9',  14, 5],
-        ['F41.1','Gangguan ansietas umum',                        'F41.9',  10, 0],
-        ['K35',  'Apendisitis akut',                              'K37',     8, 2], // bedah
-        ['R05',  'Batuk kronik tidak spesifik',                   'J06.9',   6, 0],
-        ['G45.9','Transient ischemic attack (TIA)',               'I63.9',   5, 4],
-        ['I25.1','Penyakit jantung aterosklerotik',               'I10',     5, 8], // jantung
-        ['O80',  'Persalinan normal',                             'O48',     5, 3], // ObGyn
-        ['H52.1','Miopia (rabun jauh)',                           'H52.4',   4, 6],
-        ['M17.1','Osteoartritis lutut primer',                    'M25.5',   4, 0],
+
+        ['J06.9','Infeksi saluran napas atas akut tidak spesifik','Faringitis',120,0],
+        ['J00','Nasofaringitis akut (pilek)','Rhinitis akut',100,0],
+
+        ['I10','Hipertensi esensial (primer)','Dislipidemia',90,0],
+        ['A09','Diare dan gastroenteritis akut','Dehidrasi ringan',85,0],
+        ['E11.9','Diabetes melitus tipe 2 tanpa komplikasi','Hipertensi',80,0],
+
+        ['R50.9','Demam tidak spesifik','Infeksi virus akut',75,1],
+
+        ['K29.7','Gastritis tidak spesifik','Dispepsia',70,0],
+
+        ['M54.5','Nyeri punggung bawah (low back pain)','Spasme otot',60,0],
+
+        ['J18.9','Pneumonia tidak spesifik','Hipoksia ringan',50,1],
+
+        ['A90','Demam berdarah dengue (DBD)','Trombositopenia',45,1],
+
+        ['N39.0','Infeksi saluran kemih (ISK)','Disuria',42,0],
+
+        ['J45.9','Asma tidak spesifik','Rhinitis alergi',38,0],
+
+        ['L23','Dermatitis kontak alergi','Pruritus',35,5],
+
+        ['B01','Varisela (cacar air)','Demam',30,1],
+
+        ['J03.9','Tonsilitis akut tidak spesifik','Faringitis akut',28,7],
+
+        ['K21.0','GERD (penyakit refluks gastroesofagus)','Gastritis',26,0],
+
+        ['G43.9','Migrain tidak spesifik','Vertigo ringan',24,4],
+
+        ['E78.5','Hiperlipidemia tidak spesifik','Obesitas',22,0],
+
+        ['H10.9','Konjungtivitis tidak spesifik','Iritasi mata',20,6],
+
+        ['K04.0','Pulpitis gigi','Karies gigi',18,9],
+
+        ['A15','Tuberkulosis paru','Malnutrisi ringan',15,0],
+
+        ['B86','Skabies','Infeksi kulit sekunder',14,5],
+
+        ['F41.1','Gangguan ansietas umum','Insomnia',10,0],
+
+        ['K35','Apendisitis akut','Nyeri abdomen akut',8,2],
+
+        ['R05','Batuk kronik tidak spesifik','ISPA berulang',6,0],
+
+        ['G45.9','Transient ischemic attack (TIA)','Hipertensi',5,4],
+
+        ['I25.1','Penyakit jantung aterosklerotik','Hipertensi',5,8],
+
+        ['O80','Persalinan normal','Anemia ringan',5,3],
+
+        ['H52.1','Miopia (rabun jauh)','Astigmatisme',4,6],
+
+        ['M17.1','Osteoartritis lutut primer','Nyeri sendi kronis',4,0],
+
     ];
 
     private array $keluhan = [
