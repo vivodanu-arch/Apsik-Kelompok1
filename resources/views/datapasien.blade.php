@@ -17,77 +17,36 @@
 
         <main class="p-6">
 
-           {{--Notifikasi --}}   
-        @if(session('success'))
-        <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px] z-[9999]">
-
-            <div id="successCard"
-                     class="bg-white rounded-3xl shadow-xl p-8 w-[400px] max-w-[90%] text-center transition-all duration-300">
-
-                <div class="mx-auto w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center text-white text-4xl font-bold shadow-md">
-                    ✓
-                </div>
-
-                <h2 class="text-3xl font-bold mt-5 text-gray-800">
-                    Perubahan Berhasil
-                </h2>
-
-                <p class="text-gray-500 mt-2">
-                    {{ session('success') }}
-                </p>
-
-                <div class="mt-6 h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <div id="progressBar"
-                        class="h-full bg-green-500 rounded-full">
+            {{-- Notifikasi --}}
+            @if(session('success'))
+            <div id="successModal" class="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[1px] z-[9999]">
+                <div id="successCard" class="bg-white rounded-3xl shadow-xl p-8 w-[400px] max-w-[90%] text-center transition-all duration-300">
+                    <div class="mx-auto w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center text-white text-4xl font-bold shadow-md">✓</div>
+                    <h2 class="text-3xl font-bold mt-5 text-gray-800">Perubahan Berhasil</h2>
+                    <p class="text-gray-500 mt-2">{{ session('success') }}</p>
+                    <div class="mt-6 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div id="progressBar" class="h-full bg-green-500 rounded-full"></div>
                     </div>
                 </div>
-
             </div>
-
-        </div>
-
-        <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const modal = document.getElementById('successModal');
-            const progress = document.getElementById('progressBar');
-            const card = document.getElementById('successCard');
-            
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-
-            setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-            }, 120);
-            progress.animate(
-                [
-                    { width: '100%' },
-                    { width: '0%' }
-                ],
-                {
-                    duration: 1500,
-                    fill: 'forwards'
-                }
-            );
-
-            setTimeout(() => {
-
-                modal.style.transition = 'all .2s ease';
-                modal.style.opacity = '0';
-
+            <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const modal = document.getElementById('successModal');
+                const progress = document.getElementById('progressBar');
                 const card = document.getElementById('successCard');
-                card.style.transform = 'scale(.8)';
-
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 120);
+                progress.animate([{ width: '100%' }, { width: '0%' }], { duration: 1500, fill: 'forwards' });
                 setTimeout(() => {
-                    modal.remove();
-                }, 400);
-
-            }, 1500);
-
-        });
-        </script>
-        @endif
+                    modal.style.transition = 'all .2s ease';
+                    modal.style.opacity = '0';
+                    card.style.transform = 'scale(.8)';
+                    setTimeout(() => modal.remove(), 400);
+                }, 1500);
+            });
+            </script>
+            @endif
 
             {{-- Header --}}
             <div class="rounded-2xl p-8 mb-6 text-white shadow-sm"
@@ -96,46 +55,62 @@
                 <p class="mt-2 text-blue-200 text-sm">Daftar data pasien Rumah Sakit Kasih</p>
             </div>
 
-            {{-- Search --}}
-            <div class="bg-white rounded-2xl shadow-sm p-4 mb-5">
-                <form method="GET" action="{{ route('pasien.index') }}"
-                      class="flex gap-3 items-center">
-
-                    <input type="text" name="search"
-                           value="{{ request('search') }}"
-                           placeholder="Cari nama pasien atau No. RM..."
-                           class="flex-1 border border-gray-300 rounded-xl px-4 py-2 text-sm
-                                  focus:outline-none focus:ring-2 focus:ring-blue-500">
-
-                    <button type="submit"
-                            class="bg-blue-700 hover:bg-blue-800 text-white px-5 py-2 rounded-xl text-sm font-semibold">
-                        Cari
-                    </button>
-
-                    @if(request('search'))
-                        <a href="{{ route('pasien.index') }}"
-                           class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-xl text-sm">
-                            Reset
-                        </a>
-                    @endif
-                </form>
-            </div>
-
-            {{-- Table --}}
+            {{-- Card Table --}}
             <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
 
+                {{-- Filter Bar --}}
+                <div class="p-5 border-b bg-gray-50">
+                    <form method="GET" action="{{ route('pasien.index') }}"
+                          class="flex flex-wrap items-end gap-3">
+
+                        {{-- Search --}}
+                        <div class="flex flex-col gap-1 flex-1 min-w-[240px]">
+                            <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Cari Pasien</label>
+                            <input type="text" name="search"
+                                   value="{{ request('search') }}"
+                                   placeholder="Cari nama pasien atau No. RM..."
+                                   class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+
+                        <div class="flex gap-2 items-end">
+                            <button type="submit"
+                                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-semibold">
+                                Cari
+                            </button>
+                            @if(request('search'))
+                                <a href="{{ route('pasien.index') }}"
+                                   class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm">
+                                    Reset
+                                </a>
+                            @endif
+                        </div>
+
+                        {{-- Info jumlah --}}
+                        <div class="ml-auto flex items-end">
+                            <p class="text-sm text-gray-400">
+                                Total: <strong class="text-gray-700">{{ $pasien->total() }}</strong> pasien
+                                @if(request('search'))
+                                    untuk "<em>{{ request('search') }}</em>"
+                                @endif
+                            </p>
+                        </div>
+
+                    </form>
+                </div>
+
+                {{-- Table --}}
                 <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left" style="min-width: 750px;">
+                    <table class="w-full text-sm text-left" style="min-width: 900px;">
 
                         <thead class="bg-gray-50 text-gray-500 uppercase text-xs border-b">
                             <tr>
                                 <th class="px-4 py-3 w-10">No</th>
-                                <th class="px-4 py-3">No. RM</th>
+                                <th class="px-4 py-3 w-28">No. RM</th>
                                 <th class="px-4 py-3">Nama Pasien</th>
-                                <th class="px-4 py-3 w-12">JK</th>
-                                <th class="px-4 py-3">Tanggal Lahir</th>
+                                <th class="px-4 py-3 w-16">JK</th>
+                                <th class="px-4 py-3 w-32">Tanggal Lahir</th>
                                 <th class="px-4 py-3">Alamat</th>
-                                <th class="px-4 py-3">Telepon</th>
+                                <th class="px-4 py-3 w-32">Telepon</th>
                                 <th class="px-4 py-3 w-20 text-center">Aksi</th>
                             </tr>
                         </thead>
@@ -148,7 +123,7 @@
                                     {{ ($pasien->currentPage() - 1) * $pasien->perPage() + $loop->iteration }}
                                 </td>
 
-                                <td class="px-4 py-4">
+                                <td class="px-4 py-4 whitespace-nowrap">
                                     <span class="font-mono text-blue-700 bg-blue-50 px-2 py-0.5 rounded text-xs">
                                         {{ $p->no_rm }}
                                     </span>
@@ -165,15 +140,17 @@
                                     </span>
                                 </td>
 
-                                <td class="px-4 py-4 text-gray-700">
+                                <td class="px-4 py-4 text-gray-700 whitespace-nowrap">
                                     {{ \Carbon\Carbon::parse($p->ttl)->translatedFormat('d F Y') }}
                                 </td>
 
                                 <td class="px-4 py-4 text-gray-600 max-w-xs">
-                                    {{ \Illuminate\Support\Str::limit($p->alamat, 45, '...') }}
+                                    <span title="{{ $p->alamat }}">
+                                        {{ \Illuminate\Support\Str::limit($p->alamat, 45, '...') }}
+                                    </span>
                                 </td>
 
-                                <td class="px-4 py-4 text-gray-600">
+                                <td class="px-4 py-4 text-gray-600 whitespace-nowrap">
                                     {{ $p->telepon }}
                                 </td>
 
@@ -205,16 +182,10 @@
                     </table>
                 </div>
 
-                {{-- Pagination — ini yang hilang sebelumnya --}}
+                {{-- Pagination --}}
                 <div class="px-5 py-4 border-t flex items-center justify-between">
-
                     <p class="text-sm text-gray-500">
-                        Menampilkan
-                        <strong>{{ $pasien->firstItem() ?? 0 }}–{{ $pasien->lastItem() ?? 0 }}</strong>
-                        dari <strong>{{ $pasien->total() }}</strong> pasien
-                        @if(request('search'))
-                            untuk pencarian "<em>{{ request('search') }}</em>"
-                        @endif
+                        Halaman {{ $pasien->currentPage() }} dari {{ $pasien->lastPage() }}
                     </p>
 
                     <div class="flex items-center gap-1">
